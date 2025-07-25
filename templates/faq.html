@@ -1,0 +1,83 @@
+{% extends 'base.html' %} {% load static %}
+{% load i18n %} 
+ 
+{% block title %}{% trans "faq_meta_title" %}{% endblock %}
+{% block description %}{% trans "faq_meta_description" %}{% endblock %} 
+  
+  
+  {% block extra_schema %}
+<script type="application/ld+json" data-version="{% now 'U' %}">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {% for faq in faqs %}
+      {
+        "@type": "Question",
+        "name": "{{ faq.question|striptags|escapejs }}",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "{{ faq.answer|striptags|escapejs }}"
+        }
+      }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ]
+  }
+</script>
+
+{% endblock %} {% block content %}
+
+{% include 'components/navbar.html' %}
+{% include 'components/page-header.html' %}
+
+
+<!-- Breadcrumb -->
+<div class="breadcrumb container">
+  <a href="{% url 'home:home' %}" aria-label="Home Page">{% trans "Home Page" %}</a>
+  |
+  <p>{% trans "FAQ" %}</p>
+</div>
+
+<div class="container">
+  <div class="news-top-content">
+    <h1>{% trans "Frequently asked questions" %}</h1>
+  </div>
+</div>
+
+<section class="faq-section container">
+  <div class="section-grid">
+    {% for faq in faqs %}
+    <div class="grid-item">
+      <div class="question">
+        <i class="fa-solid fa-circle"></i>
+        <h2>{{ faq.question|linebreaksbr }}</h2>
+        <img
+          loading="lazy"
+          class="plus-icon"
+          src="{% static '/images/plus.svg' %}"
+          alt="Plus Icon"
+        />
+        <img
+          loading="lazy"
+          class="minus-icon"
+          src="{% static '/images/minus.svg' %}"
+          alt="Minus Icon"
+        />
+      </div>
+      <div class="answer">
+        <p>{{ faq.answer|linebreaksbr }}</p>
+      </div>
+    </div>
+    {% empty %}
+    <div class="no-faq">
+      <p>{% trans "No FAQs available at the moment." %}</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% include 'components/contactcomponent.html' %} 
+
+{% include 'components/review.html' %}
+
+{% endblock %}

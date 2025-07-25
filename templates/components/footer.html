@@ -1,0 +1,63 @@
+{% load static %}
+{% load i18n %}
+
+<footer class="container">
+  <div class="footer-content">
+    <div>
+        <a href="{% url 'home:home' %}" aria-label="Home Page">
+           <img loading="lazy" class="avtoil-logo" src="{% static '/images/avtoil-logo.png' %}" alt="Avtoil logo" />
+        </a>
+        <p>
+            {% trans "Reliable Lubricant Manufacturer." %} <br />
+            {% trans "Engineered for Performance, Trusted for Protection." %}
+        </p>
+    </div>
+    <div class="footer-row">
+        <ul>
+            <li>
+                <a href="{% url 'about:about_page' %}" aria-label="About Page">{% trans "About Us" %}</a>
+                <a href="{% url 'products:product_list' %}" aria-label="Products Page">{% trans "Products" %}</a>
+            </li>
+            <li>
+                <a href="{% url 'services:services_page' %}" aria-label="Aminol Dealer Page">{% trans "Services" %}</a>
+                <a href="{% url 'faq:faq' %}" aria-label="Faq Page">{% trans "FAQ" %}</a>
+            </li>
+            <li>
+                <a href="{% url 'news:news_list' %}" aria-label="News Page">{% trans "News" %}</a>
+                <a href="{% url 'contact:contact' %}" aria-label="Contact Page">{% trans "Contact" %}</a>
+            </li>
+        </ul>
+        <button id="scrollToTop" aria-label="Scroll to top"><i class="fa-solid fa-chevron-up"></i></button>
+    </div>
+</div>
+  <hr class="custom-hr" />
+  <div class="footer-contact">
+    <div>
+      <p>{% trans "Heilbronner Straße 150, 70191 Stuttgart, Germany" %}</p>
+      <div class="phonenumbers"><div class="phone-number"> </div><div class="phone-number">+49 711 490 66 221 </div></div>
+      <p>info@avtoil.de</p>
+    </div>
+    <div class="">
+      <a href="https://wa.me/994502220607" aria-label="Whatsapp Page">
+        <img loading="lazy" src="{% static 'images/whatsapp.webp' %}" alt="Whatsapp" />
+      </a>
+      <a href="https://www.youtube.com/@aminollubricants7877" aria-label="Youtube Page"  target="_blank" >
+        <img loading="lazy" src="{% static 'images/youtube.webp' %}" alt="Youtube" />
+      </a>
+      <a href="https://linkedin.com/company/aminol" aria-label="Linkedin Page">
+        <img loading="lazy" src="{% static 'images/linkedin.webp' %}"  target="_blank" alt="Linkedn" />
+      </a>
+      <a href="https://www.instagram.com/aminol_official?igsh=MTM5bmZnejhxOWhzZw==" aria-label="Instagram Page" target="_blank">
+        <img loading="lazy" src="{% static 'images/instagram.webp' %}" alt="Instagram" />
+      </a>
+      <a href="https://www.facebook.com/p/AMINOL-100038067895501/" aria-label="Facebook Page" target="_blank">
+        <img loading="lazy" src="{% static 'images/facebook.webp' %}" alt="Facebook" class="facebook" />
+      </a>
+    </div>
+  </div>
+  <hr class="custom-hr" />
+  <div class="alco-privacy">
+    <p>{% trans "© 2025 ALCO LLC. All right reserved." %}</p>
+    <p>{% trans "Terms and Condition" %} - {% trans "Privacy Policy" %}</p>
+  </div>
+</footer>

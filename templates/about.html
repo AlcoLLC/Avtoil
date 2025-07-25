@@ -1,0 +1,197 @@
+{% extends 'base.html' %} {% load static %} {% load i18n %}  
+
+{% block title %}{% trans "about_meta_title" %}{% endblock %} 
+{% block description %}{% trans "about_meta_description" %}{%endblock %} 
+{% block keywords %}{% trans "about_keywords" %}{% endblock %} 
+
+{% block extra_schema %}
+{% endblock %} 
+
+{% block content %} 
+{% load custom_filters %} 
+
+{% include 'components/navbar.html' %}
+{% include 'components/page-header.html' %}
+
+<div class="breadcrumb container">
+  <a href="{% url 'home:home' %}" aria-label="Home Page">{% trans "Home page" %}</a>
+  |
+  <p>{% trans "About us" %}</p>
+</div>
+
+
+<div class="services">
+  <div class="section-header">
+    <h2>{% trans "About Aminol" %}</h2>
+  </div>
+  <div class="container services-sections">
+    <div class="section">
+      <div class="content">
+        <h2>{% trans "Hybrid & EV lubricants" %}</h2>
+        <p>{% trans "Choose sustainability with our Hybrid & EV lubricants" %}</p>
+        <!-- <a href="#" class="button-style">{% trans "Discover more" %}</a> -->
+      </div>
+
+      <img
+        loading="lazy"
+        class="image-container"
+        src="{% static 'images_folder/image123.webp' %}"
+        alt="{% trans 'Hybrid Lubricants' %}"
+      />
+    </div>
+
+    <div class="section">
+      <div class="content">
+        <h2>{% trans "Additives" %}</h2>
+        <p>
+          {% trans "Protect and keep your vehicle in top condition with our unique range of
+          additives." %}
+        </p>
+        <!-- <a href="#" class="button-style">{% trans "Discover more" %}</a> -->
+      </div>
+      <img
+        loading="lazy"
+        class="image-container"
+        src="{% static 'logos.webp' %}"
+        alt="{% trans 'Additives' %}"
+      />
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  {% for documents_cert in documents_certs %}
+  <div class="certifications-container">
+    <h3>{{ documents_cert.title|linebreaksbr }}</h3>
+    <p>{{ documents_cert.description|linebreaksbr }}</p>
+  </div>
+  {% endfor %}
+
+  <div class="logos-section">
+    <div class="wrapper" id="wrapper2">
+      <div class="carousel" id="carousel2">
+        <div class="content" id="content2">
+          {% for car in car_logos %}
+          <img loading="lazy" src="{{ car.logo.url }}" class="item" alt="Car Logo" />
+          {% endfor %}
+        </div>
+      </div>
+      <button class="prev" id="prev2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path fill="none" d="M0 0h24v24H0V0z" />
+          <path d="M15.61 7.41L14.2 6l-6 6 6 6 1.41-1.41L11.03 12l4.58-4.59z" />
+        </svg>
+      </button>
+      <button class="next" id="next2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path fill="none" d="M0 0h24v24H0V0z" />
+          <path d="M10.02 6L8.61 7.41 13.19 12l-4.58 4.59L10.02 18l6-6-6-6z" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="certifications-logos">
+    <img
+      loading="lazy"
+      src="{% static '/images/certifications-logos-2.webp' %}"
+      alt="Certifications Image"
+    />
+  </div>
+</div>
+
+<div class="image-text-section container">
+  <div class="image-text-content">
+    <img loading="lazy" src="{% static '/images/about1.webp' %}" alt="About Image" />
+    <div class="text-container">
+      <h3>Laboratory Testing</h3>
+      <p>
+        Our laboratory services specialize in precision testing solutions tailored for automotive
+        oils. Utilizing state-of-the-art equipment and expert analysis, we meticulously evaluate the
+        quality and performance of each oil sample. From viscosity measurements to chemical
+        composition analysis, our comprehensive testing ensures that our products meet the strictest
+        standards of excellence, enhancing the performance and longevity of your engines.
+      </p>
+    </div>
+  </div>
+  <div class="image-text-content">
+    <img loading="lazy" src="{% static '/images/about1.webp' %}" alt="About Image" />
+    <div class="text-container">
+      <h3>Laboratory Testing</h3>
+      <p>
+        Our laboratory services specialize in precision testing solutions tailored for automotive
+        oils. Utilizing state-of-the-art equipment and expert analysis, we meticulously evaluate the
+        quality and performance of each oil sample. From viscosity measurements to chemical
+        composition analysis, our comprehensive testing ensures that our products meet the strictest
+        standards of excellence, enhancing the performance and longevity of your engines.
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="hybrid-section container">
+  <img loading="lazy" src="{% static '/images/hybrid.webp' %}" alt="About Image" />
+  <div class="section-content">
+    <h3>{%blocktrans%} Solutions for Hybrid and Electric Vehicles {%endblocktrans%}</h3>
+  </div>
+</div>
+
+<div class="image-text-section container">
+  <div class="image-text-content">
+    <img loading="lazy" src="{% static '/images/about1.webp' %}" alt="About Image" />
+    <div class="text-container">
+      <h3>Laboratory Testing</h3>
+      <p>
+        Our laboratory services specialize in precision testing solutions tailored for automotive
+        oils. Utilizing state-of-the-art equipment and expert analysis, we meticulously evaluate the
+        quality and performance of each oil sample. From viscosity measurements to chemical
+        composition analysis, our comprehensive testing ensures that our products meet the strictest
+        standards of excellence, enhancing the performance and longevity of your engines.
+      </p>
+    </div>
+  </div>
+  <div class="image-text-content">
+    <img loading="lazy" src="{% static '/images/about1.webp' %}" alt="About Image" />
+    <div class="text-container">
+      <h3>Laboratory Testing</h3>
+      <p>
+        Our laboratory services specialize in precision testing solutions tailored for automotive
+        oils. Utilizing state-of-the-art equipment and expert analysis, we meticulously evaluate the
+        quality and performance of each oil sample. From viscosity measurements to chemical
+        composition analysis, our comprehensive testing ensures that our products meet the strictest
+        standards of excellence, enhancing the performance and longevity of your engines.
+      </p>
+    </div>
+  </div>
+</div>
+
+{% if sustainability %}
+<div class="sustainability-container">
+  <div class="sustainability-background"></div>
+  <div class="container sustainability-content">
+    <div class="sustainability-circle-wrapper">
+      <div class="sustainability-circle-img">
+        <img
+          class="circle-img"
+          src="{% static '/images/sustainability-circle.webp' %}"
+          alt="Sustainability Circle"
+        />
+        <img
+          class="curved-text-img"
+          src="{% static '/images/curve text.webp' %}"
+          alt="Core of Innovation Sustainability"
+        />
+      </div>
+    </div>
+    <div class="content-wrapper">
+      <p>{{ sustainability.main_description|safe_linebreaksbr }}</p>
+    </div>
+  </div>
+</div>
+{% endif %} 
+
+{% include 'components/gallery.html' %} 
+{% include 'components/brochure.html' %} 
+{% include 'components/review.html' %}
+
+{% endblock %}

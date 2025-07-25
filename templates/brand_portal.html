@@ -1,0 +1,78 @@
+{% extends 'base.html' %} {% load static %} {% load i18n %}
+{% block title %}{% trans "brand_portal_meta_title" %}{% endblock %}
+{% block description %}{% trans "brand_portal_meta_description" %}{% endblock %}
+{% block keywords %}{% trans "brand_portal_keywords" %}{% endblock %}
+
+{% block extra_schema %}
+
+
+{% endblock %}
+
+{% block content %}
+  {% include 'components/navbar.html' %}
+  {% include 'components/page-header.html' %}
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb container">
+    <a href="{% url 'home:home' %}" aria-label="Home Page">{% trans "Home Page" %}</a>|
+    <p>{% trans "Brand Portal" %}</p>
+  </div>
+
+  <div class="container">
+    <div class="news-top-content">
+      <h1>{% trans "Brand Portal" %}</h1>
+      <p>{{ brand.title|linebreaksbr }}</p>
+    </div>
+  </div>
+
+
+  <div class="image-text-section container">
+  <div class="image-text-content">
+    <img loading="lazy" src="{{ brand.image.url }}" alt="brand Portal Image" />
+    <div class="text-container">
+      <p>
+       {{ brand.description|linebreaksbr }}
+      </p>
+    </div>
+  </div>
+
+</div>
+
+  <div class="brand-section container">
+    {% for content in brand_contents %}
+    <div class="brand-item">
+      <div class="text-container">
+        <h2>{{ content.title|linebreaksbr }}</h2>
+        <p>{{ content.description|linebreaksbr }}</p>
+      </div>
+      <div class="brand-image">
+        {% if content.image %}
+        <img loading="lazy"
+          src="{{ content.image.url }}"
+          alt="{{ content.title }}"
+        />
+        {% else %}
+        <img loading="lazy"
+          src="{% static '/images/market-industrial.webp' %}"
+          alt="Service Offer Image"
+        />
+        {% endif %}
+        <a
+          class="read-more"
+          href="{% url 'brands:view_brand_content_pdf' content.id %}" aria-label="Brand Page"
+          target="_blank"
+          >Read more</a
+        >
+      </div>
+    </div>
+    {% empty %}
+    <div class="no-content">
+      <p>No brand content available at the moment.</p>
+    </div>
+    {% endfor %}
+  </div>
+
+
+  {% include 'components/review.html' %}
+
+{% endblock %}

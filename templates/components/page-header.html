@@ -1,0 +1,14 @@
+{% load static %}
+{% load i18n %}
+  
+  <header class="page-header">
+    <img loading="lazy" class="bg-image" src="{% static 'images/about1.webp' %}" alt="Page header background" />
+      <div class="header-content container">
+          <a class="header-text"  aria-label="Page header content" href="{{ swiper.link }}">
+            <h1>Innovating Lubrication for Modern Engines</h1>
+             <p>Avtoil™ lubricants are engineered to improve fuel economy while providing exceptional engine protection.
+             </p>
+            <span class="button-style">{% trans "Go to catalog" %}</span>
+          </a>
+      </div>
+    </header>

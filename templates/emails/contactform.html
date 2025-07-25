@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>New Contact Form Submission</title>
+    <style>
+      body {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        color: #333;
+        line-height: 1.7;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f4f4f4;
+      }
+      .container {
+        background-color: white;
+        border-radius: 8px;
+        padding: 30px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .header {
+        background-color: #2c3e50;
+        color: white;
+        text-align: center;
+        padding: 15px;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        margin: -30px -30px 30px;
+      }
+      .label {
+        font-weight: 600;
+        color: #2c3e50;
+        margin-right: 10px;
+      }
+      .value {
+        color: #34495e;
+      }
+      .section {
+        border-bottom: 1px solid #ecf0f1;
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+      }
+      .section:last-child {
+        border-bottom: none;
+      }
+      .message {
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h2>New Contact Form Submission</h2>
+      </div>
+      <div class="section">
+        <span class="label">Full Name:</span>
+        <span class="value">{{ first_name }} {{ last_name }}</span>
+      </div>
+      <div class="section">
+        <span class="label">Company:</span>
+        <span class="value">{{ company }}</span>
+      </div>
+      <div class="section">
+        <span class="label">Email Address:</span>
+        <span class="value">{{ email }}</span>
+      </div>
+      <div class="section">
+        <span class="label">Phone Number:</span>
+        <span class="value">{{ phone_number }}</span>
+      </div>
+      <div class="section">
+        <span class="label">Help Type:</span>
+        <span class="value">{{ help_type }}</span>
+      </div>
+      <div class="section">
+        <span class="label">Message:</span>
+        <div class="message">{{ message|linebreaks }}</div>
+      </div>
+    </div>
+  </body>
+</html>

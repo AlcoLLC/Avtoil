@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+	
+<title>Responsive Preview</title>
+	
+</head>
+
+<body class="responsive-preview">
+
+
+<div class="map-responsive-preview">
+
+	<div id='map-container'></div>
+	<link href="{% static 'assets/css/map.min.css' %}" rel="stylesheet">
+	<script src="{% static 'assets/js/raphael.min.js' %}" defer></script>
+	<script src="{% static 'assets/js/settings.min.js' %}" defer></script>
+	<script src="{% static 'assets/js/paths.min.js' %}" defer></script>    
+	<script src="{% static 'assets/js/map.min.js' %}" defer></script>
+	<script>
+	var map = new FlaMap(map_cfg);
+	map.drawOnDomReady('map-container');
+	</script>
+<!-- end HTML5 Map -->
+
+</div>
+</body>
+</html>

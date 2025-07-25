@@ -1,0 +1,139 @@
+{% load static %}
+{% load i18n %}
+
+<div class="aminol-contact-form container">
+    <div class="form-content">
+
+        {# --- START: XƏTA MESAJLARINI GÖSTƏRƏN BLOK --- #}
+        {% if messages %}
+            <div class="form-messages">
+                {% for message in messages %}
+                    {# Mesajın tipinə görə (error, success) uyğun class əlavə edirik #}
+                    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {# --- END: XƏTA MESAJLARINI GÖSTƏRƏN BLOK --- #}
+
+        <h2>{% trans "Contact form" %}</h2>
+        <p>
+            {% trans "Do you need a specific solution or are you interested in a partnership?" %}<br />
+            {% trans "Please contact us here." %}
+        </p>
+
+        <form action="{% url 'contact:contact' %}" method="POST">
+            {% csrf_token %}
+            
+            {# ... formun qalan hissəsi olduğu kimi qalır ... #}
+            
+            <div class="form-row">
+                <div class="form-group select-form-group">
+                    <label for="helpType">{{ form_labels.help_type }}{{ form_labels.required }}</label>
+                    <div class="custom-select-wrapper">
+                        <div class="custom-select" id="selected-enquiry">
+                            {% trans "I would like to buy Aminol products." %}
+                        </div>
+                        <div class="custom-options">
+                            {% for value, text in help_choices %}
+                            <div class="custom-option" data-value="{{ value }}">{{ text }}</div>
+                            {% endfor %}
+                        </div>
+                        <input
+                            type="hidden"
+                            name="helpType"
+                            id="helpType"
+                            value="buy"
+                            required
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input
+                        type="text"
+                        id="company"
+                        name="company"
+                        class="form-control"
+                        placeholder="{{ form_labels.company }}{{ form_labels.required }}"
+                        required
+                    />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <textarea
+                    id="question"
+                    name="question"
+                    class="form-control"
+                    placeholder="{{ form_labels.question }}{{ form_labels.required }}"
+                    required
+                ></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <input
+                        type="text"
+                        id="firstName"
+                        name="firstName"
+                        class="form-control"
+                        placeholder="{{ form_labels.first_name }}{{ form_labels.required }}"
+                        required
+                    />
+                </div>
+
+                <div class="form-group">
+                    <input
+                        type="text"
+                        id="lastName"
+                        name="lastName"
+                        class="form-control"
+                        placeholder="{{ form_labels.last_name }}{{ form_labels.required }}"
+                        required
+                    />
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        class="form-control"
+                        placeholder="{{ form_labels.email }}{{ form_labels.required }}"
+                        required
+                    />
+                </div>
+
+                <div class="form-group">
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        class="form-control"
+                        placeholder="{{ form_labels.phone }}{{ form_labels.required }}"
+                        required
+                    />
+                </div>
+            </div>
+
+            <div class="form-group recaptcha-container">
+                <div class="g-recaptcha" 
+                        data-sitekey="{{ recaptcha_site_key }}"
+                        data-callback="onRecaptchaSuccess"
+                        data-expired-callback="onRecaptchaExpired" 
+                        data-error-callback="onRecaptchaError">
+                </div>
+            </div>
+
+            <button type="submit" class="button-style">
+                {{ form_labels.send_button }}
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </form>
+    </div>
+</div>
+
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>

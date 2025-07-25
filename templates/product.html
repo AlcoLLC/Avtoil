@@ -1,0 +1,518 @@
+{% extends 'base.html' %} {% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "products_meta_title" %}{% endblock %}
+{% block description %}{% trans "products_meta_description" %}{% endblock %}
+{% block keywords %}{% trans "products_keywords" %}{% endblock %}
+
+{% block extra_schema %}
+<script type="application/ld+json" data-version="{% now 'U' %}">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "{% if selected_product_groups|length == 1 %}{% for group in product_groups %}{% if group.slug in selected_product_groups %}{{ group.title|striptags }}{% endif %}{% endfor %}{% else %}{% trans "All products" %}{% endif %}",
+  "description": "{% trans "products_meta_description" %}",
+  "url": "{{ request.build_absolute_uri }}",
+  "mainEntity": {
+    "@type": "ItemList",
+    "name": "Product Listing",
+    "itemListOrder": "https://schema.org/ItemListOrderAscending",
+    "numberOfItems": {{ products|length }},
+    "itemListElement": [
+      {% for product in products %}
+      {
+        "@type": "Product",
+        "name": "{{ product.title|striptags }}",
+        "sku": "{{ product.product_id }}",
+        {% if product.image %}
+        "image": "{{ product.image.url }}",
+        {% endif %}
+        {% if product.description %}
+        "description": "{{ product.description|striptags|truncatechars:160 }}",
+        {% endif %}
+        "url": "{% url 'products:product_detail' slug=product.slug %}",
+        "brand": {
+          "@type": "Organization",
+          "name": "Avtoil"
+        },
+        "category": "{% if product.product_group %}{{ product.product_group.title|striptags }}{% endif %}",
+        "additionalProperty": [
+          {% if product.segments.all %}
+          {
+            "@type": "PropertyValue",
+            "name": "Segment",
+            "value": "{% for segment in product.segments.all %}{{ segment.title|striptags }}{% if not forloop.last %}, {% endif %}{% endfor %}"
+          },
+          {% endif %}
+          {% if product.oil_type %}
+          {
+            "@type": "PropertyValue",
+            "name": "Oil Type",
+            "value": "{{ product.oil_type.title|striptags }}"
+          },
+          {% endif %}
+          {% if product.viscosity %}
+          {
+            "@type": "PropertyValue",
+            "name": "Viscosity",
+            "value": "{{ product.viscosity.title|striptags }}"
+          }
+          {% endif %}
+        ]
+      }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ]
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "{{ request.build_absolute_uri }}?search={search_term}",
+      "actionPlatform": [
+        "http://schema.org/DesktopWebPlatform",
+        "http://schema.org/MobileWebPlatform"
+      ]
+    },
+    "query-input": "required name=search_term"
+  },
+  "offers": {
+    "@type": "AggregateOffer",
+    "offerCount": {{ products|length }}
+  }
+}
+</script>
+
+<!-- Faceted Search Schema -->
+<script type="application/ld+json" data-version="{% now 'U' %}">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Product Filters",
+  "description": "Filter products by various criteria",
+  "mainEntity": {
+    "@type": "SearchResultsPage",
+    "potentialAction": [
+      {
+        "@type": "FilterAction",
+        "name": "Filter by Product Group",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "{{ request.build_absolute_uri }}?product_group={product_group}",
+          "actionPlatform": [
+            "http://schema.org/DesktopWebPlatform",
+            "http://schema.org/MobileWebPlatform"
+          ]
+        },
+        "query-input": "required name=product_group"
+      },
+      {
+        "@type": "FilterAction",
+        "name": "Filter by Segments",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "{{ request.build_absolute_uri }}?segments={segments}",
+          "actionPlatform": [
+            "http://schema.org/DesktopWebPlatform",
+            "http://schema.org/MobileWebPlatform"
+          ]
+        },
+        "query-input": "required name=segments"
+      },
+      {
+        "@type": "FilterAction",
+        "name": "Filter by Oil Type",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "{{ request.build_absolute_uri }}?oil_type={oil_type}",
+          "actionPlatform": [
+            "http://schema.org/DesktopWebPlatform",
+            "http://schema.org/MobileWebPlatform"
+          ]
+        },
+        "query-input": "required name=oil_type"
+      },
+      {
+        "@type": "FilterAction",
+        "name": "Filter by Viscosity",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "{{ request.build_absolute_uri }}?viscosity={viscosity}",
+          "actionPlatform": [
+            "http://schema.org/DesktopWebPlatform",
+            "http://schema.org/MobileWebPlatform"
+          ]
+        },
+        "query-input": "required name=viscosity"
+      }
+    ]
+  }
+}
+</script>
+
+<!-- Available Filter Options Schema -->
+<script type="application/ld+json" data-version="{% now 'U' %}">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "Product Filter Options",
+  "description": "Available filter options for products",
+  "variableMeasured": [
+    {
+      "@type": "PropertyValue",
+      "name": "Product Groups",
+      "value": [
+        {% for group in product_groups %}
+        {
+          "@type": "DefinedTerm",
+          "name": "{{ group.title|striptags }}",
+          "identifier": "{{ group.slug }}"
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+      ]
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Segments",
+      "value": [
+        {% for segment in segments %}
+        {
+          "@type": "DefinedTerm",
+          "name": "{{ segment.title|striptags }}",
+          "identifier": "{{ segment.slug }}"
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+      ]
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Oil Types",
+      "value": [
+        {% for oil_type in oil_types %}
+        {
+          "@type": "DefinedTerm",
+          "name": "{{ oil_type.title|striptags }}",
+          "identifier": "{{ oil_type.slug }}"
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+      ]
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Viscosity Options",
+      "value": [
+        {% for viscosity in viscosity_options %}
+        {
+          "@type": "DefinedTerm",
+          "name": "{{ viscosity.title|striptags }}",
+          "identifier": "{{ viscosity.slug }}"
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+      ]
+    }
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+{% include 'components/navbar.html' %}
+{% include 'components/page-header.html' %}
+
+
+<!-- Breadcrumb -->
+<div class="breadcrumb container">
+  <a href="{% url 'home:home' %}" aria-label="Home Page">{% trans "Home page" %}</a>|
+  <p>{% trans "Product Range" %}</p>
+</div>
+
+<div class="container">
+  <div class="product-content">
+    {% if selected_product_groups|length == 1 %}
+      {% for group in product_groups %}
+        {% if group.slug in selected_product_groups %}
+          <h1>{{ group.title|linebreaksbr }}</h1>
+          {% comment %} <p>{{ group.description|linebreaksbr }}</p> {% endcomment %}
+        {% endif %}
+      {% endfor %}
+    {% else %}
+      <h1>{% trans "All products" %}</h1>
+      <p>
+        {% blocktrans %}
+        Here you will find our wide range of mineral, semi-synthetic, and fully
+        synthetic motor oils in various viscosities and specifications, for
+        gasoline cars, diesel cars, and hybrid vehicles.
+        {% endblocktrans %}
+      </p>
+    {% endif %}
+  </div>
+</div>
+
+<section class="products-section container">
+   <button class="filter-mobile" id="filterMobileBtn">Filter</button>
+  <div class="products-container">
+    <div class="filter-container">
+  <form method="GET" id="filterForm">
+    <div class="search-bar">
+      <input type="text" name="search" placeholder="Search" class="search-input" value="{{ search_query }}" />
+      <button type="button" class="search-button">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </button>
+    </div>
+
+    <!-- Product Group Filter -->
+    <div class="filter-section">
+      <div class="filter-header">
+        <div class="filter-title">{% trans "Product group" %}</div>
+        <div class="filter-icon">
+          <i class="fa-solid fa-chevron-down"></i>
+        </div>
+      </div>
+      <div class="filter-content">
+        {% for group in product_groups %}
+        <label class="checkbox-group">
+          <input type="checkbox" name="product_group" value="{{ group.slug }}"
+                 {% if group.slug in selected_product_groups %}checked{% endif %} />
+          <span class="checkbox-label {% if group.slug in selected_product_groups %}selected-item{% endif %}">{{ group.title|linebreaksbr }}</span>
+        </label>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Segments Filter -->
+    <div class="filter-section">
+      <div class="filter-header">
+        <div class="filter-title">{% trans "Segments" %}</div>
+        <div class="filter-icon">
+          <i class="fa-solid fa-chevron-down"></i>
+        </div>
+      </div>
+      <div class="filter-content">
+        {% for segment in segments %}
+        <label class="checkbox-group">
+          <input type="checkbox" name="segments" value="{{ segment.slug }}"
+                 {% if segment.slug in selected_segments %}checked{% endif %} />
+          <span class="checkbox-label {% if segment.slug in selected_segments %}selected-item{% endif %}">{{ segment.title|linebreaksbr }}</span>
+        </label>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Oil Type Filter -->
+    <div class="filter-section">
+      <div class="filter-header">
+        <div class="filter-title">{% trans "Oil Type" %}</div>
+        <div class="filter-icon">
+          <i class="fa-solid fa-chevron-down"></i>
+        </div>
+      </div>
+      <div class="filter-content">
+        {% for oil_type in oil_types %}
+        <label class="checkbox-group">
+          <input type="checkbox" name="oil_type" value="{{ oil_type.slug }}"
+                 {% if oil_type.slug in selected_oil_types %}checked{% endif %} />
+          <span class="checkbox-label {% if oil_type.slug in selected_oil_types %}selected-item{% endif %}">{{ oil_type.title|linebreaksbr }}</span>
+        </label>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Viscosity Filter -->
+    <div class="filter-section">
+      <div class="filter-header">
+        <div class="filter-title">{% trans "Viscosity" %}</div>
+        <div class="filter-icon">
+          <i class="fa-solid fa-chevron-down"></i>
+        </div>
+      </div>
+      <div class="filter-content">
+        {% for viscosity in viscosity_options %}
+        <label class="checkbox-group">
+          <input type="checkbox" name="viscosity" value="{{ viscosity.slug }}"
+                 {% if viscosity.slug in selected_viscosity %}checked{% endif %} />
+          <span class="checkbox-label {% if viscosity.slug in selected_viscosity %}selected-item{% endif %}">{{ viscosity.title|linebreaksbr }}</span>
+        </label>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Hidden input to maintain page number -->
+    <input type="hidden" name="page" value="1">
+  </form>
+
+  <div class="filter-footer">
+      <button type="button" class="filter-results-button" id="filterResultsBtn">{% trans "View Result" %}</button>
+  </div>
+</div>
+    <div class="products-list"s>
+      {% for product in products %}
+      <div class="product-card">
+        <div class="product-image">
+          {% if product.image %}
+          <a href="{% url 'products:product_detail' slug=product.slug %}" aria-label="{{ product.title }}"><img loading="lazy" src="{{ product.image.url }}" alt="{{ product.title }}" />
+          </a>
+          {% else %}
+          {% endif %}
+        </div>
+        <div class="product-info">
+          <div>
+            <h2 class="product-title">{{ product.title|linebreaksbr }}</h2>
+            <div class="product-description">
+              <p class="product-id">{{ product.product_id }}</p>
+              <a href="{% url 'products:product_detail' slug=product.slug %}" aria-label="{{ product.title }}" class="btn-more">
+                 {% trans "More" %}<i class="fa-solid fa-chevron-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+  <!-- Modal Overlay HTML -->
+<div class="product-modal-overlay" id="productFilterModal">
+    <div class="product-modal-content">
+        <div class="product-modal-header">
+            <h2 class="product-modal-title">{% trans "Filtering" %}</h2>
+            <button class="product-modal-close" id="productModalClose">
+                <i class="fa-solid fa-times"></i>
+            </button>
+        </div>
+
+        <div class="product-modal-filter-container">
+            <form method="GET" id="modalFilterForm">
+                <div class="modal-search-bar">
+                    <input type="text" name="search" placeholder="Search" class="modal-search-input" value="{{ search_query }}" />
+                    <button type="button" class="modal-search-button">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </div>
+
+                <!-- Product Group Filter -->
+                <div class="modal-filter-section">
+                    <div class="modal-filter-header">
+                        <div class="modal-filter-title">{% trans "Product group" %}</div>
+                        <div class="modal-filter-icon">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                    </div>
+                    <div class="modal-filter-content">
+                        {% for group in product_groups %}
+                        <label class="modal-checkbox-group">
+                            <input type="checkbox" name="product_group" value="{{ group.slug }}"
+                                   {% if group.slug in selected_product_groups %}checked{% endif %} />
+                            <span class="modal-checkbox-label {% if group.slug in selected_product_groups %}modal-selected-item{% endif %}">{{ group.title|linebreaksbr }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Segments Filter -->
+                <div class="modal-filter-section">
+                    <div class="modal-filter-header">
+                        <div class="modal-filter-title">{% trans "Segments" %}</div>
+                        <div class="modal-filter-icon">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                    </div>
+                    <div class="modal-filter-content">
+                        {% for segment in segments %}
+                        <label class="modal-checkbox-group">
+                            <input type="checkbox" name="segments" value="{{ segment.slug }}"
+                                   {% if segment.slug in selected_segments %}checked{% endif %} />
+                            <span class="modal-checkbox-label {% if segment.slug in selected_segments %}modal-selected-item{% endif %}">{{ segment.title|linebreaksbr }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Oil Type Filter -->
+                <div class="modal-filter-section">
+                    <div class="modal-filter-header">
+                        <div class="modal-filter-title">{% trans "Oil type" %}</div>
+                        <div class="modal-filter-icon">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                    </div>
+                    <div class="modal-filter-content">
+                        {% for oil_type in oil_types %}
+                        <label class="modal-checkbox-group">
+                            <input type="checkbox" name="oil_type" value="{{ oil_type.slug }}"
+                                   {% if oil_type.slug in selected_oil_types %}checked{% endif %} />
+                            <span class="modal-checkbox-label {% if oil_type.slug in selected_oil_types %}modal-selected-item{% endif %}">{{ oil_type.title|linebreaksbr }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Viscosity Filter -->
+                <div class="modal-filter-section">
+                    <div class="modal-filter-header">
+                        <div class="modal-filter-title">{% trans "Viscosity" %}</div>
+                        <div class="modal-filter-icon">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                    </div>
+                    <div class="modal-filter-content">
+                        {% for viscosity in viscosity_options %}
+                        <label class="modal-checkbox-group">
+                            <input type="checkbox" name="viscosity" value="{{ viscosity.slug }}"
+                                   {% if viscosity.slug in selected_viscosity %}checked{% endif %} />
+                            <span class="modal-checkbox-label {% if viscosity.slug in selected_viscosity %}modal-selected-item{% endif %}">{{ viscosity.title|linebreaksbr }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="product-modal-footer">
+            <button class="product-search-results-button" id="productSearchResultsBtn">
+                {% trans "View Result" %}
+            </button>
+        </div>
+    </div>
+</div>
+  </div>
+
+
+
+  <!-- Always show pagination for testing -->
+    <div class="pagination-container">
+      <button class="pagination-arrow prev" id="prevPage" {% if not page_obj.has_previous %}disabled{% endif %}>
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+
+    <div class="pagination-numbers" id="paginationNumbers">
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <a href="#" aria-label="Total page number" class="page-number active" data-page="{{ num }}">{{ num }}</a>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          <a href="#" aria-label="Total page number" class="page-number" data-page="{{ num }}">{{ num }}</a>
+        {% elif num == 1 %}
+          <a href="#" aria-label="Total page number" class="page-number" data-page="{{ num }}">{{ num }}</a>
+          {% if page_obj.number > 4 %}
+            <span class="ellipsis">...</span>
+          {% endif %}
+        {% elif num == page_obj.paginator.num_pages %}
+          {% if page_obj.number < page_obj.paginator.num_pages|add:'-3' %}
+            <span class="ellipsis">...</span>
+          {% endif %}
+          <a href="#" aria-label="Total page number" class="page-number" data-page="{{ num }}">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <button class="pagination-arrow next" id="nextPage" {% if not page_obj.has_next %}disabled{% endif %}>
+      <i class="fa-solid fa-chevron-right"></i>
+    </button>
+  </div>
+
+ </section>
+
+
+{% include 'components/gallery.html' %}
+{% include 'components/brochure.html' %}
+{% include 'components/review.html' %}
+
+{% endblock %}
+

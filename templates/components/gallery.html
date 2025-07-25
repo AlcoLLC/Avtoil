@@ -1,0 +1,41 @@
+{% load static %}
+{% load i18n %}
+
+{% block page_css %}
+    <link rel="stylesheet" href="{% static 'assets/css/swiper-bundle.min.css' %}" />
+{% endblock %}
+
+{% block page_js %}
+  <script>
+document.addEventListener("DOMContentLoaded", function() {
+    if (document.querySelector('.swiper')) {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js';
+        script.defer = true;
+        document.body.appendChild(script);
+    }
+});
+</script>
+
+<script src="{% static 'assets/js/swiper-bundle.min.js' %}" defer></script>
+
+{% endblock %}
+
+
+<section class="gallery-section">
+    <div class="section-header">
+        <h3>{% trans "GALLERY" %}</h3>
+    </div>
+    <div class="swiper labSwiper">
+        <div class="swiper-wrapper">
+            {% for image in images %}
+            <div class="swiper-slide">
+                <img loading="lazy" src="{{ image.image.url }}" alt="Laboratuvar ekipmanı" />
+            </div>
+            {% endfor %}
+            
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+    </div>
+</section>

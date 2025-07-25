@@ -1,0 +1,371 @@
+{% extends 'base.html' %} {% load static %} {% load i18n %} 
+
+{% block title%}{% trans "home_meta_title" %}{% endblock %} 
+{% block description %}{%trans "home_meta_description" %}{%endblock %} 
+{% block keywords %}{%trans "home_keywords" %}{%endblock %} 
+
+{%block page_css %}
+<link rel="stylesheet" href="{% static 'assets/css/map.min.css' %}" onload="this.rel='stylesheet'" />
+<link rel="stylesheet" href="{% static 'assets/css/swiper-bundle.min.css' %}" onload="this.rel='stylesheet'" />
+<noscript>
+  <link rel="stylesheet" href="{% static 'assets/css/swiper-bundle.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'assets/css/map.min.css' %}" />
+</noscript>
+{% endblock %} 
+
+{% block page_js %}
+<script src="{% static 'assets/js/swiper-bundle.min.js' %}" defer></script>
+<script src="{% static 'assets/js/raphael.min.js' %}" defer></script>
+<script src="{% static 'assets/js/settings.min.js' %}" defer></script>
+<script src="{% static 'assets/js/paths.min.js' %}" defer></script>
+<script src="{% static 'assets/js/map.min.js' %}" defer></script>
+<script src="{% static 'assets/js/map-init.js' %}" defer></script>
+<script src="{% static 'assets/js/map1.min.js' %}" defer></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'assets/js/map3.min.js' %}" defer></script>
+
+{% endblock %}
+
+{% block extra_schema %}
+
+
+{% endblock %} 
+
+{% block content %}
+
+{% include 'components/navbar.html' %}
+
+<header class="placeholder-header home-header">
+  <div class="swiper mySwiper">
+    <div class="swiper-wrapper">
+      {% for swiper in swiper_images %}
+      <div class="swiper-slide">
+        <img
+          class="background-image"
+          src="{{ swiper.image.url }}"
+          alt="{{ swiper.image.url }} Slider Image"
+          fetchpriority="high"
+          loading="eager"
+        />
+
+        <div class="slide-content">
+          <a aria-label="Header Slide Content" href="{{ swiper.link }}">
+            <div class="section-header-title">{{ swiper.title }}</div>
+            {% if swiper.description %}
+            <p>{{ swiper.description }}</p>
+            {% endif %}
+            <span class="button-style">{% trans "Go to catalog" %}</span>
+          </a>
+        </div>
+      </div>
+      {% empty %} {% endfor %}
+    </div>
+    <div class="swiper-button-prev">
+      <i class="fa-solid fa-chevron-left"></i>
+    </div>
+    <div class="swiper-button-next">
+      <i class="fa-solid fa-chevron-right"></i>
+    </div>
+  </div>
+</header>
+
+<div class="product-categories">
+  <div class="section-header">
+    <h2>{% trans "Product Group" %}</h2>
+  </div>
+  <div class="container categories-grid">
+    {% for product_group in product_groups %}
+    <div class="category-card {% if forloop.counter > 8 %}hidden{% endif %}">
+      <a
+        href="{% url 'products:product_list' %}?product_group={{ product_group.slug }}"
+        aria-label="H{{ product_group.title }}"
+      >
+        <div class="category-image">
+          <img
+            loading="lazy"
+            src="{{ product_group.image.url }}"
+            alt="{{ product_group.title }} {% trans 'PRODUCT GROUP' %}"
+          />
+        </div>
+        <div class="category-content">
+          <h2 class="category-title">{{ product_group.title|linebreaksbr }}</h2>
+        </div>
+      </a>
+    </div>
+    {% empty %}
+    <div class="news-card">
+      <div class="news-content">
+        <h2>{% trans "No product_group available at the moment" %}</h2>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% if product_groups|length > 8 %}
+  <button class="button-style" id="seeMoreBtn">{% trans "See more" %}</button>
+  {% endif %}
+</div>
+
+<div class="container">
+  <section class="production-section">
+    <img
+      loading="lazy"
+      class="bg-image"
+      src="{% static 'images/production-bg.webp' %}"
+      alt="Production background image"
+    />
+    <div class="section-background"></div>
+    <div class="section-container">
+      <div class="section-content" id="textContent">
+        <h2>
+          {% trans "Learn more" %}
+          <br />
+          {% trans "about production" %}
+        </h2>
+        <p>
+          {% blocktrans %} "Avtoil Lubricants produces and packages high-quality oils using premium
+          imported base oils and additives, formulated by expert engineers." 
+          {% endblocktrans %}
+        </p>
+      </div>
+      <div class="play-button" id="playButton">
+        <i>►</i>
+      </div>
+      <div class="video-container" id="videoContainer">
+        <iframe
+          width="560"
+          loading="lazy"
+          height="315"
+          src="https://www.youtube-nocookie.com/embed/7NdBMqxDMrE?rel=0&showinfo=0&modestbranding=1"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="map-section">
+  <div class="section-header">
+    <h2>{% trans "Global Presence" %}</h2>
+  </div>
+  <div class="page-wrapper">
+    <main class="main-content">
+      <section id="preview" class="preview section-margin-b-m">
+        <div class="preview__content">
+          <div id="map-container"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+{% if service_contents %}
+
+<div class="services">
+  <div class="section-header">
+    <h2>{% trans "Our Services" %}</h2>
+  </div>
+  <div class="container services-sections">
+        {% for content in service_contents %}
+    <div class="section">
+      <div class="content">
+        <h2>{{ content.title|linebreaksbr }}</h2>
+        <p>{{ content.description|linebreaksbr }}</p>
+      </div>
+
+      <img
+        loading="lazy"
+        class="image-container"
+        src="{{ content.image.url }}"
+        alt="{{ content.title }}"
+      />
+    </div>
+    {% endfor %}
+    <div class="section last"> 
+      <a href="{% url 'services:services_page' %}" class="button-style">{% trans "Discover more" %}</a> 
+    </div>
+
+  </div>
+
+
+</div>
+
+{% endif %}
+
+<section class="become-partner container">
+    <img  loading="lazy" class="bg-image" src="{% static 'images/partner-bg.webp' %}" alt="Become a Partner Image" width="100%"/>
+
+  <div class="section-content">
+    <h2 class="section-title">  {% blocktrans %} Become a partner of Avtoil Lubricants {% endblocktrans %}
+    </h2>
+    <p>
+      {% blocktrans %} We invite distributors, retail chains, online stores, auto parts shops, companies with their own fleet of vehicles, and car service centers to cooperate with us.
+      {% endblocktrans %}
+    </p>
+  </div>
+  <a href="#" class="partner-button">{% blocktrans %} Become a partner {% endblocktrans %} </a>
+</section>  
+
+<section class="news-section">
+  <div class="section-header">
+    <h2>{% trans "LATEST NEWS" %}</h2>
+  </div>
+
+  <div class="container latest-news">
+    <div class="news-cards">
+      {% for news in latest_news %}
+      <div class="news-card">
+        <div class="news-image">
+          {% if news.image %}
+          <img loading="lazy" src="{{ news.image.url }}" alt="{{ news.title }}" />
+          {% else %}
+          <img
+            loading="lazy"
+            src="{% static 'images_folder/default-news.webp' %}"
+            alt="{{ news.title }}"
+          />
+          {% endif %}
+        </div>
+        <div class="news-content">
+          <p>{{ news.content|truncatewords:10 }}</p>
+
+          <a href="{% url 'news:news_detail' news.pk %}" aria-label="{{ news.title }}">
+            <h2>{{ news.title|linebreaksbr }}</h2>
+            <span>
+              {% trans "Read more" %}
+              <i class="fa-solid fa-chevron-right"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+      {% empty %} {% endfor %}
+    </div>
+    <a href="{% url 'news:news_list' %}" aria-label="News Page" class="button-style">
+      {% trans "Discover more" %}
+    </a>
+  </div>
+</section>
+
+<section class="electric-solutions container">
+  <img
+    loading="lazy"
+    class="bg-image"
+    src="{% static 'images/electric-solutions-bg.webp' %}"
+    alt="Electric Solutions Image"
+  />
+  <h2 class="section-title">Solutions for Hybrid and Electric Vehicles</h2>
+  <div class="electric-solutions-content">
+    <div class="content-left">
+      <p>
+        As hybrid and electric vehicles (HEVs and EVs) reshape the automotive landscape, Avtoil
+        collaborates closely with OEMs and leading industry experts to develop cutting-edge
+        solutions tailored for these emerging technologies.
+      </p>
+    </div>
+    <div class="content-right">
+      <p>
+        Our specialized products are engineered to meet the unique requirements of electrified
+        powertrains, ensuring maximum efficiency, thermal management, and component protection.
+      </p>
+      <ul>
+        <li>Transmission Fluids for HEVs and EVs</li>
+        <li>Brake Fluids for Regenerative Braking Systems</li>
+        <li>Gear Oils for Hybrid and Electric Vehicles</li>
+        <li>Cooling Fluids for Battery Thermal Management</li>
+        <li>Greases for Electric Motors and Components</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="sustainability-section container">
+   <div class="sustainability-image">
+    <img loading="lazy" src="{% static '/images/sustainability.webp' %}" alt="About Image" />
+     <div class="property">
+      <span>{%trans '100,000 tons'%}</span>
+      <p>{%trans 'Production capacity'%}</p>
+    </div>
+    <div class="property">
+      <span>{%trans '1000+'%}</span>
+      <p>{%trans 'products'%}</p>
+    </div>
+    <div class="property">
+      <span>{%trans '600+ tonnes'%}</span>
+      <p>{%trans 'Finished products exported daily'%}</p>
+    </div>
+   </div>
+ 
+  <div class="section-content">
+    <a href="{% url 'about:about_page' %}">
+      <h3>{%trans 'Sustainability'%}</h3>
+      <p>
+        {%blocktrans%} 
+        Sustainability is at the core of our innovation. As a leading manufacturer of
+        high-quality lubricants, we are committed to delivering solutions that align with global
+        environmental standards and customer needs.
+        {%endblocktrans%}
+      </p>
+      <span class="button-style">{%trans 'Learn more'%}</span>
+    </a>
+  </div>
+</section>
+
+<section class="featured-products">
+  <div class="section-header">
+    <h2>{% trans "FEATURED PRODUCTS" %}</h2>
+  </div>
+  <div class="featured-section">
+    <img
+      src="{% static 'images/Vector.svg' %}"
+      alt="Decorative vector background"
+      loading="lazy"
+      class="background-svg"
+    />
+    <div class="background-overlay"></div>
+
+    <div class="featured-container main-container">
+      <div class="products-slider">
+        <div class="slider-container">
+          <!-- Product 1 -->
+          {% for product_group in product_groups %}
+          <div class="product-card">
+            <div class="product-image">
+              <a href="{% url 'products:product_list' %}?product_group={{ product_group.slug }}">
+                <img
+                  loading="lazy"
+                  src="{{ product_group.image.url }}"
+                  alt="{{ product_group.title|linebreaksbr }}"
+                />
+              </a>
+            </div>
+            <div class="product-info">
+              <a href="{% url 'products:product_list' %}?product_group={{ product_group.slug }}">
+                <h2 class="product-title">{{ product_group.title|linebreaksbr }}</h2>
+              </a>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <div class="slider-nav prev-btn">
+          <i class="arrow arrow-left"></i>
+        </div>
+        <div class="slider-nav next-btn">
+          <i class="arrow arrow-right"></i>
+        </div>
+      </div>
+
+      <a href="" class="button-style">{% trans 'See More' %}</a>
+    </div>
+  </div>
+</section>
+
+{% include 'components/gallery.html' %} 
+{% include 'components/brochure.html' %}
+{% include 'components/review.html' %}
+
+{% endblock %}

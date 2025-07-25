@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block page_css %}
+    <link
+      href="http://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7COswald:300,400,700"
+      rel="stylesheet"
+      type="text/css"
+    />
+{% endblock %}
+
+{% block content %}
+   {% include 'components/navbar.html' %}
+
+    <div class="hero-fullscreen">
+      <div class="hero-fullscreen-FIX">
+        <div class="hero-bg bg-img-SINGLE overlay overlay-dark-65"></div>
+      </div>
+    </div>
+    <div class="upper-page current" id="home">
+      <div class="animated-borders">
+        <div class="border-t-line"></div>
+        <div class="border-l-line"></div>
+        <div class="border-r-line"></div>
+        <div class="border-b-line"></div>
+      </div>
+
+      <div class="side-shadow fadeIn-element"></div>
+      <div class="center-container-home">
+        <div class="center-block-home">
+          <div class="upper-content">
+            <div class="container sections-home">
+              <div class="row introduction">
+                <div class="home-page-title-wrapper fadeIn-element">
+                  <p class="home-page-title">AMINOL</p>
+                </div>
+                <div class="inner-divider-half"></div>
+                <h1 class="home-page-title fadeIn-element">400</h1>
+                <div class="inner-divider-half"></div>
+                <div
+                  class="the-button-wrapper sign-up-modal-launcher fadeIn-element"
+                >
+                  <div class="the-button">{% trans "Bad Request" %}</div>
+                </div>
+                <div class="inner-divider-half"></div>
+                <p class="fadeIn-element" style="text-align: center; color: #fff; opacity: 0.8;">
+                 {% trans "Invalid request. Please try again." %}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}

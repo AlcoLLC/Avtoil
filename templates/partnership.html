@@ -1,0 +1,211 @@
+{% extends 'base.html' %} {% load static %} {% load i18n %}
+
+{% block title %}{% trans "partnership_meta_title" %}{% endblock %} 
+{% block description %}{% trans "partnership_meta_description" %}{% endblock %} 
+
+{%block page_css %}
+<link
+  rel="stylesheet"
+  href="{% static 'assets/css/swiper-bundle.min.css' %}"
+  onload="this.rel='stylesheet'"
+/>
+<noscript>
+  <link rel="stylesheet" href="{% static 'assets/css/swiper-bundle.min.css' %}" />
+</noscript>
+{% endblock %} 
+
+{% block extra_schema %} {% endblock %} 
+
+{% block content %} 
+
+{% include 'components/navbar.html' %} 
+{% include 'components/page-header.html' %}
+
+<!-- Breadcrumb -->
+<div class="breadcrumb container">
+  <a href="{% url 'home:home' %}" aria-label="Home Page">{% trans "Home Page" %}</a>
+  |
+  <p>{% trans "Partnership" %}</p>
+</div>
+
+{% for item in partnerships %}
+<section class="partnership-section container" id="{{ item.slug }}">
+  <div class="partnership-header">
+    <h2>{{ item.title }}</h2>
+    <p>{{ item.description }}</p>
+  </div>
+
+  <div class="text-container">
+    {% for alt in item.Partnership.all %}
+    <div class="text-container">
+      <i class="fa-solid fa-circle"></i>
+      <span class="section-subtitle">{{ alt.title }}</span>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="two-images {% cycle '' 'reverse' %}">
+    {% if item.main_image %}
+    <img loading="lazy" src="{{ item.main_image.url }}" alt="{{ item.title }}" />
+    {% endif %} {% if item.secondary_image %}
+    <img loading="lazy" src="{{ item.secondary_image.url }}" alt="{{ item.title }}" />
+    {% endif %}
+  </div>
+</section>
+
+{% endfor %}
+
+<section class="partner-review-section container">
+  <div class="swiper commentSwiper">
+    <div class="swiper-wrapper">
+      {% for review in reviews %}
+      <div class="swiper-slide">
+        <div>
+          <div>
+            <img loading="lazy" src="{% static 'images/vector-review.svg' %}" alt="Vector" />
+          </div>
+          <p>{{review.review|truncatewords:60}}</p>
+        </div>
+        <div>
+          <div>
+            <img loading="lazy" src="{{ review.image.url}}" alt="Review" />
+          </div>
+          <div>
+            <h5>{{ review.name }}</h5>
+            <p>{{ review.position }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="swiper-button-prev">
+      <i class="fa-solid fa-arrow-left"></i>
+    </div>
+    <div class="swiper-button-next">
+      <i class="fa-solid fa-arrow-right"></i>
+    </div>
+  </div>
+</section>
+
+<section class="faq-section container">
+  <div class="partnership-header">
+    <h2>{% trans "FAQ for cooperation" %}</h2>
+  </div>
+
+  <div class="section-grid">
+    {% for faq in partner_faqs %}
+    <div class="grid-item">
+      <div class="question">
+        <i class="fa-solid fa-circle"></i>
+        <h2>{{ faq.question|linebreaksbr }}</h2>
+        <img
+          loading="lazy"
+          class="plus-icon"
+          src="{% static '/images/plus.svg' %}"
+          alt="Plus Icon"
+        />
+        <img
+          loading="lazy"
+          class="minus-icon"
+          src="{% static '/images/minus.svg' %}"
+          alt="Minus Icon"
+        />
+      </div>
+      <div class="answer">
+        <p>{{ faq.answer|linebreaksbr }}</p>
+      </div>
+    </div>
+    {% empty %}
+    <div class="no-faq">
+      <p>{% blocktrans %}No FAQs available at the moment.{% endblocktrans %}</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="coorperation-section">
+  <img
+    loading="lazy"
+    class="bg-image"
+    src="{% static 'images/shutterstock.webp' %}"
+    alt="Coorperation background image"
+  />
+  <div class="container">
+    <div class="coorperation-content">
+      <h3>{% blocktrans %}Interested in becoming a partner?{% endblocktrans %}</h3>
+      <p>
+        {% blocktrans %}Contact us today and let’s grow together with AVTOIL.{% endblocktrans %}
+      </p>
+    </div>
+    <div class="coorperation-form">
+      <h2>{% trans "Coorperation" %}</h2>
+      <form action="" method="POST">
+        {% csrf_token %}
+        <div class="form-group select-form-group">
+          <label for="typeOfBusiness">{% trans "Type of business" %}</label>
+          <div class="coorperation-select-wrapper">
+            <div class="coorperation-select" id="selected-option">
+              Select
+            </div>
+            <div class="coorperation-options">
+              {% comment %} {% for value, text in type_of_businesses %} {% endcomment %}
+              <div class="coorperation-option" data-value="">a</div>
+              <div class="coorperation-option" data-value="">text</div>
+              <div class="coorperation-option" data-value="">b</div>
+            </div>
+            <input type="hidden" name="typeOfBusiness" id="typeOfBusiness" value="" required />
+          </div>
+        </div> 
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">{% trans "Your name" %}</label>
+            <input type="text" id="firstName"
+              name="firstName"
+              class="form-control"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="lastName">{% trans "Your surname" %}</label>
+            <input
+              type="text"
+              id="lastName"
+              name="lastName"
+              class="form-control"
+              required
+            />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">{% trans "Email" %}</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="form-control"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="message">{% trans "Your message" %}</label>
+          <textarea
+            id="message"
+            name="message"
+            class="form-control">
+          </textarea>
+        </div>
+        <button type="submit" class="button-style">{% trans "SEND REQUEST" %}</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+{% include 'components/brochure.html' %} 
+{% include 'components/review.html' %} 
+
+{% endblock %} 
+
+{% block page_js %}
+<script src="{% static 'assets/js/swiper-bundle.min.js' %}" defer></script>
+<script src="{% static 'assets/js/partnership.js' %}" defer></script>
+{% endblock %}

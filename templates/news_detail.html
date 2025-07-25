@@ -1,0 +1,120 @@
+{% extends 'base.html' %} {% load static %} {% load i18n %} 
+
+{% block title %} {{ news.title|truncatechars:57 }} {% endblock %}
+{% block description %} {{ news.content|truncatechars:160 }} {% endblock %}
+
+{% block extra_schema %}
+<script type="application/ld+json" data-version="{% now 'U' %}">
+{
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  "headline": "{{ news.title|striptags }}",
+  "description": "{{ news.content|striptags|truncatechars:160 }}",
+  "image": [
+    "{{ news.image.url }}"
+  ],
+  "datePublished": "{{ news.published_date|date:'c' }}",
+  "dateModified": "{{ news.updated_date|default:news.published_date|date:'c' }}",
+  "author": {
+    "@type": "Organization",
+    "name": "Aminol"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Aminol",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://aminol.az/static/logo/aminol-logo.svg"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ request.build_absolute_uri }}"
+  }
+}
+</script>
+
+{% endblock %}
+
+{% block content %}
+<div class="non-header-page">
+  {% include 'components/navbar.html' %}
+
+  <header class="page-header"></header>
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb container">
+    <a href="{% url 'home:home' %}" aria-label="Home Page">{% trans "Home page" %}</a>|
+    <p>{% trans "News" %}</p>
+  </div>
+
+  <div class="container">
+    <div class="news-detail-top-content">
+      <h1>{{ news.title|linebreaksbr }}</h1>
+      <p>{{ news.published_date|date:"F d, Y" }}</p>
+    </div>
+  </div>
+  <div class="services-offer-section brand-portal-section-tab container">
+    <div class="services-offer-image news-d">
+      <img
+        loading="lazy"
+        src="{{ news.image.url }}"
+        alt="{{ news.title }}"
+      />
+    </div>
+    <div class="text-container text-left">
+      <p>{{ news.content|linebreaksbr }}</p>
+    </div>
+  </div>
+
+  {% for content in contents %}
+  <div
+    class="services-offer-section {% if forloop.counter|divisibleby:2 %}reverse{% endif %} brand-portal-section container"
+  >
+    <div class="text-container text-left">
+      <p>{{ content.description|linebreaksbr }}</p>
+    </div>
+    <div class="services-offer-image news-d">
+      <img
+        loading="lazy"
+        src="{{ content.image.url }}"
+        alt="{% trans 'News Content Image' %}"
+      />
+    </div>
+  </div>
+  {% endfor %}
+
+  <section class="news-section">
+    <div class="section-header">
+      <h2>{% trans "LATEST NEWS" %}</h2>
+    </div>
+    <div class="container latest-news">
+      <div class="news-cards">
+        {% for news in latest_news %}
+        <div class="news-card">
+          <div class="news-image">
+            {% if news.image %}
+            <img
+              loading="lazy"
+              src="{{ news.image.url }}"
+              alt="{{ news.title }}"
+            />
+            {% else %}
+            <img
+              loading="lazy"
+              src="{% static 'images_folder/zavod.webp' %}"
+              alt="{% trans 'Default news image' %}"
+            />
+            {% endif %}
+          </div>
+          <div class="news-content">
+            <p>{{ news.content|truncatewords:10 }}</p>
+             <a href="{% url 'news:news_detail' news.pk %}" aria-label="{{ news.title }}"><h2>{{ news.title|linebreaksbr }}</h2> <span>{% trans "Read more" %} <i class="fa-solid fa-chevron-right"></i></span></a>
+          </div>
+        </div>
+        {% empty %} {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% include 'components/whatsapp.html' %} {% endblock %}
+</div>

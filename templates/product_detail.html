@@ -1,0 +1,253 @@
+{% extends 'base.html' %} {% load static %} {% load i18n %}
+
+{% block title %}{{ meta_title }}{% endblock %}
+{% block description %}{{ meta_description }}{% endblock %}
+
+{% block keywords %}{% trans "product_detail_keywords" %}{% endblock %}
+
+{% block extra_schema %}
+<script type="application/ld+json" data-version="{% now 'U' %}">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": "{{ product.title|striptags }}",
+  "description": "{{ product.description|striptags|truncatechars:160 }}",
+  "sku": "{{ product.product_id }}",
+  {% if product.image %}
+  "image": "{{ product.image.url }}",
+  {% endif %}
+  {% if available_liters %}
+  "offers": {
+    "@type": "AggregateOffer",
+    "offerCount": "{{ available_liters|length }}",
+    "availability": "https://schema.org/InStock",
+    "itemCondition": "https://schema.org/NewCondition",
+    "priceCurrency": "USD",
+    "lowPrice": "0.0",
+    "highPrice": "0.0"
+  },
+  {% endif %}
+  "brand": {
+    "@type": "Organization",
+    "name": "Avtoil"
+  },
+  "manufacturer": {
+    "@type": "Organization",
+    "name": "Avtoil"
+  },
+  {% if product.api or product.acea or product.ilsac or product.jaso or product.oem_sertification %}
+  "additionalProperty": [
+    {% if product.api %}
+    {
+      "@type": "PropertyValue",
+      "name": "API",
+      "value": "{{ product.api }}"
+    }{% if product.ilsac or product.acea or product.jaso or product.oem_sertification %},{% endif %}
+    {% endif %}
+    {% if product.ilsac %}
+    {
+      "@type": "PropertyValue",
+      "name": "ILSAC",
+      "value": "{{ product.ilsac }}"
+    }{% if product.acea or product.jaso or product.oem_sertification %},{% endif %}
+    {% endif %}
+    {% if product.acea %}
+    {
+      "@type": "PropertyValue",
+      "name": "ACEA",
+      "value": "{{ product.acea }}"
+    }{% if product.jaso or product.oem_sertification %},{% endif %}
+    {% endif %}
+    {% if product.jaso %}
+    {
+      "@type": "PropertyValue",
+      "name": "JASO",
+      "value": "{{ product.jaso }}"
+    }{% if product.oem_sertification %},{% endif %}
+    {% endif %}
+    {% if product.oem_sertification %}
+    {
+      "@type": "PropertyValue",
+      "name": "OEM Certification",
+      "value": "{{ product.oem_sertification|striptags|linebreaksbr }}"
+    }
+    {% endif %}
+  ],
+  {% endif %}
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ request.build_absolute_uri }}"
+  }
+}
+</script>
+
+{% endblock %}
+
+ {% block content %}
+
+
+
+{% include 'components/navbar.html' %}
+{% include 'components/page-header.html' %}
+
+{% comment %} {% if product.product_group %}
+{% include 'components/navbar.html' %}
+<div class="product-detail-page">
+  <header class="page-header" style="background-image: url('{{ product.product_group.image.url }}');">
+      <div class="header-content container">
+        <div>{{ product.product_group.title|linebreaksbr }}</div>
+      </div>
+    </header>
+</div>
+{% else %}
+{% include 'components/navbar.html' %}
+<div class="non-header-page">
+  <header class="page-header">
+  </header>
+</div>
+{% endif %} {% endcomment %}
+
+
+<div class="breadcrumb container">
+  <a href="{% url 'products:product_list' %}" aria-label="Products Page">{% trans "Back to the overview" %} |</a>
+  <p>{{ product.title|linebreaksbr }}</p>
+</div>
+
+<section class="product-detail-section container">
+  <div class="product-detail-container">
+    <div class="product-details">
+      <h1>{{ product.title|linebreaksbr }}</h1>
+      <p class="product-id">{{ product.product_id }}</p>
+      <h2 class="product-description">
+        {{ product.description|linebreaksbr }}
+      </h2>
+        <div class="featured-benefits">
+          <h3>{% trans "Featured & Benefits:" %} </h3>
+          <p>{{ product.features_benefits|linebreaksbr }}</p>
+        </div>
+
+        <div class="application">
+          <h3>{% trans "Application:" %} </h3>
+          <p>{{ product.application|linebreaksbr }}</p>
+        </div>
+      <div class="product-detail-row">
+        <div class="specification">
+          <h3>{% trans "Specification:" %} </h3>
+          {% if product.api %}
+          <p>API <span>{{ product.api }}</span></p>
+          {% endif %}
+          {% if product.ilsac %}
+          <p>ILSAC <span>{{ product.ilsac }}</span></p>
+          {% endif %}
+          {% if product.acea %}
+          <p>ACEA <span>{{ product.acea }}</span></p>
+          {% endif %}
+          {% if product.jaso %}
+          <p>JASO <span>{{ product.jaso }}</span></p>
+          {% endif %}
+          {% if product.oem_sertification %}
+          <p>{{ product.oem_sertification|linebreaksbr }}</p>
+          {% endif %}
+        </div>
+        {% if product.recommendations %}
+        <div class="recommendations">
+          <h3>{% trans "Recommendations:" %} </h3>   
+          <div class="recommendations-content">
+            {{ product.recommendations|linebreaksbr }}
+          </div>
+                 
+        </div>
+         {% else %}  
+        {% endif %}
+        {% if available_liters %}
+        <div class="hidden-product-litre">
+          <h3>{% trans "Available packages:" %} </h3>
+          {% for liter in available_liters %}
+          <span>{{ liter.volume }}L</span>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+   {% if product.image %}
+  <div class="product-image">
+    <img loading="lazy" src="{{ product.image.url }}" alt="{{ product.title }}" />
+  </div>
+{% endif %}
+
+  </div>
+
+  {% if available_liters %}
+  <div class="product-litre">
+    <p> {% trans "Available packages:" %} </p>
+    {% for liter in available_liters %}
+      <span>
+        {% if liter.volume|floatformat:"-0" == liter.volume|stringformat:"s"|slice:":-2" and liter.volume|stringformat:"s"|slice:"-2:" == ".0" %}
+          {{ liter.volume|floatformat:"0" }}L
+        {% elif liter.volume|stringformat:"s"|slice:"-2:" == ".0" %}
+          {{ liter.volume|floatformat:"0" }}L
+        {% else %}
+          {{ liter.volume }}L
+        {% endif %}
+      </span>
+    {% endfor %}
+  </div>
+{% endif %}
+</section>
+
+<section class="product-table-section container">
+  <!-- <div class="product-table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>{% trans "Property" %}</th>
+          <th>{% trans "Unit" %}</th>
+          <th>{% trans "Test method" %}</th>
+          <th>{% trans "Typical value" %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for property in properties %}
+        <tr>
+          <td>{{ property.property_name|linebreaksbr }}</td>
+          <td>{{ property.unit|default:"-" }}</td>
+          <td>{{ property.test_method|linebreaksbr }}</td>
+          <td>{{ property.typical_value|linebreaksbr }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="4" class="text-center">{% trans "This product does not have any available specification information." %}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div> -->
+  <div class="table-btns">
+    {% if product.pds_url %}
+    <a href="{{ product.pds_url }}" aria-label="PDS Page" target="_blank">
+      PDS <i class="fa-solid fa-download"></i>
+    </a>
+    {% else %}
+    <button disabled class="">
+      PDS <i class="fa-solid fa-download"></i>
+    </button>
+    {% endif %}
+
+    {% if product.sds_url %}
+    <a href="{{ product.sds_url }}" aria-label="SDS Page" target="_blank">
+      SDS <i class="fa-solid fa-download"></i>
+    </a>
+    {% else %}
+    <button disabled class="">
+      SDS <i class="fa-solid fa-download"></i>
+    </button>
+    {% endif %}
+  </div>
+</section>
+
+{% include 'components/brochure.html' %}
+{% include 'components/review.html' %}
+
+{% endblock %}
+
+

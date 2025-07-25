@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "search_meta_title" %}{% endblock %}
+{% block description %}{% trans "search_meta_description" %}{% endblock %}
+{% block keywords %}{% trans "search_keywords" %}{% endblock %}
+
+{% block extra_schema %}
+<script type="application/ld+json" data-version="{% now 'U' %}">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Aminol",
+  "url": "{{ request.scheme }}://{{ request.get_host }}",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "{{ request.scheme }}://{{ request.get_host }}{% url 'search:search' %}?search={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+{% endblock %}
+
+{% block content %}
+{% include 'components/navbar.html' %}
+
+<div class="product-detail-page search-page">
+    <header class="page-header">
+        <div class="header-content container">
+            <h1>{% trans "Search" %}</h1>
+        </div>
+
+        <div class="container search-bar">
+            <form method="GET" class="search-form">
+                <input type="text" name="search" class="search-input" value="{{ query }}" placeholder="{% trans 'Search...' %}" />
+                <button type="button" class="cancel-button">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </form>
+        </div>
+    </header>
+</div>
+
+<div class="breadcrumb container">
+    <a href="{% url 'home:home' %}" aria-label="Home Page">{% trans "Home Page" %}</a> |
+    <p>{% trans "Search" %}</p>
+</div>
+
+<section class="search-section container">
+    {% if query %}
+        <span class="search-results-count">
+            {% blocktrans count counter=total_results %}
+                {{ counter }} result found
+            {% plural %}
+                {{ counter }} results found
+            {% endblocktrans %}
+        </span>
+
+        {% if results %}
+            {% for result in results %}
+                <div class="search-result">
+                    <div class="result-content">
+                        {% if result.image %}
+                            <div class="result-image">
+                                <img src="{{ result.image }}" alt="{{ result.title }}" />
+                            </div>
+                        {% endif %}
+                        <div class="result-text">
+                            <a href="{{ result.url }}" aria-label="Result Page" class="result-type">{{ result.type }} ></a>
+                            <h2>{{ result.title }}</h2>
+                            {% if result.description %}
+                                <p class="result-description">{{ result.description }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <button class="result-btn">
+                        <a href="{{ result.url }}" aria-label="Result Page"><i class="fa-solid fa-arrow-right"></i></a>
+                    </button>
+                </div>
+            {% endfor %}
+
+            {% if results.has_other_pages %}
+                <div class="pagination-container">
+                    <button class="pagination-arrow prev" id="prevPage" {% if not results.has_previous %}disabled{% endif %} data-page="{% if results.has_previous %}{{ results.previous_page_number }}{% endif %}">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+
+                    <div class="pagination-numbers" id="paginationNumbers">
+                        {% for num in results.paginator.page_range %}
+                            {% if results.number == num %}
+                                <a href="#" aria-label="Total page number" class="page-number active" data-page="{{ num }}">{{ num }}</a>
+                            {% elif num > results.number|add:'-3' and num < results.number|add:'3' %}
+                                <a href="#" aria-label="Total page number" class="page-number" data-page="{{ num }}">{{ num }}</a>
+                            {% elif num == 1 %}
+                                <a href="#" aria-label="Total page number" class="page-number" data-page="{{ num }}">{{ num }}</a>
+                                {% if results.number > 4 %}
+                                    <span class="ellipsis">...</span>
+                                {% endif %}
+                            {% elif num == results.paginator.num_pages %}
+                                {% if results.number < results.paginator.num_pages|add:'-3' %}
+                                    <span class="ellipsis">...</span>
+                                {% endif %}
+                                <a href="#" aria-label="Total page number" class="page-number" data-page="{{ num }}">{{ num }}</a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+
+                    <button class="pagination-arrow next" id="nextPage" {% if not results.has_next %}disabled{% endif %} data-page="{% if results.has_next %}{{ results.next_page_number }}{% endif %}">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="no-results">
+                <p>{% trans "No results found for your search." %}</p>
+                <p>{% trans "Try using different keywords or check your spelling." %}</p>
+            </div>
+        {% endif %}
+    {% else %}
+        <div class="search-placeholder">
+            <p>{% trans "Enter keywords to search..." %}</p>
+        </div>
+    {% endif %}
+</section>
+
+{% include 'components/whatsapp.html' %}
+{% endblock %}

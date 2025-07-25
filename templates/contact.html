@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "contact_meta_title" %}{% endblock %}
+{% block description %}{% trans "contact_meta_description" %}{% endblock %}
+
+{% block extra_schema %}
+<script type="application/ld+json" data-version="{% now 'U' %}">
+{
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "name": "Contact - {{ site_name }}",
+  "description": "{% trans 'contact_meta_description' %}",
+  "url": "{{ request.build_absolute_uri }}",
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "{% trans 'Home page' %}",
+        "item": "{% url 'home:home' %}"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "{% trans 'Contact' %}",
+        "item": "{{ request.build_absolute_uri }}"
+      }
+    ]
+  },
+  "mainEntity": {
+    "@type": "Organization",
+    "name": "{{ site_name }}",
+    "url": "{{ request.build_absolute_uri }}",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "{{ contact_info.contact_phone }}",
+      "contactType": "Customer Support",
+      "areaServed": "Worldwide",
+      "availableLanguage": [
+        "English",
+        "Azerbaijani",
+        "Turkish"
+      ],
+      "email": "{{ contact_info.contact_email }}"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "{{ contact_info.contact_address|striptags|escapejs }}",
+      "addressCountry": "AZ"
+    }
+  }
+}
+</script>
+
+{% endblock %}
+
+{% block content %}
+
+{% include 'components/navbar.html' %}
+{% include 'components/page-header.html' %}
+
+<!-- Breadcrumb -->
+<div class="breadcrumb container">
+  <a href="{% url 'home:home' %}" aria-label="Home Page">{% trans "Home page" %}</a>|
+  <p>{% trans "Contact" %}</p>
+</div>
+
+<div class="container">
+  <div class="contact-top-content">
+    <h2>{{ contact_info.title|linebreaksbr }}</h2>
+    <p>{{ contact_info.description|linebreaksbr }}</p>
+  </div>
+</div>
+
+{% include 'components/contactcomponent.html' %}
+
+<!-- Contact From Section -->
+
+<div class="contact-grid-content container">
+  <div class="item">
+    <h2>{% trans "Avtoil headquarters" %}</h2>
+    <p>{{ contact_info.aminol_headquarters|linebreaksbr }}</p>
+    <a
+      href="{% if contact_info.aminol_headquarters_location %}{{ contact_info.aminol_headquarters_location }}{% else %}https://maps.google.com/?q={{ contact_info.aminol_headquarters|urlencode }}{% endif %}"
+      class="button-style" aria-label="Location Page"
+      target="_blank"
+    >
+      {% trans "Location" %}
+      <img loading="lazy" src="{% static '/images/contact-icon.svg' %}" alt="{% trans 'Contact Icon' %}" />
+    </a>
+  </div>
+
+  <div class="item">
+    <h2>{% trans "Avtoil factory" %}</h2>
+    <p>{{ contact_info.aminol_factory|linebreaksbr }}</p>
+    <a
+      href="{% if contact_info.aminol_factory_location %}{{ contact_info.aminol_factory_location }}{% else %}https://maps.google.com/?q={{ contact_info.aminol_factory|urlencode }}{% endif %}"
+      class="button-style" aria-label="Location Page"
+      target="_blank"
+    >
+      {% trans "Location" %}
+      <img loading="lazy" src="{% static '/images/contact-icon.svg' %}" alt="Contact Icon" />
+    </a>
+  </div>
+</div>
+
+<div class="contact-flex-content container">
+  <div class="contact-left-content">
+    <h2>{% trans "Registers" %}</h2>
+    <div>{{ contact_info.registers|linebreaks }}</div>
+  </div>
+
+  <div class="contact-right-content">
+    <h2>{% trans "Contact" %}</h2>
+    <div class="contact-bottom">
+      <div class="item">
+        <h3>{% trans "Address" %}</h3>
+        <div>{{ contact_info.contact_address|linebreaks }}</div>
+      </div>
+
+      <div class="right-item">
+        <div>
+          <h3>{% trans "Phone number" %}</h3>
+          <p>{{ contact_info.contact_phone }}</p>
+        </div>
+        <div>
+          <h3>{% trans "E-mail address" %}</h3>
+          <p>{{ contact_info.contact_email }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% include 'components/review.html' %}
+
+{% endblock %}

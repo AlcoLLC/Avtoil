@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}  
+
+{% block title %}{% trans "news_meta_title" %}{% endblock %}
+{% block description %}{% trans "news_meta_description" %}{% endblock %}
+
+{% block extra_schema %}
+<script type="application/ld+json" data-version="{% now 'U' %}">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "{% trans 'News' %} | Aminol",
+  "description": "{% trans 'Always up to date with our latest news' %}",
+  "url": "{{ request.build_absolute_uri }}",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Aminol",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://aminol.az/static/logo/aminol-logo.svg"
+    }
+  },
+  "hasPart": [
+    {% for news in all_news %}
+    {
+      "@type": "NewsArticle",
+      "headline": "{{ news.title|striptags }}",
+      "description": "{{ news.content|striptags|truncatechars:160 }}",
+      "image": "{{ news.image.url|default:'' }}",
+      "datePublished": "{{ news.published_date|date:'c' }}",
+      "author": {
+        "@type": "Organization",
+        "name": "Aminol"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "{% url 'news:news_detail' news.pk %}"
+      }
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+
+{% endblock %}
+
+{% block content %}
+
+ {% include 'components/navbar.html' %}
+{% include 'components/page-header.html' %}
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb container">
+        <a href="{% url 'home:home' %}" aria-label="Home Page">{% trans "Home page" %}</a>|<p>{% trans "News" %}</p>
+    </div>
+
+    <div class="container">
+        <div class="news-top-content">
+            <h1>{% trans "News" %}</h1>
+            <p>{% trans "Always up to date with our latest news" %}</p>
+        </div>
+    </div>
+
+    <section class="news-section">
+        <div class="section-header">
+            <h2>{% trans "ALL ARTICLES" %}</h2>
+        </div>
+
+        <div class="container latest-news">
+            <div class="news-cards">
+                {% for news in all_news %}
+                    <div class="news-card">
+                        <div class="news-image">
+                            {% if news.image %}
+                                <img loading="lazy" src="{{ news.image.url }}" alt="{{ news.title }}" />
+                            {% else %}
+                                <img loading="lazy" src="{% static 'images_folder/zavod.webp' %}" alt="{% trans 'Default news image' %}" />
+                            {% endif %}
+                        </div>
+                        <div class="news-content">
+                            <p>{{ news.content|truncatewords:10 }}</p>
+
+                            <a href="{% url 'news:news_detail' news.pk %}" aria-label="{{ news.title }}"><h2>{{ news.title|linebreaksbr }}</h2> <span>{% trans "Read more" %} <i class="fa-solid fa-chevron-right"></i></span></a>
+                        </div>
+                    </div>
+                {% empty %}
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest News Section -->
+    <section class="news-section">
+        <div class="section-header">
+            <h2>{% trans "LATEST NEWS" %}</h2>
+        </div>
+        <div class="bg-blue">
+            <div class="container latest-news">
+                <div class="news-cards">
+                    {% for news in latest_news %}
+                        <div class="news-card">
+                            <div class="news-image">
+                                {% if news.image %}
+                                    <img loading="lazy" src="{{ news.image.url }}" alt="{{ news.title }}" />
+                                {% else %}
+                                    <img loading="lazy" src="{% static 'images_folder/zavod.webp' %}" alt="{% trans 'Default news image' %}" />
+                                {% endif %}
+                            </div>
+                            <div class="news-content">
+                                <p>{{ news.content|truncatewords:10 }}</p>
+                            <a href="{% url 'news:news_detail' news.pk %}" aria-label="{{ news.title }}"><h2>{{ news.title|linebreaksbr }}</h2> <span>{% trans "Read more" %} <i class="fa-solid fa-chevron-right"></i></span></a>
+
+                            
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p>{% trans "No latest news articles available." %}</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% include 'components/review.html' %}
+
+{% endblock %}

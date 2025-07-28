@@ -24,7 +24,7 @@ class Partnership(models.Model):
 
 class Partnership_Content(models.Model):
     Partnership = models.ForeignKey(
-        Partnership, related_name='Partnership', on_delete=models.CASCADE)
+    Partnership, related_name='Partnership', on_delete=models.CASCADE)
 
     title = models.CharField()
 
@@ -77,3 +77,74 @@ class PartnerFAQ(models.Model):
 
     def __str__(self):
         return self.question
+
+
+
+class BusinessType(models.Model):
+    name = models.CharField(
+        max_length=100,
+        verbose_name=_("Business Type Name")
+    )
+    value = models.CharField(
+        max_length=50,
+        unique=True,
+        verbose_name=_("Value")
+    )
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name=_("Is Active")
+    )
+    order = models.IntegerField(
+        default=0,
+        verbose_name=_("Order")
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['order', 'name']
+        verbose_name = _("Business Type")
+        verbose_name_plural = _("Business Types")
+
+    def __str__(self):
+        return self.name
+
+
+class PartnershipForm(models.Model):
+    business_type = models.ForeignKey(
+        BusinessType,
+        on_delete=models.CASCADE,
+        verbose_name=_("Type of business")
+    )
+    first_name = models.CharField(
+        max_length=100,
+        verbose_name=_("First name")
+    )
+    last_name = models.CharField(
+        max_length=100,
+        verbose_name=_("Last name")
+    )
+    email = models.EmailField(
+        verbose_name=_("Email")
+    )
+    message = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name=_("Message")
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_processed = models.BooleanField(
+        default=False,
+        verbose_name=_("Is processed")
+    )
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = _("Partnership Application")
+        verbose_name_plural = _("Partnership Applications")
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} - {self.business_type.name}"
+
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"

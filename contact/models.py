@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 class Contact(models.Model):
     HELP_CHOICES = [
-        ('buy', _('I would like to buy Aminol products.')),
+        ('buy', _('I would like to buy Avtoil products.')),
         ('become_dealer', _('I am interested in becoming a distributor.')),
         ('technical', 'I need technical support.'),
         ('other', _('Other'))

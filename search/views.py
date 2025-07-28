@@ -5,7 +5,7 @@ from django.core.paginator import Paginator
 import re
 
 # Import all your models
-from about.models import AboutAminol, AboutSectionContent, Quality, QualityContent, WeGuarantee, Production, ProductionContent, DocumentsCertification, Sustainability, SustainabilityContent
+from about.models import AboutAvtoil, AboutContent, DocumentsCertification, Sustainability
 from products.models import Product_group, Segments, Oil_Types, Viscosity, Liter, Product, ProductProperty
 from contact.models import Contact, ContactInfo
 from faq.models import FAQ
@@ -241,62 +241,43 @@ def search_view(request):
                 'image': None
             })
         
-      
-        # Search About Sections
+         # Search About Avtoil
         if is_english:
-            about_fields = ['title', 'description']
+            cert_fields = ['title', 'description']
         else:
-            about_fields = ['title', 'description']
+            cert_fields = ['title', 'description']
         
-        about_sections = AboutSectionContent.objects.filter(build_search_q(query, about_fields)).distinct()
-        
-        for section in about_sections:
-            title = section.title if not is_english and section.title else ''
-            description = section.description if not is_english and section.description else ''
-            results.append({
-                'title': title or 'About Section',
-                'description': description[:200] + '...' if description and len(description) > 200 else description or '',
-                'url': '/about/',
-                'type': 'About',
-                'image': section.image.url if section.image else None
-            })
-        
-        # Search About Aminol
-        if is_english:
-            about_aminol_fields = ['based_in', 'location', 'exporting_to', 'production_capacity']
-        else:
-            about_aminol_fields = ['based_in', 'location', 'exporting_to', 'production_capacity']
-        
-        about_aminol = AboutAminol.objects.filter(build_search_q(query, about_aminol_fields)).distinct()
-        
-        for about in about_aminol:
-            results.append({
-                'title': f'About Aminol - Founded {about.founded_year}',
-                'description': f'Based in: {about.based_in}, Location: {about.location}',
-                'url': '/about/',
-                'type': 'About Aminol',
-                'image': about.shared_image.url if about.shared_image else None
-            })
-        
+        about_avtoil = AboutAvtoil.objects.filter(build_search_q(query, cert_fields)).distinct()
 
-        # Search Quality Content
-        if is_english:
-            quality_fields = ['title', 'description']
-        else:
-            quality_fields = ['title', 'description']
-        
-        quality_contents = QualityContent.objects.filter(build_search_q(query, quality_fields)).distinct()
-        
-        for content in quality_contents:
+        for content in about_avtoil:
             title = content.title if not is_english and content.title else ''
-            description = content.description if not is_english and content.description else ''
+            description = content.description  if not is_english and content.description else ''
             results.append({
                 'title': title,
                 'description': description[:200] + '...' if description and len(description) > 200 else description or '',
-                'url': '/about/?tab=quality/',
-                'type': 'Quality',
+                'url': '/about/',
                 'image': content.image.url if content.image else None
             })
+        
+              
+         # Search About Content
+        if is_english:
+            cert_fields = ['title', 'description']
+        else:
+            cert_fields = ['title', 'description']
+        
+        about_content = AboutContent.objects.filter(build_search_q(query, cert_fields)).distinct()
+
+        for content in about_content:
+            title = content.title if not is_english and content.title else ''
+            description = content.description  if not is_english and content.description else ''
+            results.append({
+                'title': title,
+                'description': description[:200] + '...' if description and len(description) > 200 else description or '',
+                'url': '/about/',
+                'image': content.image.url if content.image else None
+            })
+        
 
         # Search Documents & Certifications
         if is_english:
@@ -312,61 +293,25 @@ def search_view(request):
             results.append({
                 'title': title,
                 'description': description[:200] + '...' if description and len(description) > 200 else description or '',
-                'url': '/about/?tab=documents/',
+                'url': '/about/',
                 'type': 'Documents & Certifications',
                 'image': content.image.url if content.image else None
             })
         
-        # Search Production Content
-        if is_english:
-            production_fields = ['title', 'description']
-        else:
-            production_fields = ['title', 'description']
-        
-        production_contents = ProductionContent.objects.filter(build_search_q(query, production_fields)).distinct()
-        
-        for content in production_contents:
-            title = content.title if not is_english and content.title else ''
-            description = content.description if not is_english and content.description else ''
-            results.append({
-                'title': title,
-                'description': description[:200] + '...' if description and len(description) > 200 else description or '',
-                'url': '/about/?tab=production/',
-                'type': 'Production',
-                'image': content.image.url if content.image else None
-            })
-        
+      
         # Search Sustainability
-        sustainability_items = Sustainability.objects.filter(build_search_q(query, ['main_description'])).distinct()
+        sustainability_items = Sustainability.objects.filter(build_search_q(query, ['description'])).distinct()
         
         for item in sustainability_items:
-            description = item.main_description if not is_english and item.main_description else ''
+            description = item.description if not is_english and item.description else ''
             results.append({
                 'title': 'Sustainability',
                 'description': description[:200] + '...' if description and len(description) > 200 else description or '',
-                'url': '/about/?tab=sustainability/',
+                'url': '/about/',
                 'type': 'Sustainability',
-                'image': None
+                'image': item.image.url if item.image else None
             })
-        
-        # Search Sustainability Content
-        if is_english:
-            sustainability_fields = ['title', 'description']
-        else:
-            sustainability_fields = ['title', 'description']
-        
-        sustainability_contents = SustainabilityContent.objects.filter(build_search_q(query, sustainability_fields)).distinct()
-        
-        for content in sustainability_contents:
-            title = content.title if not is_english and content.title else ''
-            description = content.description if not is_english and content.description else ''
-            results.append({
-                'title': title,
-                'description': description[:200] + '...' if description and len(description) > 200 else description or '',
-                'url': '/about/?tab=sustainability/',
-                'type': 'Sustainability',
-                'image': content.image.url if content.image else None
-            })
+
         
         # Search Contact Info
         if is_english:

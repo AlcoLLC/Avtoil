@@ -1,8 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import  HomeSwiper, PartnerLogo, CarLogo, Gallery
-from modeltranslation.admin import TranslationAdmin
-
+from .models import  HomeSwiper, PartnerLogo, CarLogo, Gallery, SolutionsHybrid, SolutionsHybridContent, BecomePartner
+from modeltranslation.admin import TranslationAdmin, TranslationTabularInline
 
 @admin.register(HomeSwiper)
 class HomeSwiperAdmin(TranslationAdmin):
@@ -160,3 +159,49 @@ class GalleryAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
     )
+
+
+@admin.register(BecomePartner)
+class BecomePartnerAdmin(TranslationAdmin):
+    list_display = ('title',)
+    search_fields = ('title',)
+
+    fields = (
+        'title', 'description', 'image'
+    )
+    
+    class Media:
+        js = (
+            'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
+            'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
+            'modeltranslation/js/tabbed_translation_fields.js',
+        )
+        css = {
+            'screen': ('modeltranslation/css/tabbed_translation_fields.css',),
+        }
+   
+    
+class SolutionsHybridContentInline(TranslationTabularInline):
+    model = SolutionsHybridContent
+    extra = 1
+    fields = ('content',)
+
+
+@admin.register(SolutionsHybrid)
+class SolutionsHybridAdmin(TranslationAdmin):
+    inlines = [SolutionsHybridContentInline]
+    list_display = ('title',)
+    search_fields = ('title',)
+
+    fields = ('title', 'description_left', 'description_right')
+    
+    class Media:
+        js = (
+            'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
+            'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
+            'modeltranslation/js/tabbed_translation_fields.js',
+        )
+        css = {
+            'screen': ('modeltranslation/css/tabbed_translation_fields.css',),
+        }
+

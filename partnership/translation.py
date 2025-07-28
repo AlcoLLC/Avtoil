@@ -1,5 +1,5 @@
 from modeltranslation.translator import register, TranslationOptions
-from .models import Partnership, Partnership_Content, PartnerReview, PartnerFAQ
+from .models import Partnership, Partnership_Content, PartnerReview, PartnerFAQ, BusinessType
 
 @register(Partnership)
 class PartnershipTranslationOptions(TranslationOptions):
@@ -17,3 +17,8 @@ class PartnerReviewTranslationOptions(TranslationOptions):
 @register(PartnerFAQ)
 class PartnerFAQTranslationOptions(TranslationOptions):
     fields = ('question', 'answer')
+
+
+@register(BusinessType)
+class BusinessTypeTranslationOptions(TranslationOptions):
+    fields = ('name',)

@@ -5,7 +5,7 @@ from django.utils import timezone
 from products.models import Product, Product_group, Segments, Oil_Types, Viscosity
 from news.models import News
 from faq.models import FAQ
-from about.models import AboutAminol, Quality, Production, Sustainability, WeGuarantee, DocumentsCertification
+from about.models import AboutAvtoil, AboutContent, Sustainability, DocumentsCertification
 from brands.models import Brand_Portal, Brand_Portal_Content
 from services.models import Service
 class StaticViewSitemap(Sitemap):
@@ -98,7 +98,7 @@ class AboutSitemap(Sitemap):
         
         # about.urls'de sadece 'about_page' var
         # Diğer sayfalar için URL pattern'ler eklenmeli
-        if AboutAminol.objects.exists():
+        if AboutAvtoil.objects.exists():
             about_pages.append('about:about_aminol')
             
         if Quality.objects.exists():

@@ -38,7 +38,7 @@ def verify_recaptcha(recaptcha_response):
 
 def contact_view(request):
     help_choices = [
-        ('buy', _('I would like to buy Aminol products.')),
+        ('buy', _('I would like to buy Avtoil products.')),
         ('become_dealer', _('I am interested in becoming a distributor.')),
         ('technical', _('I need technical support.')),
         ('other', _('Other'))

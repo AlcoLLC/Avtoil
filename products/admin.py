@@ -116,7 +116,7 @@ class ProductPropertyAdmin(TranslationAdmin):
 
 @admin.register(Product)
 class ProductAdmin(TranslationAdmin):
-    list_display = ['title', 'product_id', 'product_group', 'oil_type', 'has_pds', 'has_sds']
+    list_display = ['title', 'product_id', 'product_group', 'oil_type', 'has_pds', 'has_sds', 'in_home']
     list_filter = ['product_group', 'segments', 'oil_type', 'viscosity']
     search_fields = ['title', 'product_id', 'description']
     prepopulated_fields = {'slug': ('title',)}
@@ -124,7 +124,7 @@ class ProductAdmin(TranslationAdmin):
     
     fieldsets = (
         ('Basic Information', {
-            'fields': ('title', 'slug', 'product_id', 'description', 'image', 'features_benefits', 'application', 'order')
+            'fields': ('title', 'slug', 'product_id', 'description', 'image', 'features_benefits', 'application', 'in_home', 'order')
         }),
         ('Specifications', {
             'fields': ('api', 'ilsac', 'acea', 'jaso', 'oem_sertification', 'recommendations')

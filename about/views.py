@@ -1,53 +1,28 @@
 from django.shortcuts import render
 from .models import (
-    AboutAminol, Quality, WeGuarantee, Production,
-    DocumentsCertification, Sustainability
+    AboutAvtoil, AboutContent, DocumentsCertification, Sustainability
 )
 from home.models import PartnerLogo, CarLogo, Gallery as GalleryImage
 
 def about_page_view(request):
-    about_aminol = AboutAminol.objects.last()
-
-    about_sections = []
-    if about_aminol:
-        about_sections = about_aminol.sections.all().order_by('id')
-
-    quality = Quality.objects.last()
-
-    quality_contents = []
-    if quality:
-        quality_contents = quality.contents.all().order_by('id')
-
-    guarantee = WeGuarantee.objects.last()
-    production = Production.objects.last()
-
-    production_contents = []
-    if production:
-        production_contents = production.contents.all().order_by('id')
-
-    documents_certs = DocumentsCertification.objects.all()
-
+    about_avtoil = AboutAvtoil.objects.all()
+    documents_cert = DocumentsCertification.objects.last()
     sustainability = Sustainability.objects.last()
-
-    sustainability_contents = []
-    if sustainability:
-        sustainability_contents = sustainability.contents.all().order_by('id')
-
+    sustainability_image = sustainability.image if sustainability else None
+    about_contents = AboutContent.objects.all()
+    about_content1 = about_contents[:2]
+    about_content2 = about_contents[2:]
     partner_logos = PartnerLogo.objects.all()
     car_logos = CarLogo.objects.all()
     images = GalleryImage.objects.all().order_by('order')
 
     context = {
-        'about_aminol': about_aminol,
-        'about_sections': about_sections,
-        'quality': quality,
-        'quality_contents': quality_contents,
-        'guarantee': guarantee,
-        'production': production,
-        'production_contents': production_contents,
-        'documents_certs': documents_certs,
+        'about_avtoil': about_avtoil,
+        'about_content1': about_content1,
+        'about_content2': about_content2,
+        'documents_cert': documents_cert,
         'sustainability': sustainability,
-        'sustainability_contents': sustainability_contents,
+        'sustainability_image': sustainability_image,
         'partner_logos': partner_logos,
         'car_logos': car_logos,
         'images': images,

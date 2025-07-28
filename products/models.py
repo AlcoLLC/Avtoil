@@ -61,6 +61,8 @@ class Product(models.Model):
     sds_url = models.URLField(blank=True, null=True, verbose_name="SDS Link")
     created_at = models.DateTimeField(auto_now_add=True)
     order = models.IntegerField(default=0)
+    in_home = models.BooleanField(default=False, verbose_name="In Home")
+    
     
     
     def __str__(self):

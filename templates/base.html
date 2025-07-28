@@ -9,7 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="csrf-token" content="{{ csrf_token }}">
   <link rel="icon" type="image/svg+xml" href="{% static 'logo/aminol.svg' %}">
-  <title>{% block title %}{% trans "AMINOL - High-quality oil products" %}{% endblock %}</title>
+  <title>{% block title %}{% trans "Avtoil - High-quality oil products" %}{% endblock %}</title>
   <meta name="description" content="{% block description %}TOMOIL - High-quality oil products{% endblock %}">
   <meta name="keywords" content="{% block keywords %}oil, tomoil, automotive oil, industrial oil{% endblock %}">
   <meta name="robots" content="index, follow">
@@ -41,17 +41,17 @@
 
 
   <meta name="google-site-verification" content="_8tWduXDPsXU6p448Q8qaopDSjUjZDpbeCa1aezh_w0" />
-  <meta property="og:title" content="AMINOL">
-  <meta property="og:description" content="AMINOL - High-quality oil products">
+  <meta property="og:title" content="Avtoil">
+  <meta property="og:description" content="Avtoil - High-quality oil products">
   <meta property="og:image" content="https://aminol.az/static/logo/aminol-logo.svg">
   <meta property="og:url" content="https://aminol.az{{ request.path }}">
   <meta property="og:type" content="website">
-  <meta property="og:description" content="{% trans ' Aminol - High-quality oil products' %}">
+  <meta property="og:description" content="{% trans ' Avtoil - High-quality oil products' %}">
 
    <!-- Twitter Card tags -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@AminolOfficial"> 
-  <meta name="twitter:title" content="AMİNOL">
+  <meta name="twitter:title" content="Avtoil">
   <meta name="twitter:description" content="{% trans 'AMİNOL - High-quality oil products' %}">
   <meta name="twitter:image" content="https://aminol.az/static/logo/aminol-logo.svg">
   <meta name="ahrefs-site-verification" content="9e4cf268be7fc6c2b3be9598e3c023ec7ab0e3f8a6e5ac6884bf3d6fa032897c">
@@ -117,17 +117,12 @@
   }
 }
 </script>
-
-
-
   {% block extra_schema %}{% endblock %}
-
-
 </head>
 
 <body>
   {% block content %} {% endblock %}
-<a href="https://wa.me/994502220607" aria-label="Whatsapp" class="fixed-whatsapp" target="_blank">
+<a href="https://wa.me/4915207776502" aria-label="Whatsapp" class="fixed-whatsapp" target="_blank">
   <i class="fab fa-whatsapp"></i>
 </a>
   {% include 'components/footer.html' %}
@@ -150,6 +145,32 @@
     {% block page_js %}
     {% endblock %}
 
+  <script>
+    window.addEventListener('scroll', function () {
+        const headerWhatsapp = document.querySelector('.header-whatsapp');
+        const fixedWhatsapp = document.querySelector('.fixed-whatsapp');
+        const scrollPosition = window.scrollY;
+
+        if (scrollPosition > 100) {
+          fixedWhatsapp.style.opacity = '1';
+          fixedWhatsapp.style.visibility = 'visible';
+
+          if (headerWhatsapp) {
+            headerWhatsapp.style.opacity = '0';
+            headerWhatsapp.style.visibility = 'hidden';
+          }
+        } else {
+          fixedWhatsapp.style.opacity = '0';
+          fixedWhatsapp.style.visibility = 'hidden';
+
+          if (headerWhatsapp) {
+            headerWhatsapp.style.opacity = '1';
+            headerWhatsapp.style.visibility = 'visible';
+          }
+        }
+      });
+
+  </script>
  <script>
   var ahrefs_analytics_script = document.createElement('script');
 

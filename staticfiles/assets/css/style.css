@@ -662,7 +662,6 @@ footer .footer-contact > div:first-of-type .phone-number {
 footer .footer-contact > div:first-of-type .phone-number {
   display: flex;
   flex-direction: column;
-  font-family: Poppins;
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
@@ -698,10 +697,9 @@ footer .footer-contact > div:first-of-type p:first-of-type {
   max-width: 38%;
 }
 footer .footer-contact > div:first-of-type p,
-footer .footer-contact > div:first-of-type .phonenumbers {
+footer .footer-contact > div:first-of-type .phone-number {
   display: flex;
   flex-direction: column;
-  font-family: Poppins;
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;

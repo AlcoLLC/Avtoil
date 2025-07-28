@@ -53,7 +53,9 @@ CORS_ALLOWED_ORIGINS = [
 
 CSRF_TRUSTED_ORIGINS = [
     'http://162.55.55.226',
-    "https://162.55.55.226"
+    "https://162.55.55.226",
+    'http://127.0.0.1:8000',
+    'http://localhost:8000',
 ]
 
 
@@ -127,6 +129,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.i18n',
+                'home.context_processors.review_context',
             ],
         },
     },

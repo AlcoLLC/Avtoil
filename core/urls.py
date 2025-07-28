@@ -14,7 +14,7 @@ def robots_txt(request):
         "Disallow: /api/",
         "Disallow: /media/private/",
         "",
-        "Sitemap: https://aminol.az/sitemap.xml"
+        # "Sitemap: https://aminol.az/sitemap.xml"
     ]
     return HttpResponse('\n'.join(lines), content_type="text/plain")
 

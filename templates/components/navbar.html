@@ -30,9 +30,9 @@
                     {% get_current_language as CURRENT_LANGUAGE %}
                     {% if CURRENT_LANGUAGE == 'en' %}EN
                     {% elif CURRENT_LANGUAGE == 'de' %}DE
+                    {% elif CURRENT_LANGUAGE == 'es' %}ES
                     {% elif CURRENT_LANGUAGE == 'fr' %}FR
                     {% elif CURRENT_LANGUAGE == 'it' %}IT
-                    {% elif CURRENT_LANGUAGE == 'es' %}ES
                     {% elif CURRENT_LANGUAGE == 'zh-hans' %}汉语
                     {% else %}EN{% endif %}
                     <i class="fa-solid fa-angle-down"></i>
@@ -45,9 +45,9 @@
                               data-lang="{{ lang_code }}">
                         {% if lang_code == 'en' %}EN
                         {% elif lang_code == 'de' %}DE
+                        {% elif lang_code == 'es' %}ES
                         {% elif lang_code == 'fr' %}FR
                         {% elif lang_code == 'it' %}IT
-                        {% elif lang_code == 'es' %}ES
                         {% elif lang_code == 'zh-hans' %}汉语
                         {% else %}{{ lang_code|upper }}{% endif %}
                       </button>

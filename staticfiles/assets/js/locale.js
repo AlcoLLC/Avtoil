@@ -309,7 +309,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function calculateNewPath(langCode) {
     const currentPath = window.location.pathname;
-    const supportedLangs = ['az', 'de', 'fr', 'it', 'es', 'pt-br', 'zh-hans'];
+    const supportedLangs = ['de', 'es', 'fr', 'it', 'zh-hans'];
 
     let pathWithoutLang = currentPath;
     let currentLang = 'en';
@@ -374,7 +374,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentLang = 'en';
 
     // Determine current language from URL
-    const supportedLangs = ['az', 'de', 'fr', 'it', 'es', 'pt-br', 'zh-hans'];
+    const supportedLangs = ['de', 'es', 'fr', 'it', 'zh-hans'];
     for (let lang of supportedLangs) {
       if (currentPath.startsWith(`/${lang}/`) || currentPath === `/${lang}`) {
         currentLang = lang;
@@ -395,12 +395,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // Update dropdown button text
     const langTexts = {
       en: 'EN',
-      az: 'AZ',
       de: 'DE',
+      es: 'ES',
       fr: 'FR',
       it: 'IT',
-      es: 'ES',
-      'pt-br': 'PT',
       'zh-hans': '汉语'
     };
 
@@ -588,7 +586,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let a = window.location.pathname,
           n = a,
           o = 'en';
-        for (let l of ['az', 'de', 'fr', 'it', 'es', 'pt-br', 'zh-hans']) {
+        for (let l of ['de', 'es', 'fr', 'it', 'zh-hans']) {
           if (a.startsWith(`/${l}/`)) {
             (o = l), (n = a.substring(l.length + 1));
             break;
@@ -776,7 +774,7 @@ document.addEventListener('DOMContentLoaded', function () {
     (function e() {
       let t = window.location.pathname,
         a = 'en';
-      for (let n of ['az', 'de', 'fr', 'it', 'es', 'pt-br', 'zh-hans'])
+      for (let n of ['de', 'es', 'fr', 'it', 'zh-hans'])
         if (t.startsWith(`/${n}/`) || t === `/${n}`) {
           a = n;
           break;
@@ -790,12 +788,10 @@ document.addEventListener('DOMContentLoaded', function () {
       let o =
         {
           en: 'EN',
-          az: 'AZ',
           de: 'DE',
+          es: 'ES',
           fr: 'FR',
           it: 'IT',
-          es: 'ES',
-          'pt-br': 'PT',
           'zh-hans': '汉语'
         }[a] || 'EN';
       l && (l.innerHTML = `${o} <i class="fa-solid fa-angle-down"></i>`),

@@ -163,17 +163,15 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGES = [
     ('en', 'English'),
-    ('az', 'Azerbaijani'),
     ('de', 'German'),        
     ('fr', 'French'),       
     ('it', 'Italian'),  
     ('es', 'Spanish'),      
-    ('pt-br', 'Brazilian Portuguese'),
     ('zh-hans', 'Chinese (Simplified)'),   
 ]
 
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
-MODELTRANSLATION_LANGUAGES = ('en', 'az', 'de', 'fr', 'it', 'es', 'pt-br', 'zh-hans')
+MODELTRANSLATION_LANGUAGES = ('en', 'de', 'fr', 'it', 'es', 'zh-hans')
 
 
 LANGUAGE_CODE = 'en'

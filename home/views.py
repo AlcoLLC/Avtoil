@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.utils.translation import gettext as _
 from django.core.exceptions import ValidationError
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_protect
@@ -73,11 +74,11 @@ def submit_review(request):
         
         # Basic validations
         if not rating_value:
-            messages.error(request, 'Please select a rating.')
+            messages.error(request, _('Please select a rating.'))
             return redirect(redirect_url)
             
         if not agreement:
-            messages.error(request, 'You must accept the agreement terms.')
+            messages.error(request, _('You must accept the agreement terms.'))
             return redirect(redirect_url)
         
         # Check required fields
@@ -91,7 +92,7 @@ def submit_review(request):
         
         for field_name, field_value in required_fields.items():
             if not field_value:
-                messages.error(request, 'All fields are required.')
+                messages.error(request, _('All fields are required.'))
                 return redirect(redirect_url)
 
         # Spam check - same email in last 24 hours?
@@ -101,7 +102,7 @@ def submit_review(request):
         ).first()
         
         if recent_review:
-            messages.error(request, 'You have already submitted a review in the last 24 hours. Please wait.')
+            messages.error(request, _('You have already submitted a review in the last 24 hours. Please wait.'))
             return redirect(redirect_url)
 
         # Create review
@@ -119,94 +120,20 @@ def submit_review(request):
         review.full_clean()
         review.save()
         
-        messages.success(request, 'Thank you for your review! It will be published after approval.')
+        messages.success(request, _('Your review has been submitted successfully. Thank you for your valuable feedback!'))
         return redirect(redirect_url)
         
     except ValueError:
-        messages.error(request, 'Invalid rating value. Please select a rating.')
+        messages.error(request, _('Invalid rating value. Please select a rating.'))
         return redirect(redirect_url)
     except ValidationError as e:
         error_message = ', '.join([str(error) for error in e.messages])
         messages.error(request, f'Validation error: {error_message}')
         return redirect(redirect_url)
     except Exception as e:
-        messages.error(request, 'An error occurred while submitting your review. Please try again.')
+        messages.error(request, _('An error occurred while submitting your review. Please try again.'))
         return redirect(redirect_url)
 
-@csrf_protect
-@require_POST
-def submit_review_ajax(request):
-    """AJAX review submission"""
-    try:
-        # Read JSON data
-        if request.content_type == 'application/json':
-            data = json.loads(request.body)
-        else:
-            data = request.POST
-        
-        rating_value = data.get('rating')
-        first_name = data.get('first_name', '').strip()
-        surname = data.get('surname', '').strip()
-        email_address = data.get('email_address', '').strip()
-        summary = data.get('summary', '').strip()
-        review_text = data.get('review', '').strip()
-        agreement = data.get('agreement')
-        
-        # Validations
-        if not rating_value:
-            return JsonResponse({
-                'success': False,
-                'message': 'Please select a rating.'
-            })
-            
-        if not agreement:
-            return JsonResponse({
-                'success': False,
-                'message': 'You must accept the agreement terms.'
-            })
-        
-        # Spam check
-        recent_review = Review.objects.filter(
-            email_address=email_address,
-            created_at__gte=timezone.now() - timedelta(hours=24)
-        ).first()
-        
-        if recent_review:
-            return JsonResponse({
-                'success': False,
-                'message': 'You have already submitted a review in the last 24 hours.'
-            })
-
-        # Create review
-        review = Review(
-            first_name=first_name,
-            surname=surname,
-            email_address=email_address,
-            summary=summary,
-            review=review_text,
-            rating=int(rating_value),
-            ip_address=get_client_ip(request),
-            is_approved=False
-        )
-        
-        review.full_clean()
-        review.save()
-        
-        return JsonResponse({
-            'success': True,
-            'message': 'Thank you for your review! It will be published after approval.'
-        })
-        
-    except ValidationError as e:
-        return JsonResponse({
-            'success': False,
-            'message': ', '.join([str(error) for error in e.messages])
-        })
-    except Exception as e:
-        return JsonResponse({
-            'success': False,
-            'message': 'An error occurred. Please try again.'
-        })
 
 # Error handlers
 def handler404(request, exception):

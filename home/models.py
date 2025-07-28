@@ -62,3 +62,34 @@ class Gallery(models.Model):
     def __str__(self):
         return f"Gallery Image {self.id}"
 
+class BecomePartner(models.Model):
+     title = models.CharField(max_length=255)
+     description = models.TextField()
+     image = models.ImageField(
+        upload_to='become_partner/')
+     def __str__(self):
+        return f"{self.title}"
+     
+
+class SolutionsHybrid(models.Model):
+     title = models.CharField(max_length=255)
+     description_left = models.TextField()
+     description_right = models.TextField()
+
+     def __str__(self):
+        return f"{self.title}"
+     
+class SolutionsHybridContent(models.Model):
+    SolutionsHybrid = models.ForeignKey(
+    SolutionsHybrid, related_name='SolutionsHybrid', on_delete=models.CASCADE)
+
+    content  = models.CharField()
+
+    def __str__(self):
+        return f"{self.content}"
+
+
+        
+
+
+     

@@ -74,3 +74,46 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 });
+
+// Form submit handling
+const form = document.querySelector('.coorperation-form form');
+if (form) {
+  form.addEventListener('submit', function (e) {
+    const requiredFields = form.querySelectorAll('input[required], select[required]');
+    let isValid = true;
+
+    requiredFields.forEach((field) => {
+      if (!field.value.trim()) {
+        isValid = false;
+        field.style.borderColor = '#dc3545';
+      } else {
+        field.style.borderColor = '#b4b7d425';
+      }
+    });
+
+    // Check hidden input (business type)
+    const hiddenInput = document.querySelector('#typeOfBusiness');
+    if (!hiddenInput || !hiddenInput.value) {
+      isValid = false;
+      const selectWrapper = document.querySelector('.coorperation-select');
+      if (selectWrapper) {
+        selectWrapper.style.borderColor = '#dc3545';
+      }
+    }
+
+    if (!isValid) {
+      e.preventDefault();
+      // Show error message if needed
+    }
+  });
+}
+
+// Auto hide messages after 5 seconds
+document.addEventListener('DOMContentLoaded', function () {
+  const alerts = document.querySelectorAll('.alert');
+  alerts.forEach((alert) => {
+    setTimeout(() => {
+      alert.style.display = 'none';
+    }, 5000);
+  });
+});

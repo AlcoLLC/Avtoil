@@ -2,11 +2,14 @@
 
 {% block title%}{% trans "home_meta_title" %}{% endblock %} 
 {% block description %}{%trans "home_meta_description" %}{%endblock %} 
-{% block keywords %}{%trans "home_keywords" %}{%endblock %} 
+{% block keywords %}{%trans "home_keywords" %}{%endblock %}
+
 
 {%block page_css %}
-<link rel="stylesheet" href="{% static 'assets/css/map.min.css' %}" onload="this.rel='stylesheet'" />
-<link rel="stylesheet" href="{% static 'assets/css/swiper-bundle.min.css' %}" onload="this.rel='stylesheet'" />
+<link
+  rel="stylesheet" href="{% static 'assets/css/map.min.css' %}" onload="this.rel='stylesheet'"/>
+<link
+  rel="stylesheet" href="{% static 'assets/css/swiper-bundle.min.css' %}" onload="this.rel='stylesheet'" />
 <noscript>
   <link rel="stylesheet" href="{% static 'assets/css/swiper-bundle.min.css' %}" />
   <link rel="stylesheet" href="{% static 'assets/css/map.min.css' %}" />
@@ -26,12 +29,13 @@
 
 {% endblock %}
 
-{% block extra_schema %}
-
+{% block extra_schema %} 
 
 {% endblock %} 
 
+
 {% block content %}
+
 
 {% include 'components/navbar.html' %}
 
@@ -124,8 +128,7 @@
         </h2>
         <p>
           {% blocktrans %} "Avtoil Lubricants produces and packages high-quality oils using premium
-          imported base oils and additives, formulated by expert engineers." 
-          {% endblocktrans %}
+          imported base oils and additives, formulated by expert engineers." {% endblocktrans %}
         </p>
       </div>
       <div class="play-button" id="playButton">
@@ -164,13 +167,12 @@
 </div>
 
 {% if service_contents %}
-
 <div class="services">
   <div class="section-header">
     <h2>{% trans "Our Services" %}</h2>
   </div>
   <div class="container services-sections">
-        {% for content in service_contents %}
+    {% for content in service_contents %}
     <div class="section">
       <div class="content">
         <h2>{{ content.title|linebreaksbr }}</h2>
@@ -185,30 +187,30 @@
       />
     </div>
     {% endfor %}
-    <div class="section last"> 
-      <a href="{% url 'services:services_page' %}" class="button-style">{% trans "Discover more" %}</a> 
+    <div class="section last">
+      <a href="{% url 'services:services_page' %}" class="button-style">
+        {% trans "Discover more" %}
+      </a>
     </div>
-
   </div>
-
-
 </div>
-
 {% endif %}
 
 <section class="become-partner container">
-    <img  loading="lazy" class="bg-image" src="{% static 'images/partner-bg.webp' %}" alt="Become a Partner Image" width="100%"/>
+  <img  loading="lazy" class="bg-image"
+    src="{{ become_partner.image.url }}" alt="{{ become_partner.title }}"
+    width="100%" />
 
   <div class="section-content">
-    <h2 class="section-title">  {% blocktrans %} Become a partner of Avtoil Lubricants {% endblocktrans %}
+    <h2 class="section-title">
+      {{ become_partner.title|linebreaksbr }}
     </h2>
     <p>
-      {% blocktrans %} We invite distributors, retail chains, online stores, auto parts shops, companies with their own fleet of vehicles, and car service centers to cooperate with us.
-      {% endblocktrans %}
+      {{ become_partner.description|linebreaksbr }} 
     </p>
   </div>
-  <a href="#" class="partner-button">{% blocktrans %} Become a partner {% endblocktrans %} </a>
-</section>  
+   <a href="{% url 'partnership:partnership' %}" class="partner-button">{% blocktrans %} Become a partner {% endblocktrans %}</a>
+</section>
 
 <section class="news-section">
   <div class="section-header">
@@ -257,36 +259,31 @@
     src="{% static 'images/electric-solutions-bg.webp' %}"
     alt="Electric Solutions Image"
   />
-  <h2 class="section-title">Solutions for Hybrid and Electric Vehicles</h2>
+  <h2 class="section-title">{{ solutions_hybrid.title|linebreaksbr }}</h2>
   <div class="electric-solutions-content">
     <div class="content-left">
       <p>
-        As hybrid and electric vehicles (HEVs and EVs) reshape the automotive landscape, Avtoil
-        collaborates closely with OEMs and leading industry experts to develop cutting-edge
-        solutions tailored for these emerging technologies.
+        {{ solutions_hybrid.description_left|linebreaksbr }}
       </p>
     </div>
     <div class="content-right">
       <p>
-        Our specialized products are engineered to meet the unique requirements of electrified
-        powertrains, ensuring maximum efficiency, thermal management, and component protection.
+        {{ solutions_hybrid.description_right|linebreaksbr }}
       </p>
       <ul>
-        <li>Transmission Fluids for HEVs and EVs</li>
-        <li>Brake Fluids for Regenerative Braking Systems</li>
-        <li>Gear Oils for Hybrid and Electric Vehicles</li>
-        <li>Cooling Fluids for Battery Thermal Management</li>
-        <li>Greases for Electric Motors and Components</li>
+        {% for item in solutions_contents%}
+        <li>{{ item.content }}</li>
+        {% endfor %}
       </ul>
     </div>
   </div>
 </section>
 
 <section class="sustainability-section container">
-   <div class="sustainability-image">
-    <img loading="lazy" src="{% static '/images/sustainability.webp' %}" alt="About Image" />
-     <div class="property">
-      <span>{%trans '100,000 tons'%}</span>
+  <div class="sustainability-image">
+    <img loading="lazy" src="{{ sustainability_image.url}}" alt="{{ sustainability.title}}" />
+    <div class="property">
+      <span>{%trans '100,000 tonnes'%}</span>
       <p>{%trans 'Production capacity'%}</p>
     </div>
     <div class="property">
@@ -297,17 +294,15 @@
       <span>{%trans '600+ tonnes'%}</span>
       <p>{%trans 'Finished products exported daily'%}</p>
     </div>
-   </div>
- 
+  </div>
+
   <div class="section-content">
     <a href="{% url 'about:about_page' %}">
       <h3>{%trans 'Sustainability'%}</h3>
       <p>
-        {%blocktrans%} 
-        Sustainability is at the core of our innovation. As a leading manufacturer of
+        {%blocktrans%} Sustainability is at the core of our innovation. As a leading manufacturer of
         high-quality lubricants, we are committed to delivering solutions that align with global
-        environmental standards and customer needs.
-        {%endblocktrans%}
+        environmental standards and customer needs. {%endblocktrans%}
       </p>
       <span class="button-style">{%trans 'Learn more'%}</span>
     </a>
@@ -331,20 +326,20 @@
       <div class="products-slider">
         <div class="slider-container">
           <!-- Product 1 -->
-          {% for product_group in product_groups %}
+          {% for product in products %}
           <div class="product-card">
             <div class="product-image">
-              <a href="{% url 'products:product_list' %}?product_group={{ product_group.slug }}">
+              <a href="{% url 'products:product_detail' slug=product.slug %}">
                 <img
                   loading="lazy"
-                  src="{{ product_group.image.url }}"
-                  alt="{{ product_group.title|linebreaksbr }}"
+                  src="{{ product.image.url }}"
+                  alt="{{ product.title|linebreaksbr }}"
                 />
               </a>
             </div>
             <div class="product-info">
-              <a href="{% url 'products:product_list' %}?product_group={{ product_group.slug }}">
-                <h2 class="product-title">{{ product_group.title|linebreaksbr }}</h2>
+              <a href="{% url 'products:product_detail' slug=product.slug %}">
+                <h2 class="product-title">{{ product.title|linebreaksbr }}</h2>
               </a>
             </div>
           </div>
@@ -359,13 +354,14 @@
         </div>
       </div>
 
-      <a href="" class="button-style">{% trans 'See More' %}</a>
+      <a href="{% url 'products:product_list' %}" class="button-style">{% trans 'See More' %}</a>
     </div>
   </div>
 </section>
 
+
 {% include 'components/gallery.html' %} 
 {% include 'components/brochure.html' %}
 {% include 'components/review.html' %}
-
+ 
 {% endblock %}

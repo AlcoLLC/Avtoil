@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Partnership, Partnership_Content, PartnerReview, PartnerFAQ
+from .models import Partnership, Partnership_Content, PartnerReview, PartnerFAQ, PartnershipForm, BusinessType
 from modeltranslation.admin import TranslationAdmin, TranslationTabularInline
 
 class PartnershipContentInline(TranslationTabularInline):
@@ -78,3 +78,40 @@ class PartnerFAQAdmin(TranslationAdmin):
         css = {
             'screen': ('modeltranslation/css/tabbed_translation_fields.css',),
         }
+
+
+@admin.register(BusinessType)
+class BusinessTypeAdmin(TranslationAdmin):
+    list_display = ('name', 'value', 'order', 'is_active', 'created_at')
+    list_filter = ('is_active',)
+    search_fields = ('name', 'value')
+    list_editable = ('order', 'is_active')
+    ordering = ('order', 'name')
+    
+    fields = ('name', 'value', 'is_active', 'order')
+
+
+@admin.register(PartnershipForm)
+class PartnershipFormAdmin(admin.ModelAdmin):
+    list_display = ('full_name', 'email', 'business_type', 'created_at', 'is_processed')
+    list_filter = ('business_type', 'is_processed', 'created_at')
+    search_fields = ('first_name', 'last_name', 'email', 'business_type__name')
+    readonly_fields = ('created_at',)
+    list_editable = ('is_processed',)
+    ordering = ('-created_at',)
+    
+    fieldsets = (
+        ('Personal Information', {
+            'fields': ('first_name', 'last_name', 'email')
+        }),
+        ('Business Information', {
+            'fields': ('business_type', 'message')
+        }),
+        ('Status', {
+            'fields': ('is_processed', 'created_at')
+        }),
+    )
+
+    def full_name(self, obj):
+        return obj.full_name
+    full_name.short_description = 'Full Name'

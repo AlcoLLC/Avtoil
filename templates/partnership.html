@@ -137,8 +137,20 @@
       </p>
     </div>
     <div class="coorperation-form">
-      <h2>{% trans "Coorperation" %}</h2>
-      <form action="" method="POST">
+      <h3>{% trans "Coorperation" %}</h3>
+          <!-- Messages display -->
+      {% if messages %}
+        <div class="messages-container">
+          {% for message in messages %}
+             <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+                <button type="button" class="close-btn" onclick="this.parentElement.style.display='none'">&times;</button>
+             </div>
+          {% endfor %}
+         </div>
+      {% endif %}
+      
+      <form action="{% url 'partnership:partnership' %}" method="POST">
         {% csrf_token %}
         <div class="form-group select-form-group">
           <label for="typeOfBusiness">{% trans "Type of business" %}</label>
@@ -147,10 +159,9 @@
               Select
             </div>
             <div class="coorperation-options">
-              {% comment %} {% for value, text in type_of_businesses %} {% endcomment %}
-              <div class="coorperation-option" data-value="">a</div>
-              <div class="coorperation-option" data-value="">text</div>
-              <div class="coorperation-option" data-value="">b</div>
+              {% for business_type in business_types %}
+                 <div class="coorperation-option" data-value="{{ business_type.value }}">{{ business_type.name }}</div>
+              {% endfor %}
             </div>
             <input type="hidden" name="typeOfBusiness" id="typeOfBusiness" value="" required />
           </div>
@@ -199,7 +210,7 @@
     </div>
   </div>
 </section>
-
+{% include 'components/whatsapp.html' %} 
 {% include 'components/brochure.html' %} 
 {% include 'components/review.html' %} 
 

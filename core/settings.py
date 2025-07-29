@@ -20,7 +20,11 @@ load_dotenv(BASE_DIR / ".env")
 
 SECRET_KEY = os.getenv('SECRET_KEY', 'dummy-secret')
 DEBUG = os.getenv('DEBUG', 'true').strip().lower() in ['true', '1', 'yes']
-ALLOWED_HOSTS = ['*']
+
+if DEBUG:
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+else:
+    ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 
 USE_POSTGRES = os.getenv('USE_POSTGRES', 'false').lower() == 'true'
 
@@ -44,19 +48,18 @@ else:
     }
 
 
-CORS_ALLOWED_ORIGINS = [
-    'http://162.55.55.226',
-    "https://162.55.55.226",
-    'http://162.55.55.226:100',
-    "https://162.55.55.226:100",
-]
-
-CSRF_TRUSTED_ORIGINS = [
-    'http://162.55.55.226',
-    "https://162.55.55.226",
-    'http://127.0.0.1:8000',
-    'http://localhost:8000',
-]
+if DEBUG:
+    CORS_ALLOWED_ORIGINS = [
+        'http://localhost:8000',
+        'http://127.0.0.1:8000',
+    ]
+    CSRF_TRUSTED_ORIGINS = [
+        'http://localhost:8000',
+        'http://127.0.0.1:8000',
+    ]
+else:
+    CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', '').split(',')
+    CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',')
 
 
 # Application definition
@@ -76,7 +79,6 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.sitemaps',
     # apps
-
     'home',
     'about',
     'services',
@@ -208,10 +210,10 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
 STATIC_URL = "/static/"
 
-if DEBUG == False:
-    STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-else:
+if DEBUG:
     STATICFILES_DIRS = [os.path.join(BASE_DIR, "staticfiles")]
+else:
+    STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafile/')
@@ -283,6 +285,6 @@ SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
 
-SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = not DEBUG
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_AGE = 3600  

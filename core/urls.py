@@ -39,7 +39,6 @@ urlpatterns += i18n_patterns(
     path('', include('partnership.urls')),
     path('', include('search.urls')),
     prefix_default_language=False
-    
     )
 
 urlpatterns += [

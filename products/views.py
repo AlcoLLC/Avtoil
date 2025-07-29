@@ -69,7 +69,7 @@ def product_detail(request, slug):
         title = product.title or ""
         full_title = title
         if title and len(title) < 60:
-            full_title = title + " " + _(" | AMINOL")
+            full_title = title + " " + _(" | AVTOIL")
 
         description = product.description or ""
         if description and len(description) < 160:

@@ -5,7 +5,7 @@ from services.models import (
 )
 
 class Command(BaseCommand):
-    help = 'Copy original fields into *translate fields for Aminol models'
+    help = 'Copy original fields into *translate fields for Avtoil models'
 
     def handle(self, *args, **options):
         def copy_fields(instance, field_pairs):

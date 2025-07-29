@@ -413,7 +413,7 @@
 .product-categories .category-card:hover .category-title::after {
   width: 80%;
 }
-.aminol-worldwide .aminol-worldwide-content p,
+.avtoil-worldwide .avtoil-worldwide-content p,
 .product-categories .category-desc {
   font-weight: 400;
   font-size: 16px;
@@ -985,24 +985,24 @@
     padding: 40px 20px;
     margin-bottom: 60px;
   }
-  .aminol-worldwide {
+  .avtoil-worldwide {
     flex-direction: column;
     gap: 25px;
     margin: 20px auto;
   }
-  .aminol-worldwide > div {
+  .avtoil-worldwide > div {
     width: 50%;
   }
-  .aminol-worldwide .aminol-worldwide-content {
+  .avtoil-worldwide .avtoil-worldwide-content {
     width: 80%;
     text-align: center;
     align-items: center;
   }
-  .aminol-worldwide .aminol-worldwide-content h2 {
+  .avtoil-worldwide .avtoil-worldwide-content h2 {
     font-size: 24px;
     line-height: 32px;
   }
-  .aminol-worldwide .aminol-worldwide-content p {
+  .avtoil-worldwide .avtoil-worldwide-content p {
     font-size: 13px;
     line-height: 18px;
   }

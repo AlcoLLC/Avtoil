@@ -34,8 +34,8 @@ else:
     IMAGE_EXTENSIONS = ('.jpg', '.jpeg', '.png', '.webp', '.bmp', '.tiff', '.gif')
 
 # Kaynak ve hedef dizinler
-SOURCE_DIR = "/Aminol/gallery"
-COMPRESSED_OUTPUT_DIR = "/Aminol/mediafile/gallery"
+SOURCE_DIR = "/Avtoil/gallery"
+COMPRESSED_OUTPUT_DIR = "/Avtoil/mediafile/gallery"
 
 def get_file_size_kb(buffer):
     return len(buffer.getvalue()) / 1024

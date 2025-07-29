@@ -53,7 +53,9 @@ CORS_ALLOWED_ORIGINS = [
 
 CSRF_TRUSTED_ORIGINS = [
     'http://162.55.55.226',
-    "https://162.55.55.226"
+    "https://162.55.55.226",
+    'http://127.0.0.1:8000',
+    'http://localhost:8000',
 ]
 
 
@@ -127,6 +129,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.i18n',
+                'home.context_processors.review_context',
+                'home.context_processors.page_header_context',
+
             ],
         },
     },
@@ -160,17 +165,15 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGES = [
     ('en', 'English'),
-    ('az', 'Azerbaijani'),
-    ('de', 'German'),        
+    ('de', 'German'),    
+    ('es', 'Spanish'),       
     ('fr', 'French'),       
     ('it', 'Italian'),  
-    ('es', 'Spanish'),      
-    ('pt-br', 'Brazilian Portuguese'),
     ('zh-hans', 'Chinese (Simplified)'),   
 ]
 
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
-MODELTRANSLATION_LANGUAGES = ('en', 'az', 'de', 'fr', 'it', 'es', 'pt-br', 'zh-hans')
+MODELTRANSLATION_LANGUAGES = ('en', 'de',  'es', 'fr', 'it', 'zh-hans')
 
 
 LANGUAGE_CODE = 'en'
@@ -185,6 +188,8 @@ TIME_ZONE = 'Asia/Baku'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
+
+PREFIX_DEFAULT_LANGUAGE = False
 
 
 LANGUAGE_SESSION_KEY = 'django_language'

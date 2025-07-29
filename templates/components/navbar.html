@@ -13,13 +13,13 @@
         <div class="nav-section">
             <ul class="nav-top">
                <li><a href="{% url 'partnership:partnership' %}" aria-label="Partnership Page">{% trans "Partnership" %}</a></li>    
-              <li><a href="{% url 'news:news_list' %}" aria-label="News Page">{% trans "News" %}</a></li>
-              <li><a href="{% url 'brands:brand_portal_list' %}" aria-label="Brand Portal Page">{% trans "Brand Portal" %}</a></li>
+              <li><a href="{% url 'news:news' %}" aria-label="News Page">{% trans "News" %}</a></li>
+              <li><a href="{% url 'brands:brands' %}" aria-label="Brand Portal Page">{% trans "Brand Portal" %}</a></li>
             </ul>
             <ul>
-              <li><a href="{% url 'about:about_page' %}" aria-label="About Page">{% trans "About us" %}</a></li>
-              <li><a href="{% url 'products:product_list' %}" aria-label="Products Page">{% trans "Products" %}</a></li>
-              <li><a href="{% url 'services:services_page' %}" aria-label="Services Page">{% trans "Services" %}</a></li>
+              <li><a href="{% url 'about:about' %}" aria-label="About Page">{% trans "About us" %}</a></li>
+              <li><a href="{% url 'products:product' %}" aria-label="Products Page">{% trans "Products" %}</a></li>
+              <li><a href="{% url 'services:services' %}" aria-label="Services Page">{% trans "Services" %}</a></li>
               <li><a href="{% url 'contact:contact' %}" aria-label="Contact Page">{% trans "Contact" %}</a></li>    
             </ul>
         </div>
@@ -30,9 +30,9 @@
                     {% get_current_language as CURRENT_LANGUAGE %}
                     {% if CURRENT_LANGUAGE == 'en' %}EN
                     {% elif CURRENT_LANGUAGE == 'de' %}DE
+                    {% elif CURRENT_LANGUAGE == 'es' %}ES
                     {% elif CURRENT_LANGUAGE == 'fr' %}FR
                     {% elif CURRENT_LANGUAGE == 'it' %}IT
-                    {% elif CURRENT_LANGUAGE == 'es' %}ES
                     {% elif CURRENT_LANGUAGE == 'zh-hans' %}汉语
                     {% else %}EN{% endif %}
                     <i class="fa-solid fa-angle-down"></i>
@@ -45,9 +45,9 @@
                               data-lang="{{ lang_code }}">
                         {% if lang_code == 'en' %}EN
                         {% elif lang_code == 'de' %}DE
+                        {% elif lang_code == 'es' %}ES
                         {% elif lang_code == 'fr' %}FR
                         {% elif lang_code == 'it' %}IT
-                        {% elif lang_code == 'es' %}ES
                         {% elif lang_code == 'zh-hans' %}汉语
                         {% else %}{{ lang_code|upper }}{% endif %}
                       </button>
@@ -67,12 +67,12 @@
 
 <div class="mobile-menu" id="mobile-menu">
            <ul>
-              <li><a href="{% url 'about:about_page' %}" aria-label="About Page">{% trans "About us" %}</a></li>
-              <li><a href="{% url 'products:product_list' %}" aria-label="Products Page">{% trans "Products" %}</a></li>
-              <li><a href="{% url 'services:services_page' %}" aria-label="Services Page">{% trans "Services" %}</a></li>
+              <li><a href="{% url 'about:about' %}" aria-label="About Page">{% trans "About us" %}</a></li>
+              <li><a href="{% url 'products:product' %}" aria-label="Products Page">{% trans "Products" %}</a></li>
+              <li><a href="{% url 'services:services' %}" aria-label="Services Page">{% trans "Services" %}</a></li>
               <li><a href="{% url 'contact:contact' %}" aria-label="Contact Page">{% trans "Contact" %}</a></li> 
               <li><a href="{% url 'partnership:partnership' %}" aria-label="Partnership Page">{% trans "Partnership" %}</a></li>    
-              <li><a href="{% url 'news:news_list' %}" aria-label="News Page">{% trans "News" %}</a></li>
-              <li><a href="{% url 'brands:brand_portal_list' %}" aria-label="Brand Portal Page">{% trans "Brand Portal" %}</a></li>  
+              <li><a href="{% url 'news:news' %}" aria-label="News Page">{% trans "News" %}</a></li>
+              <li><a href="{% url 'brands:brands' %}" aria-label="Brand Portal Page">{% trans "Brand Portal" %}</a></li>  
            </ul>
 </div>

@@ -88,35 +88,26 @@
 
 
 {% include 'components/navbar.html' %}
-{% include 'components/page-header.html' %}
 
-{% comment %} {% if product.product_group %}
-{% include 'components/navbar.html' %}
-<div class="product-detail-page">
-  <header class="page-header" style="background-image: url('{{ product.product_group.image.url }}');">
-      <div class="header-content container">
-        <div>{{ product.product_group.title|linebreaksbr }}</div>
-      </div>
-    </header>
-</div>
-{% else %}
-{% include 'components/navbar.html' %}
-<div class="non-header-page">
   <header class="page-header">
+      <img loading="lazy" class="bg-image" src="{{ product.product_group.image.url }}" alt="Page header background" />
+      <div class="header-content container">
+        <div class="header-text" >
+          <h1>{{ product.title }}</h1>
+          <p>{{ product.product_id }}</p>
+        </div>
+      </div>
   </header>
-</div>
-{% endif %} {% endcomment %}
-
 
 <div class="breadcrumb container">
-  <a href="{% url 'products:product_list' %}" aria-label="Products Page">{% trans "Back to the overview" %} |</a>
+  <a href="{% url 'products:product' %}" aria-label="Products Page">{% trans "Back to the overview" %} |</a>
   <p>{{ product.title|linebreaksbr }}</p>
 </div>
 
 <section class="product-detail-section container">
   <div class="product-detail-container">
     <div class="product-details">
-      <h1>{{ product.title|linebreaksbr }}</h1>
+      <h2>{{ product.title|linebreaksbr }}</h2>
       <p class="product-id">{{ product.product_id }}</p>
       <h2 class="product-description">
         {{ product.description|linebreaksbr }}

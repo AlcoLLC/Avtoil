@@ -1,8 +1,18 @@
-{% load static %}
-{% load i18n %}
-
+{% load static %} {% load i18n %}
 
 <section class="review-section">
+
+  {% if messages %}
+  <div class="messages-container">
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+        <button type="button" class="close-btn" onclick="this.parentElement.style.display='none'">&times;</button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
   <img
     src="{% static 'images/review-background.webp' %}"
     alt="Decorative vector background"
@@ -13,52 +23,44 @@
     <div class="review-content">
       <h3 class="section-title">{% trans 'Leave a review on trust pilot' %}</h3>
       <p>
-        {% blocktrans %} Most of the oils and greases we develop are biodegradable
-        {% endblocktrans  %}
+        {% blocktrans %} Most of the oils and greases we develop are biodegradable 
+        {% endblocktrans %}
       </p>
       <button class="button-style" id="openReviewModal">
         {% blocktrans %} Leave a review {% endblocktrans %}
       </button>
     </div>
+      {% if  approved_reviews %}
 
     <div class="opinions">
-      <div class="opinion active" data-index="0">
+      {% for review in approved_reviews %}
+      <div
+        class="opinion {% if forloop.first %}active{% endif %}"
+        data-index="{{ forloop.counter0 }}"
+      >
         <div class="star-rating">
+          {% for i in "12345" %} {% if forloop.counter <= review.rating %}
           <i class="fa-solid fa-star"></i>
+          {% else %}
           <i class="fa-regular fa-star"></i>
+          {% endif %} {% endfor %}
         </div>
         <div class="review-header">
-          <h3>Kevin Huh reviewed Avtoil</h3>
+          <h3>{{ review.full_name }}</h3>
         </div>
-        <p class="section-description">
-          Avtoil is one of the best motor oils I’ve had a long time.
+        <p class="section-description">{{ review.summary }}</p>
+        {% if review.review|length > 100 %}
+        <p class="review-full-text" style="font-size: 0.9em; margin-top: 10px; color: #666">
+          {{ review.review|truncatewords:20 }}
         </p>
+        {% endif %}
       </div>
-      <div class="opinion active" data-index="1">
-        <div class="star-rating">
-          <i class="fa-solid fa-star"></i>
-          <i class="fa-regular fa-star"></i>
-        </div>
-        <div class="review-header">
-          <h3>fdfdsfdffff</h3>
-        </div>
-        <p class="section-description">
-          Avtoil is one of the best motor oils I’ve had a long time.
-        </p>
-      </div>
-      <div class="opinion active" data-index="2">
-        <div class="star-rating">
-          <i class="fa-solid fa-star"></i>
-          <i class="fa-regular fa-star"></i>
-        </div>
-        <div class="review-header">
-          <h3>aaaa</h3>
-        </div>
-        <p class="section-description">
-          Avtoil is one of the best motor oils I’ve had a long time.
-        </p>
-      </div>
+      {% empty %}
+      
+      {% endfor %}
     </div>
+    {% endif %}
+
   </div>
 
   <!-- Modal HTML -->
@@ -70,8 +72,20 @@
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
-      <form id="review-form" class="modal-form" method="POST">
+      <!-- Update your form in the template -->
+
+
+      <form
+        id="review-form"
+        class="modal-form"
+        method="POST"
+        action="{% url 'home:submit_review' %}"
+      >
         {% csrf_token %}
+
+        <!-- Add hidden field to track current page -->
+        <input type="hidden" name="redirect_url" value="{{ request.get_full_path }}" />
+
         <div class="form-section">
           <label>{% trans 'Rating' %}</label>
           <div class="star-selector">
@@ -84,6 +98,7 @@
           <input type="hidden" name="rating" id="rating-input" required />
         </div>
 
+        <!-- Rest of your form fields remain the same -->
         <div class="form-row">
           <div class="form-group">
             <label for="firstName">{% trans 'First name' %}</label>
@@ -161,3 +176,5 @@
     </div>
   </div>
 </section>
+
+

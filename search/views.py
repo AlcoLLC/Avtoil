@@ -6,12 +6,13 @@ import re
 
 # Import all your models
 from about.models import AboutAvtoil, AboutContent, DocumentsCertification, Sustainability
-from products.models import Product_group, Segments, Oil_Types, Viscosity, Liter, Product, ProductProperty
-from contact.models import Contact, ContactInfo
+from products.models import Product_group, Segments, Oil_Types, Viscosity, Product, ProductProperty
+from contact.models import  ContactInfo
 from faq.models import FAQ
-from home.models import HomeSwiper
+from home.models import HomeSwiper, BecomePartner, SolutionsHybrid, SolutionsHybridContent, Review
 from news.models import News, News_Content
 from services.models import Service, Service_Content
+from partnership.models import Partnership, Partnership_Content, PartnerReview, PartnerFAQ
 
 
 def create_search_queries(query):
@@ -52,7 +53,7 @@ def search_view(request):
     results = []
     total_results = 0
     
-    if query and len(query) >= 2:  # Minimum 2 characters for search
+    if query and len(query) >= 2:  
         current_language = get_language()
         is_english = current_language == 'en'
         
@@ -61,16 +62,16 @@ def search_view(request):
             product_fields = ['title', 'description', 'features_benefits', 'application', 
                             'recommendations', 'product_id', 'api', 'ilsac', 'acea', 'jaso']
         else:
-            product_fields = [ 'title', 'description', 'product_id']
+            product_fields = ['title', 'description', 'product_id']
         
         products = Product.objects.filter(build_search_q(query, product_fields)).distinct()
         
         for product in products:
-            title = product.title if not is_english and product.title else 'product.title'
-            description = product.description if not is_english and product.description else 'product.description'
+            title = product.title or ''
+            description = product.description or ''
             results.append({
                 'title': title,
-                'description': description[:200] + '...' if description and len(description) > 200 else description or '',
+                'description': description[:200] + '...' if description and len(description) > 200 else description,
                 'url': f'/product/{product.slug}/',
                 'type': 'Product',
                 'image': product.image.url if product.image else None
@@ -86,8 +87,8 @@ def search_view(request):
         
         for swiper in swipers:
             results.append({
-                'title': swiper.title,
-                'description': swiper.description[:200] + '...' if swiper.description and len(swiper.description) > 200 else swiper.description or '',
+                'title': swiper.title or '',
+                'description': (swiper.description or '')[:200] + '...' if swiper.description and len(swiper.description) > 200 else swiper.description or '',
                 'url': swiper.link or '/',
                 'type': 'Home Banner',
                 'image': swiper.image.url if swiper.image else None
@@ -102,11 +103,11 @@ def search_view(request):
         product_groups = Product_group.objects.filter(build_search_q(query, group_fields)).distinct()
         
         for group in product_groups:
-            title = group.title  if not is_english and group.title else 'group.title'
-            description = group.description if not is_english and group.description else 'group.description'
+            title = group.title or ''
+            description = group.description or ''
             results.append({
                 'title': title,
-                'description': description[:200] + '...' if description and len(description) > 200 else description or '',
+                'description': description[:200] + '...' if description and len(description) > 200 else description,
                 'url': f'/product/',
                 'type': 'Product Group',
                 'image': group.image.url if group.image else None
@@ -116,12 +117,12 @@ def search_view(request):
         if is_english:
             segment_fields = ['title']
         else:
-            segment_fields = [ 'title']
+            segment_fields = ['title']
         
         segments = Segments.objects.filter(build_search_q(query, segment_fields)).distinct()
         
         for segment in segments:
-            title = segment.title if not is_english and segment.title else 'segment.title'
+            title = segment.title or ''
             results.append({
                 'title': title,
                 'description': f'Product Segment: {title}',
@@ -139,7 +140,7 @@ def search_view(request):
         oil_types = Oil_Types.objects.filter(build_search_q(query, oil_type_fields)).distinct()
         
         for oil_type in oil_types:
-            title = oil_type.title if not is_english and oil_type.title else 'oil_type.title'
+            title = oil_type.title or ''
             results.append({
                 'title': title,
                 'description': f'Oil Type: {title}',
@@ -153,7 +154,7 @@ def search_view(request):
         
         for viscosity in viscosities:
             results.append({
-                'title': viscosity.title,
+                'title': viscosity.title or '',
                 'description': f'Viscosity: {viscosity.title}',
                 'url': f'/product/?viscosity={viscosity.slug}',
                 'type': 'Viscosity',
@@ -169,7 +170,7 @@ def search_view(request):
         product_properties = ProductProperty.objects.filter(build_search_q(query, property_fields)).distinct()
         
         for prop in product_properties:
-            property_name = prop.property_name if not is_english and prop.property_name else ''
+            property_name = prop.property_name or ''
             results.append({
                 'title': f'{prop.product.title} - {property_name}',
                 'description': f'Property: {property_name}, Test Method: {prop.test_method}, Value: {prop.typical_value}',
@@ -190,11 +191,11 @@ def search_view(request):
         ).distinct()
         
         for news in news_items:
-            title = news.title if not is_english and news.title else ''
-            content = news.content if not is_english and news.content else ''
+            title = news.title or ''
+            content = news.content or ''
             results.append({
                 'title': title,
-                'description': content[:200] + '...' if content and len(content) > 200 else content or '',
+                'description': content[:200] + '...' if content and len(content) > 200 else content,
                 'url': f'/news/{news.id}/',
                 'type': 'News',
                 'image': news.image.url if news.image else None
@@ -209,11 +210,11 @@ def search_view(request):
         news_contents = News_Content.objects.filter(build_search_q(query, news_content_fields)).distinct()
         
         for content in news_contents:
-            description = content.description if not is_english and content.description else ''
-            news_title = content.news.title  if not is_english and content.news.title  else ''
+            description = content.description or ''
+            news_title = content.news.title or ''
             results.append({
                 'title': news_title,
-                'description': description[:200] + '...' if description and len(description) > 200 else description or '',
+                'description': description[:200] + '...' if description and len(description) > 200 else description,
                 'url': f'/news/{content.news.id}/',
                 'type': 'News',
                 'image': content.image.url if content.image else None
@@ -231,54 +232,54 @@ def search_view(request):
         ).distinct()
         
         for faq in faqs:
-            question = faq.question if not is_english and faq.question else ''
-            answer = faq.answer if not is_english and faq.answer else ''
+            question = faq.question or ''
+            answer = faq.answer or ''
             results.append({
                 'title': question,
-                'description': answer[:200] + '...' if answer and len(answer) > 200 else answer or '',
+                'description': answer[:200] + '...' if answer and len(answer) > 200 else answer,
                 'url': '/faq/',
                 'type': 'FAQ',
                 'image': None
             })
         
-         # Search About Avtoil
+        # Search About Avtoil
         if is_english:
-            cert_fields = ['title', 'description']
+            about_fields = ['title', 'description']
         else:
-            cert_fields = ['title', 'description']
+            about_fields = ['title', 'description']
         
-        about_avtoil = AboutAvtoil.objects.filter(build_search_q(query, cert_fields)).distinct()
+        about_avtoil = AboutAvtoil.objects.filter(build_search_q(query, about_fields)).distinct()
 
         for content in about_avtoil:
-            title = content.title if not is_english and content.title else ''
-            description = content.description  if not is_english and content.description else ''
+            title = content.title or ''
+            description = content.description or ''
             results.append({
                 'title': title,
-                'description': description[:200] + '...' if description and len(description) > 200 else description or '',
+                'description': description[:200] + '...' if description and len(description) > 200 else description,
                 'url': '/about/',
+                'type': 'About',
                 'image': content.image.url if content.image else None
             })
-        
-              
-         # Search About Content
+                     
+        # Search About Content
         if is_english:
-            cert_fields = ['title', 'description']
+            about_content_fields = ['title', 'description']
         else:
-            cert_fields = ['title', 'description']
+            about_content_fields = ['title', 'description']
         
-        about_content = AboutContent.objects.filter(build_search_q(query, cert_fields)).distinct()
+        about_content = AboutContent.objects.filter(build_search_q(query, about_content_fields)).distinct()
 
         for content in about_content:
-            title = content.title if not is_english and content.title else ''
-            description = content.description  if not is_english and content.description else ''
+            title = content.title or ''
+            description = content.description or ''
             results.append({
                 'title': title,
-                'description': description[:200] + '...' if description and len(description) > 200 else description or '',
+                'description': description[:200] + '...' if description and len(description) > 200 else description,
                 'url': '/about/',
+                'type': 'About Content',
                 'image': content.image.url if content.image else None
             })
         
-
         # Search Documents & Certifications
         if is_english:
             cert_fields = ['title', 'description']
@@ -288,65 +289,63 @@ def search_view(request):
         certifications_contents = DocumentsCertification.objects.filter(build_search_q(query, cert_fields)).distinct()
 
         for content in certifications_contents:
-            title = content.title if not is_english and content.title else ''
-            description = content.description  if not is_english and content.description else ''
+            title = content.title or ''
+            description = content.description or ''
             results.append({
                 'title': title,
-                'description': description[:200] + '...' if description and len(description) > 200 else description or '',
+                'description': description[:200] + '...' if description and len(description) > 200 else description,
                 'url': '/about/',
                 'type': 'Documents & Certifications',
-                'image': content.image.url if content.image else None
+                'image':  None
             })
         
-      
         # Search Sustainability
         sustainability_items = Sustainability.objects.filter(build_search_q(query, ['description'])).distinct()
         
         for item in sustainability_items:
-            description = item.description if not is_english and item.description else ''
+            description = item.description or ''
             results.append({
                 'title': 'Sustainability',
-                'description': description[:200] + '...' if description and len(description) > 200 else description or '',
+                'description': description[:200] + '...' if description and len(description) > 200 else description,
                 'url': '/about/',
                 'type': 'Sustainability',
                 'image': item.image.url if item.image else None
             })
 
-        
         # Search Contact Info
         if is_english:
-            contact_fields = ['title', 'description', 'aminol_headquarters', 'aminol_factory', 
+            contact_fields = ['title', 'description', 'avtoil_headquarters', 'avtoil_factory', 
                             'registers', 'contact_address']
         else:
-            contact_fields = ['title', 'description', 'aminol_headquarters', 'aminol_factory']
+            contact_fields = ['title', 'description', 'avtoil_headquarters', 'avtoil_factory']
         
         contact_infos = ContactInfo.objects.filter(build_search_q(query, contact_fields)).distinct()
         
         for contact in contact_infos:
-            title = contact.title if not is_english and contact.title else ''
-            description = contact.description if not is_english and contact.description else ''
+            title = contact.title or ''
+            description = contact.description or ''
             results.append({
                 'title': title,
-                'description': description[:200] + '...' if description and len(description) > 200 else description or '',
+                'description': description[:200] + '...' if description and len(description) > 200 else description,
                 'url': '/contact/',
                 'type': 'Contact',
                 'image': None
             })
         
-        # Search Aminol Official Service
+        # Search Service
         if is_english:
-            service_fields = ['title', 'title_description', 'description']
+            service_fields = ['title', 'description']
         else:
             service_fields = ['title', 'description']
         
         service_services = Service.objects.filter(build_search_q(query, service_fields)).distinct()
         
         for service in service_services:
-            title = service.title if not is_english and service.title else ''
-            description = service.description if not is_english and service.description else ''
+            title = service.title or ''
+            description = service.description or ''
             results.append({
                 'title': title,
-                'description': description[:200] + '...' if description and len(description) > 200 else description or '',
+                'description': description[:200] + '...' if description and len(description) > 200 else description,
                 'url': '/services/',
                 'type': 'Service',
                 'image': service.image.url if service.image else None
@@ -356,21 +355,151 @@ def search_view(request):
         if is_english:
             service_content_fields = ['title', 'description']
         else:
-            service_content_fields = [ 'title', 'description']
+            service_content_fields = ['title', 'description']
         
         service_contents = Service_Content.objects.filter(build_search_q(query, service_content_fields)).distinct()
-        
+
         for content in service_contents:
-            title = content.title if not is_english and content.title else ''
-            description = content.description if not is_english and content.description else ''
+            title = content.title or ''
+            description = content.description or ''
             results.append({
                 'title': title,
-                'description': description[:200] + '...' if description and len(description) > 200 else description or '',
+                'description': description[:200] + '...' if description and len(description) > 200 else description,
                 'url': '/services/',
-                'type': 'Service',
+                'type': 'Service Content',
                 'image': content.image.url if content.image else None
             })
-               
+        
+        # Search Partnership
+        if is_english:
+            partnership_fields = ['title', 'description']
+        else:
+            partnership_fields = ['title', 'description']
+        
+        partnerships = Partnership.objects.filter(build_search_q(query, partnership_fields)).distinct()
+        
+        for partnership in partnerships:
+            title = partnership.title or ''
+            description = partnership.description or ''
+            results.append({
+                'title': title,
+                'description': description[:200] + '...' if description and len(description) > 200 else description,
+                'url': '/partnership/',
+                'type': 'Partnership',
+                'image': partnership.main_image.url if partnership.main_image else None
+            })
+        
+        # Search Partnership Content
+        partnership_contents = Partnership_Content.objects.filter(build_search_q(query, ['title'])).distinct()
+        
+        for content in partnership_contents:
+            title = content.title or ''
+            results.append({
+                'title': title,
+                'description': f'Partnership Content: {title}',
+                'url': '/partnership/',
+                'type': 'Partnership Content',
+                'image': None
+            })
+        
+        # Search Partner Reviews
+        if is_english:
+            review_fields = ['name', 'position', 'review']
+        else:
+            review_fields = ['name', 'position', 'review']
+        
+        partner_reviews = PartnerReview.objects.filter(
+            build_search_q(query, review_fields),
+            is_active=True
+        ).distinct()
+        
+        for review in partner_reviews:
+            name = review.name or ''
+            position = review.position or ''
+            review_text = review.review or ''
+            results.append({
+                'title': f'{name} - {position}',
+                'description': review_text[:200] + '...' if review_text and len(review_text) > 200 else review_text,
+                'url': '/partnership/',
+                'type': 'Partner Review',
+                'image': review.image.url if review.image else None
+            })
+        
+        # Search Partner FAQ
+        if is_english:
+            partner_faq_fields = ['question', 'answer']
+        else:
+            partner_faq_fields = ['question', 'answer']
+        
+        partner_faqs = PartnerFAQ.objects.filter(
+            build_search_q(query, partner_faq_fields),
+            is_active=True
+        ).distinct()
+        
+        for faq in partner_faqs:
+            question = faq.question or ''
+            answer = faq.answer or ''
+            results.append({
+                'title': question,
+                'description': answer[:200] + '...' if answer and len(answer) > 200 else answer,
+                'url': '/partnership/',
+                'type': 'Partner FAQ',
+                'image': None
+            })
+
+
+        # BecomePartner axtarışı
+        become_partners = BecomePartner.objects.filter(
+            build_search_q(query, ['title', 'description'])
+        ).distinct()
+        for item in become_partners:
+            results.append({
+                'title': item.title or '',
+                'description': (item.description or '')[:200] + '...',
+                'url': '/become-partner/',
+                'type': 'Become Partner',
+                'image': item.image.url if item.image else None
+            })
+
+        # SolutionsHybrid axtarışı
+        solutions_hybrids = SolutionsHybrid.objects.filter(
+            build_search_q(query, ['title', 'description_left', 'description_right'])
+        ).distinct()
+        for item in solutions_hybrids:
+            results.append({
+                'title': item.title or '',
+                'description': ((item.description_left or '') + " " + (item.description_right or ''))[:200] + '...',
+                'url': '/solutions-hybrid/',
+                'type': 'Solutions Hybrid',
+                'image': None
+            })
+
+        # SolutionsHybridContent axtarışı
+        solutions_contents = SolutionsHybridContent.objects.filter(
+            build_search_q(query, ['content'])
+        ).distinct()
+        for item in solutions_contents:
+            results.append({
+                'title': f"Content: {item.content}" or '',
+                'description': '',
+                'url': '/solutions-hybrid/',
+                'type': 'Solutions Hybrid Content',
+                'image': None
+            })
+
+        # Review axtarışı
+        reviews = Review.objects.filter(
+            build_search_q(query, ['first_name', 'surname', 'summary', 'review'])
+        ).distinct()
+        for review in reviews:
+            results.append({
+                'title': f"{review.first_name} {review.surname} - {review.summary}",
+                'description': (review.review or '')[:200] + '...',
+                'url': '/reviews/',
+                'type': 'Review',
+                'image': None
+            })
+                    
         # Remove duplicates based on title and type
         seen = set()
         unique_results = []

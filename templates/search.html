@@ -11,7 +11,7 @@
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "name": "Aminol",
+  "name": "Avtoil",
   "url": "{{ request.scheme }}://{{ request.get_host }}",
   "potentialAction": {
     "@type": "SearchAction",
@@ -25,12 +25,12 @@
 {% block content %}
 {% include 'components/navbar.html' %}
 
-<div class="product-detail-page search-page">
+<div class="search-page">
     <header class="page-header">
+        <img loading="lazy" class="bg-image" src="{{ page_header.image.url }}" alt="Page header background" />
         <div class="header-content container">
             <h1>{% trans "Search" %}</h1>
         </div>
-
         <div class="container search-bar">
             <form method="GET" class="search-form">
                 <input type="text" name="search" class="search-input" value="{{ query }}" placeholder="{% trans 'Search...' %}" />

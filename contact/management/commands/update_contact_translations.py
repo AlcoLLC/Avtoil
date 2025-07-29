@@ -15,8 +15,8 @@ class Command(BaseCommand):
         field_mappings = [
             ('title'),
             ('description'),
-            ('aminol_headquarters'),
-            ('aminol_factory'),
+            ('avtoil_headquarters'),
+            ('avtoil_factory'),
             ('registers'),
             ('contact_address'),
         ]

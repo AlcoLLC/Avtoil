@@ -229,9 +229,6 @@ nav {
   gap: 40px;
 }
 
-.search-page .page-header::before {
-  background-color: #0056b8 !important;
-}
 .dropdown-content a {
   color: #28315e !important;
   padding: 20px;
@@ -662,7 +659,6 @@ footer .footer-contact > div:first-of-type .phone-number {
 footer .footer-contact > div:first-of-type .phone-number {
   display: flex;
   flex-direction: column;
-  font-family: Poppins;
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
@@ -698,10 +694,9 @@ footer .footer-contact > div:first-of-type p:first-of-type {
   max-width: 38%;
 }
 footer .footer-contact > div:first-of-type p,
-footer .footer-contact > div:first-of-type .phonenumbers {
+footer .footer-contact > div:first-of-type .phone-number {
   display: flex;
   flex-direction: column;
-  font-family: Poppins;
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
@@ -869,7 +864,9 @@ footer .alco-privacy p {
   right: 0;
   left: 0;
 }
-
+.search-page .page-header::before {
+  background-color: #0056b8 !important;
+}
 .search-page .cancel-button i,
 .search-page .search-input {
   color: #0056b8;
@@ -877,9 +874,10 @@ footer .alco-privacy p {
 }
 
 .search-page .page-header {
+  background-color: #0056b8 !important;
   display: flex;
   flex-direction: column;
-  align-items: start;
+  align-items: center;
 }
 .search-page .search-bar {
   position: relative;
@@ -904,23 +902,22 @@ footer .alco-privacy p {
   position: absolute;
   right: 15px;
   top: 50%;
-  transform: translateY(-50%);
-  background: 0 0;
+  transform: translateY(-50%, -50%);
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.product-detail-page .page-header h1,
-.product-detail-page .page-header div {
+.search-page .page-header h1,
+.search-page .page-header div {
   font-size: 42px;
   line-height: 80px;
   letter-spacing: 0;
   font-weight: 600;
   white-space: nowrap;
 }
-.product-detail-page .page-header p {
+.search-page .page-header p {
   font-weight: 400;
   font-size: 16px;
   line-height: 24.03px;
@@ -932,7 +929,7 @@ footer .alco-privacy p {
     font-size: 48px;
     line-height: 56px;
   }
-  .product-detail-page .page-header {
+  .search-page .page-header {
     padding-top: 15%;
   }
   .page-header .header-content p {
@@ -940,8 +937,8 @@ footer .alco-privacy p {
     line-height: 24px;
   }
 
-  .product-detail-page .page-header h1,
-  .product-detail-page .page-header div {
+  .search-page .page-header h1,
+  .search-page .page-header div {
     font-size: 38px;
     line-height: 70px;
   }
@@ -950,7 +947,7 @@ footer .alco-privacy p {
   .page-header {
     height: 60vh;
   }
-  .product-detail-page .page-header {
+  .search-page .page-header {
     padding-top: 20%;
   }
   .page-header .header-content h1 {
@@ -961,12 +958,12 @@ footer .alco-privacy p {
     font-size: 18px;
     line-height: 20px;
   }
-  .product-detail-page .page-header h1,
-  .product-detail-page .page-header div {
+  .search-page .page-header h1,
+  .search-page .page-header div {
     font-size: 34px;
     line-height: 60px;
   }
-  .product-detail-page .page-header p {
+  .search-page .page-header p {
     font-size: 15px;
     line-height: 20px;
   }
@@ -993,12 +990,12 @@ footer .alco-privacy p {
     text-align: center;
     margin: 0px auto;
   }
-  .product-detail-page .page-header h1,
-  .product-detail-page .page-header div {
+  .search-page .page-header h1,
+  .search-page .page-header div {
     font-size: 30px;
     line-height: 50px;
   }
-  .product-detail-page .page-header p {
+  .search-page .page-header p {
     font-size: 14px;
     line-height: 18px;
   }
@@ -1014,8 +1011,8 @@ footer .alco-privacy p {
   .page-header .header-content p {
     font-size: 14px;
   }
-  .product-detail-page .page-header h1,
-  .product-detail-page .page-header div {
+  .search-page .page-header h1,
+  .search-page .page-header div {
     font-size: 28px;
     line-height: 45px;
   }

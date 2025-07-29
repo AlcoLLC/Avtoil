@@ -23,7 +23,6 @@
 <script src="{% static 'assets/js/paths.min.js' %}" defer></script>
 <script src="{% static 'assets/js/map.min.js' %}" defer></script>
 <script src="{% static 'assets/js/map-init.js' %}" defer></script>
-<script src="{% static 'assets/js/map1.min.js' %}" defer></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{% static 'assets/js/map3.min.js' %}" defer></script>
 
@@ -39,7 +38,7 @@
 
 {% include 'components/navbar.html' %}
 
-<header class="placeholder-header home-header">
+<header class="home-header">
   <div class="swiper mySwiper">
     <div class="swiper-wrapper">
       {% for swiper in swiper_images %}
@@ -81,7 +80,7 @@
     {% for product_group in product_groups %}
     <div class="category-card {% if forloop.counter > 8 %}hidden{% endif %}">
       <a
-        href="{% url 'products:product_list' %}?product_group={{ product_group.slug }}"
+        href="{% url 'products:product' %}?product_group={{ product_group.slug }}"
         aria-label="H{{ product_group.title }}"
       >
         <div class="category-image">
@@ -127,8 +126,8 @@
           {% trans "about production" %}
         </h2>
         <p>
-          {% blocktrans %} "Avtoil Lubricants produces and packages high-quality oils using premium
-          imported base oils and additives, formulated by expert engineers." {% endblocktrans %}
+          {% blocktrans %} Avtoil Lubricants produces and packages high-quality oils using premium
+          imported base oils and additives, formulated by expert engineers. {% endblocktrans %}
         </p>
       </div>
       <div class="play-button" id="playButton">
@@ -188,7 +187,7 @@
     </div>
     {% endfor %}
     <div class="section last">
-      <a href="{% url 'services:services_page' %}" class="button-style">
+      <a href="{% url 'services:services' %}" class="button-style">
         {% trans "Discover more" %}
       </a>
     </div>
@@ -246,7 +245,7 @@
       </div>
       {% empty %} {% endfor %}
     </div>
-    <a href="{% url 'news:news_list' %}" aria-label="News Page" class="button-style">
+    <a href="{% url 'news:news' %}" aria-label="News Page" class="button-style">
       {% trans "Discover more" %}
     </a>
   </div>
@@ -297,7 +296,7 @@
   </div>
 
   <div class="section-content">
-    <a href="{% url 'about:about_page' %}">
+    <a href="{% url 'about:about' %}">
       <h3>{%trans 'Sustainability'%}</h3>
       <p>
         {%blocktrans%} Sustainability is at the core of our innovation. As a leading manufacturer of
@@ -354,7 +353,7 @@
         </div>
       </div>
 
-      <a href="{% url 'products:product_list' %}" class="button-style">{% trans 'See More' %}</a>
+      <a href="{% url 'products:product' %}" class="button-style">{% trans 'See More' %}</a>
     </div>
   </div>
 </section>

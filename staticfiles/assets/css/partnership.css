@@ -406,6 +406,7 @@
   border-radius: 12px;
   padding: 30px;
   border: 1px solid #dddddd;
+  width: 50%;
 }
 
 .coorperation-form h3 {
@@ -462,6 +463,7 @@
 .coorperation-form .coorperation-select-wrapper {
   position: relative;
   width: 100%;
+  max-width: 100%;
 }
 
 .coorperation-form .coorperation-select {

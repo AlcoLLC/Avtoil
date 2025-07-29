@@ -4,9 +4,9 @@ from django.utils.translation import gettext_lazy as _
 
 class Contact(models.Model):
     HELP_CHOICES = [
-        ('buy', _('I would like to buy Avtoil products.')),
+        ('buy', _('I would like to buy Avtoil products.')), 
         ('become_dealer', _('I am interested in becoming a distributor.')),
-        ('technical', 'I need technical support.'),
+        ('technical', _('I need technical support.')), 
         ('other', _('Other'))
     ]
     
@@ -33,12 +33,12 @@ class Contact(models.Model):
 class ContactInfo(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
-    aminol_headquarters = models.TextField()
-    aminol_headquarters_location = models.URLField(blank=True, help_text="URL for headquarters location (Google Maps link)")
-    aminol_factory = models.TextField()
-    aminol_factory_location = models.URLField(blank=True, help_text="URL for factory location (Google Maps link)")
-    aminol_headquarters_image = models.ImageField(upload_to='aminol_headquarters/')
-    aminol_factory_image = models.ImageField(upload_to='aminol_factory/')
+    avtoil_headquarters = models.TextField()  # aminol → avtoil
+    avtoil_headquarters_location = models.URLField(blank=True, help_text="URL for headquarters location (Google Maps link)")
+    avtoil_factory = models.TextField()  # aminol → avtoil
+    avtoil_factory_location = models.URLField(blank=True, help_text="URL for factory location (Google Maps link)")
+    avtoil_headquarters_image = models.ImageField(upload_to='avtoil_headquarters/')  
+    avtoil_factory_image = models.ImageField(upload_to='avtoil_factory/') 
     registers = models.TextField()
     contact_address = models.TextField()
     contact_phone = models.CharField(max_length=20)

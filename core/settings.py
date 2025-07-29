@@ -187,6 +187,8 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+PREFIX_DEFAULT_LANGUAGE = False
+
 
 LANGUAGE_SESSION_KEY = 'django_language'
 LANGUAGE_COOKIE_NAME = 'django_language'

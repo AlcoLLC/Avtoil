@@ -81,30 +81,37 @@
 
 <div class="contact-grid-content container">
   <div class="item">
-    <h2>{% trans "Avtoil headquarters" %}</h2>
-    <p>{{ contact_info.aminol_headquarters|linebreaksbr }}</p>
-    <a
-      href="{% if contact_info.aminol_headquarters_location %}{{ contact_info.aminol_headquarters_location }}{% else %}https://maps.google.com/?q={{ contact_info.aminol_headquarters|urlencode }}{% endif %}"
-      class="button-style" aria-label="Location Page"
-      target="_blank"
-    >
-      {% trans "Location" %}
-      <img loading="lazy" src="{% static '/images/contact-icon.svg' %}" alt="{% trans 'Contact Icon' %}" />
-    </a>
+     <div>
+        <h2>{% trans "Avtoil headquarters" %}</h2>
+        <p>{{ contact_info.avtoil_headquarters|linebreaksbr }}</p>
+        <a
+          href="{% if contact_info.avtoil_headquarters_location %}{{ contact_info.avtoil_headquarters_location }}{% else %}https://maps.google.com/?q={{ contact_info.avtoil_headquarters|urlencode }}{% endif %}"
+          class="button-style" aria-label="Location Page"
+          target="_blank"
+        >
+          {% trans "Location" %}
+          <img loading="lazy" src="{% static '/images/contact-icon.svg' %}" alt="{% trans 'Contact Icon' %}" />
+        </a>
+     </div>
+      <img  loading="lazy" class="contact-info-img"  src="{{ contact_info.avtoil_headquarters_image.url }}" alt="{% trans 'Contact Icon' %}" />
   </div>
 
   <div class="item">
-    <h2>{% trans "Avtoil factory" %}</h2>
-    <p>{{ contact_info.aminol_factory|linebreaksbr }}</p>
-    <a
-      href="{% if contact_info.aminol_factory_location %}{{ contact_info.aminol_factory_location }}{% else %}https://maps.google.com/?q={{ contact_info.aminol_factory|urlencode }}{% endif %}"
-      class="button-style" aria-label="Location Page"
-      target="_blank"
-    >
-      {% trans "Location" %}
-      <img loading="lazy" src="{% static '/images/contact-icon.svg' %}" alt="Contact Icon" />
-    </a>
+      <div>
+          <h2>{% trans "Avtoil factory" %}</h2>
+          <p>{{ contact_info.avtoil_factory|linebreaksbr }}</p>
+          <a
+            href="{% if contact_info.avtoil_factory_location %}{{ contact_info.avtoil_factory_location }}{% else %}https://maps.google.com/?q={{ contact_info.avtoil_factory|urlencode }}{% endif %}"
+            class="button-style" aria-label="Location Page"
+            target="_blank"
+          >
+            {% trans "Location" %}
+            <img loading="lazy" src="{% static '/images/contact-icon.svg' %}" alt="Contact Icon" />
+          </a>
+      </div>
+      <img loading="lazy" class="contact-info-img"  src="{{ contact_info.avtoil_factory_image.url }}" alt="{% trans 'Contact Icon' %}" />
   </div>
+
 </div>
 
 <div class="contact-flex-content container">

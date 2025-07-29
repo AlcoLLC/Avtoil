@@ -34,10 +34,10 @@ class ContactInfoAdmin(TranslationAdmin):
             'fields': ('title', 'description')
         }),
         ('Headquarters Information', {
-            'fields': ('aminol_headquarters', 'aminol_headquarters_location', 'aminol_headquarters_image')
+            'fields': ('avtoil_headquarters', 'avtoil_headquarters_location', 'avtoil_headquarters_image')  
         }),
         ('Factory Information', {
-            'fields': ('aminol_factory', 'aminol_factory_location', 'aminol_factory_image')
+            'fields': ('avtoil_factory', 'avtoil_factory_location', 'avtoil_factory_image') 
         }),
         ('Registration Information', {
             'fields': ('registers',)

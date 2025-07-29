@@ -1,15 +1,15 @@
-.aminol-contact-form {
+.avtoil-contact-form {
   margin: 70px auto;
   background-color: #f5f5f5;
   color: #28315e;
   border-radius: 12px;
 }
 
-.aminol-contact-form .form-content {
+.avtoil-contact-form .form-content {
   padding: 35px;
 }
 
-.aminol-contact-form h2 {
+.avtoil-contact-form h2 {
   margin-bottom: 10px;
   font-weight: 600;
   font-size: 24px;
@@ -17,30 +17,30 @@
   letter-spacing: 0px;
 }
 
-.aminol-contact-form p {
+.avtoil-contact-form p {
   margin-bottom: 20px;
   font-size: 16px;
   line-height: 20px;
   letter-spacing: 0px;
 }
 
-.aminol-contact-form .form-group {
+.avtoil-contact-form .form-group {
   margin-bottom: 10px;
 }
 
-.aminol-contact-form input::placeholder,
-.aminol-contact-form textarea::placeholder {
+.avtoil-contact-form input::placeholder,
+.avtoil-contact-form textarea::placeholder {
   color: #b4b7d4;
 }
 
-.aminol-contact-form .form-group label {
+.avtoil-contact-form .form-group label {
   display: block;
   margin-bottom: 8px;
   font-weight: 600;
   font-size: 16px;
 }
 
-.aminol-contact-form .form-control {
+.avtoil-contact-form .form-control {
   width: 100%;
   padding: 12px 15px;
   border: 1px solid #b4b7d425;
@@ -50,12 +50,12 @@
   color: #28315e;
 }
 
-.aminol-contact-form .form-control:focus {
+.avtoil-contact-form .form-control:focus {
   outline: none;
   border-color: #b4b7d4;
 }
 
-.aminol-contact-form textarea.form-control {
+.avtoil-contact-form textarea.form-control {
   resize: vertical;
   min-height: 170px;
   max-height: 200px;
@@ -63,17 +63,17 @@
   color: #28315e;
 }
 
-.aminol-contact-form .form-row {
+.avtoil-contact-form .form-row {
   display: flex;
   align-items: end;
   gap: 20px;
 }
 
-.aminol-contact-form .form-row .form-group {
+.avtoil-contact-form .form-row .form-group {
   flex: 1;
 }
 
-.aminol-contact-form .btn-send {
+.avtoil-contact-form .btn-send {
   background-color: #f92b3f;
   color: white;
   border: none;
@@ -88,21 +88,21 @@
   transition: background-color 0.2s;
 }
 
-.aminol-contact-form .btn-send i {
+.avtoil-contact-form .btn-send i {
   margin-left: 8px;
   font-size: 12px;
 }
 
-.aminol-contact-form .btn-send:hover {
+.avtoil-contact-form .btn-send:hover {
   background-color: #d9232f;
 }
 
-.aminol-contact-form .custom-select-wrapper {
+.avtoil-contact-form .custom-select-wrapper {
   position: relative;
   width: 100%;
 }
 
-.aminol-contact-form .custom-select {
+.avtoil-contact-form .custom-select {
   position: relative;
   display: block;
   width: 100%;
@@ -116,7 +116,7 @@
   user-select: none;
 }
 
-.aminol-contact-form .custom-select:after {
+.avtoil-contact-form .custom-select:after {
   content: '\f078';
   font-family: 'Font Awesome 5 Free';
   font-weight: 900;
@@ -128,11 +128,11 @@
   font-size: 12px;
 }
 
-.aminol-contact-form .custom-select.open:after {
+.avtoil-contact-form .custom-select.open:after {
   content: '\f077';
 }
 
-.aminol-contact-form .custom-options {
+.avtoil-contact-form .custom-options {
   position: absolute;
   top: calc(100% + 4px);
   left: 0;
@@ -150,12 +150,12 @@
   z-index: 999;
 }
 
-.aminol-contact-form .custom-options.active {
+.avtoil-contact-form .custom-options.active {
   opacity: 1;
   visibility: visible;
 }
 
-.aminol-contact-form .custom-option {
+.avtoil-contact-form .custom-option {
   position: relative;
   display: block;
   padding: 12px 14px;
@@ -166,101 +166,101 @@
   border-bottom: 1px solid #f0f2f5;
 }
 
-.aminol-contact-form .custom-option:last-child {
+.avtoil-contact-form .custom-option:last-child {
   border-bottom: none;
 }
 
-.aminol-contact-form .custom-option:hover {
+.avtoil-contact-form .custom-option:hover {
   background-color: #f5f7fa;
 }
 
-.aminol-contact-form .custom-option.selected {
+.avtoil-contact-form .custom-option.selected {
   background-color: #f0f2f5;
 }
 
 @media (max-width: 1024px) {
-  .aminol-contact-form .form-content {
+  .avtoil-contact-form .form-content {
     padding: 30px;
   }
 
-  .aminol-contact-form h2 {
+  .avtoil-contact-form h2 {
     font-size: 22px;
     line-height: 26px;
   }
 
-  .aminol-contact-form p {
+  .avtoil-contact-form p {
     font-size: 15px;
     line-height: 20px;
   }
 
-  .aminol-contact-form .form-control,
-  .aminol-contact-form .custom-select {
+  .avtoil-contact-form .form-control,
+  .avtoil-contact-form .custom-select {
     font-size: 15px;
     padding: 11px 14px;
   }
 
-  .aminol-contact-form .btn-send {
+  .avtoil-contact-form .btn-send {
     font-size: 15px;
     padding: 11px 26px;
   }
 }
 
 @media (max-width: 770px) {
-  .aminol-contact-form .form-content {
+  .avtoil-contact-form .form-content {
     padding: 25px;
   }
 
-  .aminol-contact-form h2 {
+  .avtoil-contact-form h2 {
     font-size: 18px;
     line-height: 24px;
   }
 
-  .aminol-contact-form p {
+  .avtoil-contact-form p {
     font-size: 12px;
   }
 
-  .aminol-contact-form .form-group label {
+  .avtoil-contact-form .form-group label {
     font-size: 14px;
   }
 
-  .aminol-contact-form .form-control,
-  .aminol-contact-form .custom-select {
+  .avtoil-contact-form .form-control,
+  .avtoil-contact-form .custom-select {
     font-size: 12px;
     padding: 10px 12px;
   }
 
-  .aminol-contact-form .btn-send {
+  .avtoil-contact-form .btn-send {
     font-size: 14px;
     padding: 10px 20px;
   }
 
-  .aminol-contact-form .custom-options {
+  .avtoil-contact-form .custom-options {
     max-height: 160px;
   }
 
-  .aminol-contact-form .custom-option {
+  .avtoil-contact-form .custom-option {
     padding: 10px 12px;
     font-size: 12px;
   }
 }
 
 @media (max-width: 630px) {
-  .aminol-contact-form .form-row {
+  .avtoil-contact-form .form-row {
     flex-direction: column;
     align-items: stretch;
     gap: 10px;
   }
 
-  .aminol-contact-form .form-group {
+  .avtoil-contact-form .form-group {
     width: 100%;
   }
 
-  .aminol-contact-form h2 {
+  .avtoil-contact-form h2 {
     font-size: 16px;
     line-height: 20px;
   }
 
-  .aminol-contact-form .btn-send {
+  .avtoil-contact-form .btn-send {
     font-size: 13px;
     padding: 11px 30px;
     margin: 10px auto;

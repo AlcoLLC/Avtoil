@@ -385,7 +385,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentLang = 'en';
 
     // Determine current language from URL
-    const supportedLangs = ['de', 'es', 'fr', 'it', 'zh-hans'];
+    const supportedLangs = ['en', 'de', 'es', 'fr', 'it', 'zh-hans'];
     for (let lang of supportedLangs) {
       if (currentPath.startsWith(`/${lang}/`) || currentPath === `/${lang}`) {
         currentLang = lang;

@@ -38,7 +38,7 @@ def verify_recaptcha(recaptcha_response):
 
 def contact_view(request):
     help_choices = [
-        ('buy', _('I would like to buy Avtoil products.')),
+        ('buy', _('I would like to buy Avtoil products.')),  
         ('become_dealer', _('I am interested in becoming a distributor.')),
         ('technical', _('I need technical support.')),
         ('other', _('Other'))
@@ -105,20 +105,21 @@ def contact_view(request):
                     email_subject,
                     '',
                     settings.EMAIL_HOST_USER,
-                    ['info@aminol.az'],
+                    ['info@avtoil.de'],  
                     html_message=html_email,
                     fail_silently=False,
                 )
                 
-                user_email_subject = "Thank you for contacting Aminol"
+                user_email_subject = "Thank you for contacting Avtoil" 
                 user_email_message = f"""
 Dear {form.cleaned_data['first_name']},
 
-Thank you for contacting Aminol. We have received your inquiry. Our team will get back to you shortly.
+Thank you for contacting Avtoil. We have received your inquiry. Our team will get back to you shortly.
 
 Best regards,
-Aminol Support Team
-"""
+Avtoil Support Team
+"""  
+                
                 send_mail(
                     user_email_subject,
                     user_email_message,

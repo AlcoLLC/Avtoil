@@ -85,7 +85,7 @@ class SolutionsHybridContent(models.Model):
     SolutionsHybrid = models.ForeignKey(
     SolutionsHybrid, related_name='SolutionsHybrid', on_delete=models.CASCADE)
 
-    content  = models.CharField()
+    content  = models.CharField(max_length=255)
 
     def __str__(self):
         return f"{self.content}"

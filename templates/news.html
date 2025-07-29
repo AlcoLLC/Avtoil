@@ -10,15 +10,15 @@
 {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  "name": "{% trans 'News' %} | Aminol",
+  "name": "{% trans 'News' %} | Avtoil",
   "description": "{% trans 'Always up to date with our latest news' %}",
   "url": "{{ request.build_absolute_uri }}",
   "publisher": {
     "@type": "Organization",
-    "name": "Aminol",
+    "name": "Avtoil",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://aminol.az/static/logo/aminol-logo.svg"
+      "url": "https://avtoil.de/static/logo/avtoil-logo.png"
     }
   },
   "hasPart": [
@@ -31,7 +31,7 @@
       "datePublished": "{{ news.published_date|date:'c' }}",
       "author": {
         "@type": "Organization",
-        "name": "Aminol"
+        "name": "Avtoil"
       },
       "mainEntityOfPage": {
         "@type": "WebPage",

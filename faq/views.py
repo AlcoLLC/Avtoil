@@ -99,7 +99,7 @@ def faq_view(request):
                 })
                 send_mail(email_subject, "", settings.EMAIL_HOST_USER, [settings.DEFAULT_CONTACT_EMAIL], html_message=html_email, fail_silently=False)
                 
-                user_email_subject = _("Thank you for contacting Aminol")
+                user_email_subject = _("Thank you for contacting Avtoil")
                 user_email_message = render_to_string('emails/thank_you_email.txt', {'first_name': form.cleaned_data['first_name']})
                 send_mail(user_email_subject, user_email_message, settings.EMAIL_HOST_USER, [form.cleaned_data['email']], fail_silently=False)
                 

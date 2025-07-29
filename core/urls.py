@@ -14,7 +14,7 @@ def robots_txt(request):
         "Disallow: /api/",
         "Disallow: /media/private/",
         "",
-        # "Sitemap: https://aminol.az/sitemap.xml"
+        # "Sitemap: https://avtoil.de/sitemap.xml"
     ]
     return HttpResponse('\n'.join(lines), content_type="text/plain")
 
@@ -26,7 +26,6 @@ urlpatterns = [
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path('robots.txt', robots_txt),
 ]
-
 
 urlpatterns += i18n_patterns(
     path('', include('home.urls')),
@@ -40,7 +39,6 @@ urlpatterns += i18n_patterns(
     path('', include('partnership.urls')),
     path('', include('search.urls')),
     prefix_default_language=False
-    
     )
 
 urlpatterns += [

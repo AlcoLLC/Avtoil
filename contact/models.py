@@ -33,9 +33,9 @@ class Contact(models.Model):
 class ContactInfo(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
-    avtoil_headquarters = models.TextField()  # aminol → avtoil
+    avtoil_headquarters = models.TextField() 
     avtoil_headquarters_location = models.URLField(blank=True, help_text="URL for headquarters location (Google Maps link)")
-    avtoil_factory = models.TextField()  # aminol → avtoil
+    avtoil_factory = models.TextField()  
     avtoil_factory_location = models.URLField(blank=True, help_text="URL for factory location (Google Maps link)")
     avtoil_headquarters_image = models.ImageField(upload_to='avtoil_headquarters/')  
     avtoil_factory_image = models.ImageField(upload_to='avtoil_factory/') 

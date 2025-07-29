@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
 from django.utils import timezone
-from .models import  HomeSwiper, PartnerLogo, CarLogo, Gallery, SolutionsHybrid, SolutionsHybridContent, BecomePartner, Review
+from .models import  HomeSwiper, PartnerLogo, CarLogo, Gallery, SolutionsHybrid, SolutionsHybridContent, BecomePartner, Review, PageHeader
 from modeltranslation.admin import TranslationAdmin, TranslationTabularInline
 
 @admin.register(HomeSwiper)
@@ -32,7 +32,6 @@ class HomeSwiperAdmin(TranslationAdmin):
         css = {
             'all': ('admin/css/custom_admin.css',)
         }
-
 
 @admin.register(PartnerLogo)
 class PartnerLogoAdmin(admin.ModelAdmin):
@@ -254,3 +253,13 @@ class ReviewAdmin(TranslationAdmin):
         updated = queryset.update(is_approved=False, approved_at=None)
         self.message_user(request, f'{updated} reviews disapproved.')
     disapprove_reviews.short_description = "Disapprove selected reviews"
+
+
+
+
+@admin.register(PageHeader)
+class PageHeaderAdmin(TranslationAdmin):  
+    list_display = ('slug', 'title')
+    search_fields = ('slug', 'title')
+
+    fields = ('slug', 'title', 'description', 'image', 'link')

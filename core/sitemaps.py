@@ -15,12 +15,12 @@ class StaticViewSitemap(Sitemap):
     def items(self):
         return [
             'home:home',
-            'about:about_page',
-            'products:product_list',
-            'services: services_page', 
+            'about:about',
+            'products:product',
+            'services: services', 
             'contact:contact',
             'partnership:partnership',
-            'news:news_list',
+            'news:news',
             'faq:faq'
         ]
     
@@ -99,19 +99,7 @@ class AboutSitemap(Sitemap):
         # about.urls'de sadece 'about_page' var
         # Diğer sayfalar için URL pattern'ler eklenmeli
         if AboutAvtoil.objects.exists():
-            about_pages.append('about:about_aminol')
-            
-        if Quality.objects.exists():
-            about_pages.append('about:quality')
-            
-        if Production.objects.exists():
-            about_pages.append('about:production')
-            
-        if Sustainability.objects.exists():
-            about_pages.append('about:sustainability')
-            
-        if WeGuarantee.objects.exists():
-            about_pages.append('about:we_guarantee')
+            about_pages.append('about:about')
             
         if DocumentsCertification.objects.exists():
             about_pages.append('about:documents_certification')
@@ -121,16 +109,6 @@ class AboutSitemap(Sitemap):
     def location(self, item):
         return reverse(item)
 
-
-class WeGuaranteeSitemap(Sitemap):
-    changefreq = 'monthly'
-    priority = 0.6
-    
-    def items(self):
-        return WeGuarantee.objects.all()
-    
-    def location(self, obj):
-        return reverse('about:we_guarantee_detail', kwargs={'id': obj.id})
 
 
 class DocumentsCertificationSitemap(Sitemap):
@@ -151,7 +129,7 @@ class ServicesSitemap(Sitemap):
     def items(self):
         services = []
         services.extend([
-            'services:services_page',
+            'services:services',
         ])
             
         return services

@@ -1,5 +1,5 @@
 from modeltranslation.translator import register, TranslationOptions
-from .models import HomeSwiper, SolutionsHybrid, SolutionsHybridContent, BecomePartner, Review
+from .models import HomeSwiper, SolutionsHybrid, SolutionsHybridContent, BecomePartner, Review, PageHeader
 
 @register(HomeSwiper)
 class HomeSwiperTranslationOptions(TranslationOptions):
@@ -21,3 +21,7 @@ class SolutionsHybridContentTranslationOptions(TranslationOptions):
 @register(Review)
 class ReviewTranslationOptions(TranslationOptions):
     fields = ('summary', 'review')
+
+@register(PageHeader)
+class PageHeaderTranslationOptions(TranslationOptions):
+    fields = ('title', 'description')

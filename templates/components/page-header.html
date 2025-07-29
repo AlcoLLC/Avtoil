@@ -1,14 +1,32 @@
 {% load static %}
 {% load i18n %}
   
-  <header class="page-header">
-    <img loading="lazy" class="bg-image" src="{% static 'images/about1.webp' %}" alt="Page header background" />
-      <div class="header-content container">
-          <a class="header-text"  aria-label="Page header content" href="{{ swiper.link }}">
-            <h1>Innovating Lubrication for Modern Engines</h1>
-             <p>Avtoil™ lubricants are engineered to improve fuel economy while providing exceptional engine protection.
-             </p>
-            <span class="button-style">{% trans "Go to catalog" %}</span>
-          </a>
-      </div>
-    </header>
+{% if page_header %}
+<header class="page-header">
+  <img loading="lazy" class="bg-image" src="{{ page_header.image.url }}" alt="Page header background" />
+  <div class="header-content container">
+    {% if page_header.link %}
+    <a class="header-text" aria-label="Page header content" href="{{ page_header.link }}">
+      <h1>{{ page_header.title }}</h1>
+      <p>{{ page_header.description }}</p>
+      <span class="button-style">{% trans "Go to catalog" %}</span>
+    </a>
+     {% else %}
+    <div class="header-text">
+      <h1>{{ page_header.title }}</h1>
+      <p>{{ page_header.description }}</p>
+    </div>
+    {% endif %}
+  </div>
+</header>
+{% else %}
+<header class="page-header">
+  <div class="header-content container">
+    <a class="header-text" aria-label="Page header content" href="#">
+      <h1>Title</h1>
+      <p>Description</p>
+      <span class="button-style">{% trans "Go to catalog" %}</span>
+    </a>
+  </div>
+</header>
+{% endif %}

@@ -3,6 +3,10 @@
 {% block title %} {{ news.title|truncatechars:57 }} {% endblock %}
 {% block description %} {{ news.content|truncatechars:160 }} {% endblock %}
 
+{% block page_css %}
+  <link rel="stylesheet" href="{% static 'assets/css/news.css' %}" />
+{% endblock %}
+
 {% block extra_schema %}
 <script type="application/ld+json" data-version="{% now 'U' %}">
 {
@@ -24,7 +28,7 @@
     "name": "Avtoil",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://avtoil.az/static/logo/avtoil-logo.png"
+      "url": "https://avtoil.az/static/images/avtoil-logo.png"
     }
   },
   "mainEntityOfPage": {

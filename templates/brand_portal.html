@@ -3,9 +3,13 @@
 {% block description %}{% trans "brand_portal_meta_description" %}{% endblock %}
 {% block keywords %}{% trans "brand_portal_keywords" %}{% endblock %}
 
+
+{% block page_css %}
+  <link rel="stylesheet" href="{% static 'assets/css/brand.css' %}" />
+{% endblock %}
+
+
 {% block extra_schema %}
-
-
 {% endblock %}
 
 {% block content %}
@@ -24,7 +28,6 @@
       <p>{{ brand.title|linebreaksbr }}</p>
     </div>
   </div>
-
 
   <div class="image-text-section container">
   <div class="image-text-content">

@@ -2,8 +2,11 @@
 
 {% block title %}{{ meta_title }}{% endblock %}
 {% block description %}{{ meta_description }}{% endblock %}
-
 {% block keywords %}{% trans "product_detail_keywords" %}{% endblock %}
+
+{% block page_css %}
+  <link rel="stylesheet" href="{% static 'assets/css/product.css' %}" />
+{% endblock %}
 
 {% block extra_schema %}
 <script type="application/ld+json" data-version="{% now 'U' %}">
@@ -187,7 +190,9 @@
 </section>
 
 <section class="product-table-section container">
-  <!-- <div class="product-table-container">
+
+ {% comment %} 
+ <div class="product-table-container">
     <table>
       <thead>
         <tr>
@@ -212,7 +217,9 @@
         {% endfor %}
       </tbody>
     </table>
-  </div> -->
+  </div> 
+  {% endcomment %}
+
   <div class="table-btns">
     {% if product.pds_url %}
     <a href="{{ product.pds_url }}" aria-label="PDS Page" target="_blank">
@@ -236,7 +243,6 @@
   </div>
 </section>
 
-{% include 'components/brochure.html' %}
 {% include 'components/review.html' %}
 
 {% endblock %}

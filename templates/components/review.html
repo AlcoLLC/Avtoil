@@ -1,17 +1,27 @@
-{% load static %} {% load i18n %}
+{% load static %} {% load i18n %} 
+
+{% block page_css %}
+<link rel="stylesheet" href="{% static 'assets/css/review.css' %}" />
+{% endblock %}
+
+
+{% block page_js %}
+  <script src="{% static 'assets/js/review.js' %}" defer></script>
+{% endblock %}
 
 <section class="review-section">
-
   {% if messages %}
   <div class="messages-container">
     {% for message in messages %}
-      <div class="alert alert-{{ message.tags }}">
-        {{ message }}
-        <button type="button" class="close-btn" onclick="this.parentElement.style.display='none'">&times;</button>
-      </div>
+    <div class="alert alert-{{ message.tags }}">
+      {{ message }}
+      <button type="button" class="close-btn" onclick="this.parentElement.style.display='none'">
+        &times;
+      </button>
+    </div>
     {% endfor %}
   </div>
-{% endif %}
+  {% endif %}
 
   <img
     src="{% static 'images/review-background.webp' %}"
@@ -30,19 +40,17 @@
         {% blocktrans %} Leave a review {% endblocktrans %}
       </button>
     </div>
-      {% if  approved_reviews %}
+    {% if approved_reviews %}
 
     <div class="opinions">
       {% for review in approved_reviews %}
-      <div
-        class="opinion {% if forloop.first %}active{% endif %}"
-        data-index="{{ forloop.counter0 }}"
-      >
+      <div class="opinion {% if forloop.first %}active{% endif %}" data-index="{{ forloop.counter0 }}">
+
         <div class="star-rating">
           {% for i in "12345" %} {% if forloop.counter <= review.rating %}
-          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star fa-yellow"></i>
           {% else %}
-          <i class="fa-regular fa-star"></i>
+          <i class="fa-solid fa-star fa-gray"></i>
           {% endif %} {% endfor %}
         </div>
         <div class="review-header">
@@ -56,11 +64,9 @@
         {% endif %}
       </div>
       {% empty %}
-      
       {% endfor %}
     </div>
     {% endif %}
-
   </div>
 
   <!-- Modal HTML -->
@@ -73,7 +79,6 @@
         </button>
       </div>
       <!-- Update your form in the template -->
-
 
       <form
         id="review-form"
@@ -176,5 +181,3 @@
     </div>
   </div>
 </section>
-
-

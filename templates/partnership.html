@@ -4,6 +4,8 @@
 {% block description %}{% trans "partnership_meta_description" %}{% endblock %} 
 
 {%block page_css %}
+<link rel="stylesheet" href="{% static 'assets/css/partnership.css' %}" />
+<link rel="stylesheet" href="{% static 'assets/css/faq.css' %}" />
 <link
   rel="stylesheet"
   href="{% static 'assets/css/swiper-bundle.min.css' %}"
@@ -34,7 +36,6 @@
     <h2>{{ item.title }}</h2>
     <p>{{ item.description }}</p>
   </div>
-
   <div class="text-container">
     {% for alt in item.Partnership.all %}
     <div class="text-container">
@@ -218,5 +219,7 @@
 
 {% block page_js %}
 <script src="{% static 'assets/js/swiper-bundle.min.js' %}" defer></script>
-<script src="{% static 'assets/js/partnership.js' %}" defer></script>
+<script src="{% static 'assets/js/partnership.min.js' %}" defer></script>
+<script src="{% static 'assets/js/faq.min.js' %}" defer></script>
 {% endblock %}
+

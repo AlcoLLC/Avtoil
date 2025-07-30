@@ -15,17 +15,26 @@
     <div class="footer-row">
         <ul>
             <li>
-                <a href="{% url 'about:about' %}" aria-label="About Page">{% trans "About Us" %}</a>
-                <a href="{% url 'products:product' %}" aria-label="Products Page">{% trans "Products" %}</a>
-            </li>
-            <li>
+              <div>
+                 <a href="{% url 'about:about' %}" aria-label="About Page">{% trans "About Us" %}</a>
+                 <a href="{% url 'products:product' %}" aria-label="Products Page">{% trans "Products" %}</a>
+              </div>
+               <div>
                 <a href="{% url 'services:services' %}" aria-label="Avtoil Service Page">{% trans "Services" %}</a>
-                <a href="{% url 'faq:faq' %}" aria-label="Faq Page">{% trans "FAQ" %}</a>
+                <a href="{% url 'brands:brands' %}" aria-label="Brand Portal Page">{% trans "Brand Portal" %}</a> 
+               </div>
             </li>
             <li>
+              <div>
                 <a href="{% url 'news:news' %}" aria-label="News Page">{% trans "News" %}</a>
+                <a href="{% url 'faq:faq' %}" aria-label="Faq Page">{% trans "FAQ" %}</a>
+              </div>          
+              <div>
+                <a href="{% url 'partnership:partnership' %}" aria-label="Partnership Page">{% trans "Partnership" %}</a>
                 <a href="{% url 'contact:contact' %}" aria-label="Contact Page">{% trans "Contact" %}</a>
+              </div>
             </li>
+
         </ul>
         <button id="scrollToTop" aria-label="Scroll to top"><i class="fa-solid fa-chevron-up"></i></button>
     </div>
@@ -38,7 +47,7 @@
       <p>info@avtoil.de</p>
     </div>
     <div class="">
-      <a href="https://wa.me/994502220607" aria-label="Whatsapp Page">
+      <a href="https://wa.me/4915207776502" aria-label="Whatsapp Page">
         <img loading="lazy" src="{% static 'images/whatsapp.webp' %}" alt="Whatsapp" />
       </a>
       <a href="https://www.youtube.com/@avtoillubricants7877" aria-label="Youtube Page"  target="_blank" >

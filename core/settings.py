@@ -47,7 +47,6 @@ else:
         }
     }
 
-
 if DEBUG:
     CORS_ALLOWED_ORIGINS = [
         'http://localhost:8000',

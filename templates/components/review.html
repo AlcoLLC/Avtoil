@@ -4,6 +4,11 @@
 <link rel="stylesheet" href="{% static 'assets/css/review.css' %}" />
 {% endblock %}
 
+
+{% block page_js %}
+  <script src="{% static 'assets/js/review.js' %}" defer></script>
+{% endblock %}
+
 <section class="review-section">
   {% if messages %}
   <div class="messages-container">

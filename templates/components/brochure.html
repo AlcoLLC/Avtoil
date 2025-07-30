@@ -1,6 +1,10 @@
 {% load static %}
 {% load i18n %}
 
+    {% block page_js %}
+      <script src="{% static 'assets/js/carousel.min.js' %}"></script>
+    {% endblock %}
+
 <div class="partners-section">
       <div class="section-header">
         <h3>{% trans "Our Partners" %}</h3>

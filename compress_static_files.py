@@ -71,7 +71,7 @@ def minify_and_save_static_file(file_path, target_path):
         compression_ratio = ((original_size - minified_size) / original_size) * 100 if original_size > 0 else 0
         
         print(f"✔ Minify edildi: {file_path}")
-        print(f"  ↳ Kaydedildi: {target_path}") # Hedef yolu gösterir (.min.css gibi)
+        print(f"  ↳ Kaydedildi: {target_path}") 
         print(f"  📊 {original_size} bytes → {minified_size} bytes ({compression_ratio:.1f}% azalma)")
         
         return True
@@ -95,8 +95,8 @@ def process_static_files(source_dir, target_dir):
     
     for root, _, files in os.walk(source_dir):
         for file in files:
-            # .min.css gibi zaten işlenmiş dosyaları atla
-            if file.lower().endswith('.min.css') or file.lower().endswith('.min.js'):
+          
+            if file.lower().endswith('.css') or file.lower().endswith('.min.js'):
                 continue
 
             if file.lower().endswith(STATIC_EXTENSIONS):
@@ -104,7 +104,7 @@ def process_static_files(source_dir, target_dir):
                 original_path = os.path.join(root, file)
                 
                 # --- DEĞİŞİKLİK: Hedef dosya adını oluşturma ---
-                # dosya.css -> dosya.min.css
+                # dosya.css -> dosya.css
                 base_name, ext = os.path.splitext(file)
                 min_filename = f"{base_name}.min{ext}"
                 

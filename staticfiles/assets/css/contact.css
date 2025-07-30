@@ -1,0 +1,451 @@
+.contact-top-content {
+  margin: 50px auto;
+  color: #28315e;
+}
+.contact-top-content h2 {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 48px;
+}
+.contact-top-content p {
+  max-width: 62%;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+}
+.contact-flex-content,
+.contact-grid-content {
+  margin: 50px auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  color: #28315e;
+  align-items: start;
+}
+.contact-flex-content {
+  margin-bottom: 70px;
+  display: flex;
+  justify-content: space-between;
+}
+.contact-flex-content .contact-left-content,
+.contact-flex-content .contact-right-content {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.contact-flex-content .contact-left-content div,
+.contact-grid-content p {
+  width: 70%;
+}
+.contact-grid-content {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 40px;
+}
+.contact-grid-content .item {
+  width: 100%;
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.contact-grid-content .item div {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 10px 0;
+}
+.contact-grid-content .contact-info-img {
+  width: 40%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.contact-flex-content h2,
+.contact-grid-content h2 {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 30px;
+  color: #28315e;
+  white-space: nowrap;
+}
+.contact-flex-content p,
+.contact-grid-content p {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.contact-bottom {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 30px;
+  color: #28315e;
+}
+.contact-bottom h3 {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 25px;
+}
+.contact-bottom .item,
+.contact-bottom .right-item {
+  width: 100%;
+}
+.contact-bottom .right-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+@media (max-width: 1024px) {
+  .contact-grid-content {
+    padding: 0 15px;
+  }
+  .contact-flex-content h2,
+  .contact-grid-content h2 {
+    font-size: 20px;
+    line-height: 28px;
+  }
+  .contact-flex-content p,
+  .contact-grid-content p {
+    font-size: 13px;
+    line-height: 18px;
+  }
+}
+@media (max-width: 770px) {
+  .contact-grid-content {
+    flex-direction: column;
+  }
+  .contact-flex-content {
+    flex-direction: column;
+    gap: 40px;
+    padding: 0 15px;
+  }
+  .contact-flex-content .contact-left-content {
+    width: 90%;
+  }
+  .contact-flex-content .contact-left-content div,
+  .contact-flex-content .contact-right-content {
+    width: 100%;
+  }
+  .contact-flex-content h2,
+  .contact-grid-content h2 {
+    font-size: 18px;
+    line-height: 14px;
+  }
+  .contact-flex-content p,
+  .contact-grid-content p {
+    font-size: 13px;
+    line-height: 18px;
+  }
+  .contact-top-content h2 {
+    font-size: 22px;
+    line-height: 40px;
+  }
+  .contact-top-content p {
+    font-size: 14px;
+    line-height: 18px;
+  }
+}
+@media (max-width: 520px) {
+  .contact-flex-content h2,
+  .contact-grid-content h2 {
+    font-size: 16px;
+    line-height: 14px;
+  }
+  .contact-grid-content .contact-info-img {
+    height: 180px;
+  }
+  .contact-flex-content p,
+  .contact-grid-content p {
+    font-size: 12px;
+    line-height: 18px;
+  }
+  .contact-top-content h2 {
+    font-size: 18px;
+    line-height: 30px;
+    margin-bottom: 10px;
+  }
+  .contact-top-content p {
+    font-size: 12px;
+    line-height: 18px;
+    max-width: 90%;
+  }
+}
+
+.avtoil-contact-form {
+  margin: 70px auto;
+  background-color: #f5f5f5;
+  color: #28315e;
+  border-radius: 12px;
+}
+
+.avtoil-contact-form .form-content {
+  padding: 35px;
+}
+
+.avtoil-contact-form h2 {
+  margin-bottom: 10px;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 24.03px;
+  letter-spacing: 0px;
+}
+
+.avtoil-contact-form p {
+  margin-bottom: 20px;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0px;
+}
+
+.avtoil-contact-form .form-group {
+  margin-bottom: 10px;
+}
+
+.avtoil-contact-form input::placeholder,
+.avtoil-contact-form textarea::placeholder {
+  color: #b4b7d4;
+}
+
+.avtoil-contact-form .form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.avtoil-contact-form .form-control {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #b4b7d425;
+  border-radius: 6px;
+  background-color: #fff;
+  font-size: 16px;
+  color: #28315e;
+}
+
+.avtoil-contact-form .form-control:focus {
+  outline: none;
+  border-color: #b4b7d4;
+}
+
+.avtoil-contact-form textarea.form-control {
+  resize: vertical;
+  min-height: 170px;
+  max-height: 200px;
+  font-size: 16px;
+  color: #28315e;
+}
+
+.avtoil-contact-form .form-row {
+  display: flex;
+  align-items: end;
+  gap: 20px;
+}
+
+.avtoil-contact-form .form-row .form-group {
+  flex: 1;
+}
+
+.avtoil-contact-form .btn-send {
+  background-color: #f92b3f;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 24px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.avtoil-contact-form .btn-send i {
+  margin-left: 8px;
+  font-size: 12px;
+}
+
+.avtoil-contact-form .btn-send:hover {
+  background-color: #d9232f;
+}
+
+.avtoil-contact-form .custom-select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.avtoil-contact-form .custom-select {
+  position: relative;
+  display: block;
+  width: 100%;
+  color: #28315e;
+  padding: 12px 15px;
+  border: 1px solid #b4b7d425;
+  border-radius: 6px;
+  background-color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.avtoil-contact-form .custom-select:after {
+  content: '\f078';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  position: absolute;
+  right: 15px;
+  top: 46%;
+  transform: translateY(-50%);
+  color: #28315e;
+  font-size: 12px;
+}
+
+.avtoil-contact-form .custom-select.open:after {
+  content: '\f077';
+}
+
+.avtoil-contact-form .custom-options {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  border: 1px solid #b4b7d475;
+  background-color: #fff;
+  border-radius: 6px;
+  max-height: 175px;
+  width: 100%;
+  scrollbar-width: thin;
+  overflow-y: auto;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s;
+  z-index: 999;
+}
+
+.avtoil-contact-form .custom-options.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.avtoil-contact-form .custom-option {
+  position: relative;
+  display: block;
+  padding: 12px 14px;
+  font-size: 16px;
+  opacity: 80%;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-bottom: 1px solid #f0f2f5;
+}
+
+.avtoil-contact-form .custom-option:last-child {
+  border-bottom: none;
+}
+
+.avtoil-contact-form .custom-option:hover {
+  background-color: #f5f7fa;
+}
+
+.avtoil-contact-form .custom-option.selected {
+  background-color: #f0f2f5;
+}
+
+@media (max-width: 1024px) {
+  .avtoil-contact-form .form-content {
+    padding: 30px;
+  }
+
+  .avtoil-contact-form h2 {
+    font-size: 22px;
+    line-height: 26px;
+  }
+
+  .avtoil-contact-form p {
+    font-size: 15px;
+    line-height: 20px;
+  }
+
+  .avtoil-contact-form .form-control,
+  .avtoil-contact-form .custom-select {
+    font-size: 15px;
+    padding: 11px 14px;
+  }
+
+  .avtoil-contact-form .btn-send {
+    font-size: 15px;
+    padding: 11px 26px;
+  }
+}
+
+@media (max-width: 770px) {
+  .avtoil-contact-form .form-content {
+    padding: 25px;
+  }
+
+  .avtoil-contact-form h2 {
+    font-size: 18px;
+    line-height: 24px;
+  }
+
+  .avtoil-contact-form p {
+    font-size: 12px;
+  }
+
+  .avtoil-contact-form .form-group label {
+    font-size: 14px;
+  }
+
+  .avtoil-contact-form .form-control,
+  .avtoil-contact-form .custom-select {
+    font-size: 12px;
+    padding: 10px 12px;
+  }
+
+  .avtoil-contact-form .btn-send {
+    font-size: 14px;
+    padding: 10px 20px;
+  }
+
+  .avtoil-contact-form .custom-options {
+    max-height: 160px;
+  }
+
+  .avtoil-contact-form .custom-option {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 630px) {
+  .avtoil-contact-form .form-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .avtoil-contact-form .form-group {
+    width: 100%;
+  }
+
+  .avtoil-contact-form h2 {
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  .avtoil-contact-form .btn-send {
+    font-size: 13px;
+    padding: 11px 30px;
+    margin: 10px auto;
+  }
+}

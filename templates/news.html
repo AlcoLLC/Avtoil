@@ -5,6 +5,11 @@
 {% block title %}{% trans "news_meta_title" %}{% endblock %}
 {% block description %}{% trans "news_meta_description" %}{% endblock %}
 
+{% block page_css %}
+  <link rel="stylesheet" href="{% static 'assets/css/news.css' %}" />
+{% endblock %}
+
+
 {% block extra_schema %}
 <script type="application/ld+json" data-version="{% now 'U' %}">
 {
@@ -64,7 +69,7 @@
 
     <section class="news-section">
         <div class="section-header">
-            <h2>{% trans "ALL ARTICLES" %}</h2>
+            <h2>{% trans "ALL NEWS  " %}</h2>
         </div>
 
         <div class="container latest-news">
@@ -95,7 +100,6 @@
         <div class="section-header">
             <h2>{% trans "LATEST NEWS" %}</h2>
         </div>
-        <div class="bg-blue">
             <div class="container latest-news">
                 <div class="news-cards">
                     {% for news in latest_news %}
@@ -119,7 +123,6 @@
                     {% endfor %}
                 </div>
             </div>
-        </div>
     </section>
 
     {% include 'components/review.html' %}

@@ -3,7 +3,10 @@
  
 {% block title %}{% trans "faq_meta_title" %}{% endblock %}
 {% block description %}{% trans "faq_meta_description" %}{% endblock %} 
-  
+
+{% block page_css %}
+  <link rel="stylesheet" href="{% static 'assets/css/faq.css' %}" />
+{% endblock %}
   
   {% block extra_schema %}
 <script type="application/ld+json" data-version="{% now 'U' %}">

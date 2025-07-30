@@ -6,6 +6,10 @@
 {% block description %}{% trans "search_meta_description" %}{% endblock %}
 {% block keywords %}{% trans "search_keywords" %}{% endblock %}
 
+{% block page_css %}
+  <link rel="stylesheet" href="{% static 'assets/css/search.css' %}" />
+{% endblock %}
+
 {% block extra_schema %}
 <script type="application/ld+json" data-version="{% now 'U' %}">
 {

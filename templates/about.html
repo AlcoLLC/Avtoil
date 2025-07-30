@@ -4,6 +4,10 @@
 {% block description %}{% trans "about_meta_description" %}{%endblock %} 
 {% block keywords %}{% trans "about_keywords" %}{% endblock %} 
 
+{% block page_css %}
+  <link rel="stylesheet" href="{% static 'assets/css/about.css' %}" />
+{% endblock %}
+
 {% block extra_schema %}
 {% endblock %} 
 

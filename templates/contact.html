@@ -5,6 +5,10 @@
 {% block title %}{% trans "contact_meta_title" %}{% endblock %}
 {% block description %}{% trans "contact_meta_description" %}{% endblock %}
 
+{% block page_css %}
+  <link rel="stylesheet" href="{% static 'assets/css/contact.css' %}" />
+{% endblock %}
+
 {% block extra_schema %}
 <script type="application/ld+json" data-version="{% now 'U' %}">
 {

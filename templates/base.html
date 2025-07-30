@@ -14,28 +14,15 @@
   <meta name="keywords" content="{% block keywords %}oil, tomoil, automotive oil, industrial oil{% endblock %}">
   <meta name="robots" content="index, follow">
 
-  <link rel="stylesheet" href="{% static 'assets/css/home.css' %}" />
-  <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
-  <link rel="stylesheet" href="{% static 'assets/css/about.css' %}" />
-  <link rel="stylesheet" href="{% static 'assets/css/service.css' %}" />
-  <link rel="stylesheet" href="{% static 'assets/css/product.css' %}" />
-  <link rel="stylesheet" href="{% static 'assets/css/contact&others.css' %}" />
-  <link rel="stylesheet" href="{% static 'assets/css/search.css' %}" />
-  <link rel="stylesheet" href="{% static 'assets/css/partnership.css' %}" />
-
-    {% block page_css %}{% endblock %}
-
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="canonical" href="https://avtoil.de{{ request.path }}" />
-  
   <link rel="alternate" hreflang="en" href="https://avtoil.de/">
   <link rel="alternate" hreflang="de" href="https://avtoil.de/de/">
   <link rel="alternate" hreflang="fr" href="https://avtoil.de/fr/">
   <link rel="alternate" hreflang="it" href="https://avtoil.de/it/">
   <link rel="alternate" hreflang="es" href="https://avtoil.de/es/">
   <link rel="alternate" hreflang="zh-hans" href="https://avtoil.de/zh-hans/">
-
 
   <meta name="google-site-verification" content="_8tWduXDPsXU6p448Q8qaopDSjUjZDpbeCa1aezh_w0" />
   <meta property="og:title" content="Avtoil">
@@ -52,19 +39,20 @@
   <meta name="twitter:description" content="{% trans 'AMİNOL - High-quality oil products' %}">
   <meta name="twitter:image" content="https://avtoil.de/static/images/avtoil-logo.png">
   <meta name="ahrefs-site-verification" content="9e4cf268be7fc6c2b3be9598e3c023ec7ab0e3f8a6e5ac6884bf3d6fa032897c">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
 
-  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+  <link rel="preload" as="font" href="{% static 'assets/fonts/fa-solid-900.woff2' %}" type="font/woff2"
+    crossorigin="anonymous">
+  
+  <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css' %}" />
+
+  {% block page_css %}{% endblock %}
+
   <link href="{% static 'assets/css/style_not_found.css' %}" rel="stylesheet" media="print" onload="this.media='all'"/>
   
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-    integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
-
    <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -120,7 +108,7 @@
 <body>
   {% block content %} {% endblock %}
 <a href="https://wa.me/4915207776502" aria-label="Whatsapp" class="fixed-whatsapp" target="_blank">
-  <i class="fab fa-whatsapp"></i>
+    <img loading="lazy" class="whatsapp-icon" src="{% static 'images/whatsapp.svg' %}" alt="Whatsapp icon" />
 </a>
   {% include 'components/footer.html' %}
 

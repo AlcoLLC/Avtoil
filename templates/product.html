@@ -5,6 +5,10 @@
 {% block description %}{% trans "products_meta_description" %}{% endblock %}
 {% block keywords %}{% trans "products_keywords" %}{% endblock %}
 
+{% block page_css %}
+  <link rel="stylesheet" href="{% static 'assets/css/product.css' %}" />
+{% endblock %}
+
 {% block extra_schema %}
 <script type="application/ld+json" data-version="{% now 'U' %}">
 {

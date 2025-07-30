@@ -1814,7 +1814,7 @@ footer .alco-privacy p {
   max-width: 400px;
 }
 
-.alert {
+.messages-container .alert {
   padding: 15px 20px;
   margin-bottom: 10px;
   border-radius: 8px;
@@ -1823,19 +1823,19 @@ footer .alco-privacy p {
   animation: slideIn 0.3s ease-out;
 }
 
-.alert-success {
+.messages-container .alert-success {
   background-color: #d4edda;
   border: 1px solid #c3e6cb;
   color: #155724;
 }
 
-.alert-error {
+.messages-container .alert-error {
   background-color: #f8d7da;
   border: 1px solid #f5c6cb;
   color: #721c24;
 }
 
-.close-btn {
+.messages-container .close-btn {
   position: absolute;
   top: 80px;
   right: 15px;
@@ -1847,7 +1847,7 @@ footer .alco-privacy p {
   opacity: 0.7;
 }
 
-.close-btn:hover {
+.messages-container .close-btn:hover {
   opacity: 1;
 }
 

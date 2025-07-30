@@ -10,8 +10,8 @@
   <meta name="csrf-token" content="{{ csrf_token }}">
   <link rel="icon" type="image/svg+xml" href="{% static 'images/avtoil-icon.webp' %}">
   <title>{% block title %}{% trans "Avtoil - High-quality oil products" %}{% endblock %}</title>
-  <meta name="description" content="{% block description %}TOMOIL - High-quality oil products{% endblock %}">
-  <meta name="keywords" content="{% block keywords %}oil, tomoil, automotive oil, industrial oil{% endblock %}">
+  <meta name="description" content="{% block description %}AVTOIL - High-quality oil products{% endblock %}">
+  <meta name="keywords" content="{% block keywords %}oil, avtoil, automotive oil, industrial oil{% endblock %}">
   <meta name="robots" content="index, follow">
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -50,29 +50,27 @@
   <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css' %}" />
 
   {% block page_css %}{% endblock %}
-
-  <link href="{% static 'assets/css/style_not_found.css' %}" rel="stylesheet" media="print" onload="this.media='all'"/>
   
    <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   "name": "Avtoil",
-  "image": "https://avtoil.de/static/logo/avtoil-logo.png",
+  "image": "https://avtoil.de/static/images/avtoil-logo.png",
   "url": "https://avtoil.de",
   "telephone": "",
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "Vali Mammadov Street 1/3, Old City",
-    "addressLocality": "Baku",
-    "addressRegion": "AZ",
-    "postalCode": "AZ1000",
-    "addressCountry": "AZ"
+    "streetAddress": "....",
+    "addressLocality": "...",
+    "addressRegion": "DE",
+    "postalCode": "....",
+    "addressCountry": "DE"
   },
   "geo": {
     "@type": "GeoCoordinates",
-    "latitude": 40.383904,
-    "longitude": 49.850275
+    "latitude": .........,
+    "longitude": ........
   },
   "openingHoursSpecification": [
     {
@@ -89,16 +87,16 @@
     }
   ],
   "sameAs": [
-    "https://linkedin.com/company/avtoil",
-    "https://www.instagram.com/avtoil_official?igsh=MTM5bmZnejhxOWhzZw==",
-    "https://www.youtube.com/@avtoillubricants7877",
-    "https://www.facebook.com/p/avtoil-100038067895501/"
+    "https://linkedin.com.....",
+    "https://www.instagram.com....",
+    "https://www.youtube.com....",
+    "https://www.facebook.com...."
   ],
   "contactPoint": {
     "@type": "ContactPoint",
-    "telephone": "+994502220607",
+    "telephone": "+4915207776502",
     "contactType": "Customer Service",
-    "availableLanguage": ["English", "Azerbaijani", "German", "French", "Italian", "Spanish", "Portuguese", "Chinese"]
+    "availableLanguage": ["English", "German", "French", "Italian", "Spanish",  "Chinese"]
   }
 }
 </script>
@@ -110,13 +108,15 @@
 <a href="https://wa.me/4915207776502" aria-label="Whatsapp" class="fixed-whatsapp" target="_blank">
     <img loading="lazy" class="whatsapp-icon" src="{% static 'images/whatsapp.svg' %}" alt="Whatsapp icon" />
 </a>
+
   {% include 'components/footer.html' %}
 
   <script src="{% static 'assets/js/script.min.js' %}" defer></script>
   <script src="{% static 'assets/js/locale.min.js' %}" defer></script>
 
-  <script src="https://analytics.ahrefs.com/analytics.js" data-key="VCY7krba01QhiJDS2Q8BjQ" async></script>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-56M2MVQ89Z" defer></script>
+  <script src="https://analytics.ahrefs.com/analytics.js" data-key="........." async></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-.........." defer></script>
+
   <script src="{% static 'assets/js/plugins.min.js' %}" defer></script>
   <script src="{% static 'assets/js/bigz.min.js' %}" defer></script>
 
@@ -126,8 +126,6 @@
  
  <script>
   var ahrefs_analytics_script = document.createElement('script');
-
-
   ahrefs_analytics_script.async = true;
   ahrefs_analytics_script.src = 'https://analytics.ahrefs.com/analytics.js';
   ahrefs_analytics_script.setAttribute('data-key', 'VCY7krba01QhiJDS2Q8BjQ');
@@ -136,7 +134,7 @@
   window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-56M2MVQ89Z', { 'send_page_view': false });
+    gtag('config', '............', { 'send_page_view': false });
 </script>
 
 </body>

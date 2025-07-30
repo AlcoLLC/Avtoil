@@ -100,7 +100,7 @@
       <img  loading="lazy" class="contact-info-img"  src="{{ contact_info.avtoil_headquarters_image.url }}" alt="{% trans 'Contact Icon' %}" />
   </div>
 
-  <div class="item">
+  {% comment %} <div class="item">
       <div>
           <h2>{% trans "Avtoil factory" %}</h2>
           <p>{{ contact_info.avtoil_factory|linebreaksbr }}</p>
@@ -114,7 +114,7 @@
           </a>
       </div>
       <img loading="lazy" class="contact-info-img"  src="{{ contact_info.avtoil_factory_image.url }}" alt="{% trans 'Contact Icon' %}" />
-  </div>
+  </div> {% endcomment %}
 
 </div>
 

@@ -3,12 +3,28 @@
 
 {% block title %}{% trans "service_meta_title" %}{% endblock %}
 {% block description %}{% trans "service_meta_description" %}{% endblock %}
-{% block extra_schema %} {% endblock %}
+
+{% block extra_schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "{{ service_highlights.title1|escapejs }}",
+  "description": "{{ service_highlights.description|default_if_none:''|escapejs }}",
+  "provider": {
+    "@type": "Organization",
+    "name": "Avtoil",
+    "url": "{{ request.build_absolute_uri }}",
+    "logo": "{% static 'images/avtoil-logo.png' %}"
+  }
+}
+</script>
+{% endblock %}
+
 
 {% block page_css %}
   <link rel="stylesheet" href="{% static 'assets/css/service.css' %}" />
 {% endblock %}
-
 
 {% block content %} 
 
@@ -26,7 +42,7 @@
 {% if service_highlights %}
 <section class="service-main-content container">
   <h2>{{ service_highlights.title1 }}</h2>
-  <img src="{{ service_highlights.image1.url }}" alt="" />
+  <img loading="lazy"  src="{{ service_highlights.image1.url }}" alt="" />
 </section>
 {% endif %}
 
@@ -42,8 +58,8 @@
         {% comment %} <a href="#" class="button-style">{% trans "Discover more" %}</a> {% endcomment %}
       </div>
 
-      <img
-        loading="lazy"
+      <img loading="lazy" 
+        
         class="image-container"
         src="{{ content.image.url }}"
         alt="{{ content.title }}"
@@ -58,7 +74,7 @@
 {% if service_highlights.title2 %}
 <section class="service-main-content container">
   <h2>{{ service_highlights.title2 }}</h2>
-  <img src="{{ service_highlights.image2.url }}" alt="" />
+  <img loading="lazy"  src="{{ service_highlights.image2.url }}" alt="" />
 </section>
 
 {% endif %} 
@@ -68,7 +84,7 @@
   {% for service in services %}
 
   <div class="image-text-content">
-    <img loading="lazy" src="{{ service.image.url }}" alt="{{ service.title }}" />
+    <img loading="lazy"   src="{{ service.image.url }}" alt="{{ service.title }}" />
     <div class="text-container">
       <h3>{{ service.title|linebreaksbr }}</h3>
       <p>{{ service.description|linebreaksbr }}</p>
@@ -82,7 +98,7 @@
 {% if service_highlights.title3 %}
 <section class="service-main-content container">
   <h2>{{ service_highlights.title3 }}</h2>
-  <img src="{{ service_highlights.image3.url }}" alt="" />
+  <img loading="lazy"  src="{{ service_highlights.image3.url }}" alt="" />
 </section>
 {% endif %}
 

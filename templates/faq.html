@@ -37,7 +37,6 @@
 <!-- Breadcrumb -->
 <div class="breadcrumb container">
   <a href="{% url 'home:home' %}" aria-label="Home Page">{% trans "Home Page" %}</a>
-  |
   <p>{% trans "FAQ" %}</p>
 </div>
 
@@ -54,14 +53,14 @@
       <div class="question">
         <i class="fa-solid fa-circle"></i>
         <h2>{{ faq.question|linebreaksbr }}</h2>
-        <img
-          loading="lazy"
+        <img loading="lazy" 
+          
           class="plus-icon"
           src="{% static '/images/plus.svg' %}"
           alt="Plus Icon"
         />
-        <img
-          loading="lazy"
+        <img loading="lazy" 
+          
           class="minus-icon"
           src="{% static '/images/minus.svg' %}"
           alt="Minus Icon"

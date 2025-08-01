@@ -17,13 +17,13 @@ class PartnershipAdmin(TranslationAdmin):
     
     def main_image_preview(self, obj):
         if obj.main_image:
-            return format_html('<img src="{}" style="width: 60px; height: 40px; object-fit: cover;" />', obj.main_image.url)
+            return format_html('<img loading="lazy"  src="{}" style="width: 60px; height: 40px; object-fit: cover;" />', obj.main_image.url)
         return "Yoxdur"
     main_image_preview.short_description = "Main"
 
     def secondary_image_preview(self, obj):
         if obj.secondary_image:
-            return format_html('<img src="{}" style="width: 60px; height: 40px; object-fit: cover;" />', obj.secondary_image.url)
+            return format_html('<img loading="lazy"  src="{}" style="width: 60px; height: 40px; object-fit: cover;" />', obj.secondary_image.url)
         return "Yoxdur"
     secondary_image_preview.short_description = "Secondary"
 

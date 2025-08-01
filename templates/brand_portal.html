@@ -10,6 +10,23 @@
 
 
 {% block extra_schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "{{ brand.title|escapejs }}",
+  "description": "{{ brand.description|truncatewords:30|escapejs }}",
+  "url": "{{ request.build_absolute_uri }}",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Avtoil",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{% static 'images/avtoil-logo.png' %}"
+    }
+  }
+}
+</script>
 {% endblock %}
 
 {% block content %}
@@ -31,7 +48,7 @@
 
   <div class="image-text-section container">
   <div class="image-text-content">
-    <img loading="lazy" src="{{ brand.image.url }}" alt="brand Portal Image" />
+    <img loading="lazy"   src="{{ brand.image.url }}" alt="brand Portal Image" />
     <div class="text-container">
       <p>
        {{ brand.description|linebreaksbr }}
@@ -50,12 +67,12 @@
       </div>
       <div class="brand-image">
         {% if content.image %}
-        <img loading="lazy"
+        <img loading="lazy"  
           src="{{ content.image.url }}"
           alt="{{ content.title }}"
         />
         {% else %}
-        <img loading="lazy"
+        <img loading="lazy"  
           src="{% static '/images/market-industrial.webp' %}"
           alt="Service Offer Image"
         />

@@ -45,7 +45,7 @@
   {% include 'components/navbar.html' %}
 
   <header class="page-header">
-      <img loading="lazy" class="bg-image" src="{{ news.image.url }}" alt="Page header background" />
+      <img loading="lazy"   class="bg-image" src="{{ news.image.url }}" alt="Page header background" />
       <div class="header-content container">
         <div class="header-text" >
           <h1>{{ news.title }}</h1>
@@ -63,7 +63,7 @@
     <div class="news-detail-top-content">
       <h2>{{ news.title|linebreaksbr }}</h2>
       <p>{{ news.published_date|date:"F d, Y" }}</p>
-       <img loading="lazy" src="{{ news.image.url }}" alt="{{ news.title }}" />
+       <img loading="lazy"   src="{{ news.image.url }}" alt="{{ news.title }}" />
       <p>{{ news.content|linebreaksbr }}</p>
     </div>
   </div>
@@ -71,7 +71,7 @@
   <div class="image-text-section container">
     {%for content in contents %}
     <div class="image-text-content">
-      <img loading="lazy" src="{{ content.image.url }}" alt="{{ content.title }}" />
+      <img loading="lazy"   src="{{ content.image.url }}" alt="{{ content.title }}" />
       <div class="text-container">
         <p>{{ content.description|linebreaksbr }}</p>
       </div>
@@ -89,14 +89,14 @@
         <div class="news-card">
           <div class="news-image">
             {% if news.image %}
-            <img
-              loading="lazy"
+            <img loading="lazy" 
+              
               src="{{ news.image.url }}"
               alt="{{ news.title }}"
             />
             {% else %}
-            <img
-              loading="lazy"
+            <img loading="lazy" 
+              
               src="{% static 'images_folder/zavod.webp' %}"
               alt="{% trans 'Default news image' %}"
             />

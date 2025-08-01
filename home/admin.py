@@ -23,7 +23,7 @@ class HomeSwiperAdmin(TranslationAdmin):
     
     def image_preview(self, obj):
         if obj.image:
-            return f'<img loading="lazy"  src="{obj.image.url}" width="50" height="50" style="object-fit: cover; border-radius: 4px;" />'
+            return f'<img loading="lazy"    src="{obj.image.url}" width="50" height="50" style="object-fit: cover; border-radius: 4px;" />'
         return "No Image"
     image_preview.allow_tags = True
     image_preview.short_description = 'Önizleme'
@@ -44,7 +44,7 @@ class PartnerLogoAdmin(admin.ModelAdmin):
     def logo_preview(self, obj):
         if obj.logo:
             return format_html(
-                '<img src="{}" style="width: 50px; height: 50px; object-fit: contain; border-radius: 4px; border: 1px solid #ddd;" />',
+                '<img loading="lazy"  src="{}" style="width: 50px; height: 50px; object-fit: contain; border-radius: 4px; border: 1px solid #ddd;" />',
                 obj.logo.url
             )
         return "No Image"
@@ -53,7 +53,7 @@ class PartnerLogoAdmin(admin.ModelAdmin):
     def logo_preview_large(self, obj):
         if obj.logo:
             return format_html(
-                '<img src="{}" style="max-width: 200px; max-height: 200px; object-fit: contain; border-radius: 8px; border: 1px solid #ddd;" />',
+                '<img loading="lazy"  src="{}" style="max-width: 200px; max-height: 200px; object-fit: contain; border-radius: 8px; border: 1px solid #ddd;" />',
                 obj.logo.url
             )
         return "No Image"
@@ -87,7 +87,7 @@ class CarLogoAdmin(admin.ModelAdmin):
     def logo_preview(self, obj):
         if obj.logo:
             return format_html(
-                '<img src="{}" style="width: 50px; height: 50px; object-fit: contain; border-radius: 4px; border: 1px solid #ddd;" />',
+                '<img loading="lazy"  src="{}" style="width: 50px; height: 50px; object-fit: contain; border-radius: 4px; border: 1px solid #ddd;" />',
                 obj.logo.url
             )
         return "No Image"
@@ -96,7 +96,7 @@ class CarLogoAdmin(admin.ModelAdmin):
     def logo_preview_large(self, obj):
         if obj.logo:
             return format_html(
-                '<img src="{}" style="max-width: 200px; max-height: 200px; object-fit: contain; border-radius: 8px; border: 1px solid #ddd;" />',
+                '<img loading="lazy"  src="{}" style="max-width: 200px; max-height: 200px; object-fit: contain; border-radius: 8px; border: 1px solid #ddd;" />',
                 obj.logo.url
             )
         return "No Image"
@@ -129,7 +129,7 @@ class GalleryAdmin(admin.ModelAdmin):
     def image_preview(self, obj):
         if obj.image:
             return format_html(
-                '<img src="{}" style="width: 50px; height: 50px; object-fit: contain; border-radius: 4px; border: 1px solid #ddd;" />',
+                '<img loading="lazy"  src="{}" style="width: 50px; height: 50px; object-fit: contain; border-radius: 4px; border: 1px solid #ddd;" />',
                 obj.image.url
             )
         return "No Image"
@@ -138,7 +138,7 @@ class GalleryAdmin(admin.ModelAdmin):
     def image_preview_large(self, obj):
         if obj.image:
             return format_html(
-                '<img src="{}" style="max-width: 200px; max-height: 200px; object-fit: contain; border-radius: 8px; border: 1px solid #ddd;" />',
+                '<img loading="lazy"  src="{}" style="max-width: 200px; max-height: 200px; object-fit: contain; border-radius: 8px; border: 1px solid #ddd;" />',
                 obj.image.url
             )
         return "No Image"

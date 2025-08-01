@@ -34,7 +34,7 @@ class NewsAdmin(TranslationAdmin):
     def image_preview(self, obj):
         if obj.image:
             return format_html(
-                '<img src="{}" style="width: 100px; height: 60px; object-fit: cover;"/>',
+                '<img loading="lazy"  src="{}" style="width: 100px; height: 60px; object-fit: cover;"/>',
                 obj.image.url
             )
         return "No image"

@@ -14,7 +14,7 @@
 {
   "@context": "https://schema.org",
   "@type": "ContactPage",
-  "name": "Contact - {{ site_name }}",
+  "name": "Contact - Avtoil",
   "description": "{% trans 'contact_meta_description' %}",
   "url": "{{ request.build_absolute_uri }}",
   "breadcrumb": {
@@ -36,7 +36,7 @@
   },
   "mainEntity": {
     "@type": "Organization",
-    "name": "{{ site_name }}",
+    "name": "Avtoil",
     "url": "{{ request.build_absolute_uri }}",
     "contactPoint": {
       "@type": "ContactPoint",
@@ -45,18 +45,22 @@
       "areaServed": "Worldwide",
       "availableLanguage": [
         "English",
-        "Azerbaijani",
-        "Turkish"
+        "German",
+        "French",
+        "Italian",
+        "Spanish",
+        "Chinese"
       ],
       "email": "{{ contact_info.contact_email }}"
     },
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "{{ contact_info.contact_address|striptags|escapejs }}",
-      "addressCountry": "AZ"
+      "addressCountry": "DE"
     }
   }
 }
+
 </script>
 
 {% endblock %}
@@ -94,28 +98,11 @@
           target="_blank"
         >
           {% trans "Location" %}
-          <img loading="lazy" src="{% static '/images/contact-icon.svg' %}" alt="{% trans 'Contact Icon' %}" />
+          <img loading="lazy"   src="{% static '/images/contact-icon.svg' %}" alt="{% trans 'Contact Icon' %}" />
         </a>
      </div>
-      <img  loading="lazy" class="contact-info-img"  src="{{ contact_info.avtoil_headquarters_image.url }}" alt="{% trans 'Contact Icon' %}" />
+      <img loading="lazy"    class="contact-info-img"  src="{{ contact_info.avtoil_headquarters_image.url }}" alt="{% trans 'Contact Icon' %}" />
   </div>
-
-  {% comment %} <div class="item">
-      <div>
-          <h2>{% trans "Avtoil factory" %}</h2>
-          <p>{{ contact_info.avtoil_factory|linebreaksbr }}</p>
-          <a
-            href="{% if contact_info.avtoil_factory_location %}{{ contact_info.avtoil_factory_location }}{% else %}https://maps.google.com/?q={{ contact_info.avtoil_factory|urlencode }}{% endif %}"
-            class="button-style" aria-label="Location Page"
-            target="_blank"
-          >
-            {% trans "Location" %}
-            <img loading="lazy" src="{% static '/images/contact-icon.svg' %}" alt="Contact Icon" />
-          </a>
-      </div>
-      <img loading="lazy" class="contact-info-img"  src="{{ contact_info.avtoil_factory_image.url }}" alt="{% trans 'Contact Icon' %}" />
-  </div> {% endcomment %}
-
 </div>
 
 <div class="contact-flex-content container">

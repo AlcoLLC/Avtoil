@@ -31,7 +31,7 @@
 
 <div class="search-page">
     <header class="page-header">
-        <img loading="lazy" class="bg-image" src="{{ page_header.image.url }}" alt="Page header background" />
+        <img loading="lazy"   class="bg-image" src="{{ page_header.image.url }}" alt="Page header background" />
         <div class="header-content container">
             <h1>{% trans "Search" %}</h1>
         </div>
@@ -67,7 +67,7 @@
                     <div class="result-content">
                         {% if result.image %}
                             <div class="result-image">
-                                <img src="{{ result.image }}" alt="{{ result.title }}" />
+                                <img loading="lazy"  src="{{ result.image }}" alt="{{ result.title }}" />
                             </div>
                         {% endif %}
                         <div class="result-text">

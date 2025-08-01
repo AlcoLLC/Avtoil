@@ -93,7 +93,7 @@
 {% include 'components/navbar.html' %}
 
   <header class="page-header">
-      <img loading="lazy" class="bg-image" src="{{ product.product_group.image.url }}" alt="Page header background" />
+      <img loading="lazy"   class="bg-image" src="{{ product.product_group.image.url }}" alt="Page header background" />
       <div class="header-content container">
         <div class="header-text" >
           <h1>{{ product.title }}</h1>
@@ -165,7 +165,7 @@
     </div>
    {% if product.image %}
   <div class="product-image">
-    <img loading="lazy" src="{{ product.image.url }}" alt="{{ product.title }}" />
+    <img loading="lazy"   src="{{ product.image.url }}" alt="{{ product.title }}" />
   </div>
 {% endif %}
 

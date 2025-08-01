@@ -16,7 +16,32 @@
 </noscript>
 {% endblock %} 
 
-{% block extra_schema %} {% endblock %} 
+{% block extra_schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "name": "Partnership - Avtoil",
+  "description": "{% trans 'partnership_meta_description' %}",
+  "url": "{{ request.build_absolute_uri }}",
+  "mainEntity": {
+    "@type": "Organization",
+    "name": "Avtoil",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "Customer Service",
+      "email": "info@avtoil.az",
+      "availableLanguage": ["English", "German", "French", "Italian", "Spanish", "Chinese"]
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "{{ contact_info.contact_address|striptags|escapejs }}",
+      "addressCountry": "DE"
+    }
+  }
+}
+</script>
+{% endblock %}
 
 {% block content %} 
 
@@ -46,9 +71,9 @@
   </div>
   <div class="two-images {% cycle '' 'reverse' %}">
     {% if item.main_image %}
-    <img loading="lazy" src="{{ item.main_image.url }}" alt="{{ item.title }}" />
+    <img loading="lazy"   src="{{ item.main_image.url }}" alt="{{ item.title }}" />
     {% endif %} {% if item.secondary_image %}
-    <img loading="lazy" src="{{ item.secondary_image.url }}" alt="{{ item.title }}" />
+    <img loading="lazy"   src="{{ item.secondary_image.url }}" alt="{{ item.title }}" />
     {% endif %}
   </div>
 </section>
@@ -62,13 +87,13 @@
       <div class="swiper-slide">
         <div>
           <div>
-            <img loading="lazy" src="{% static 'images/vector-review.svg' %}" alt="Vector" />
+            <img loading="lazy"   src="{% static 'images/vector-review.svg' %}" alt="Vector" />
           </div>
           <p>{{review.review|truncatewords:60}}</p>
         </div>
         <div>
           <div>
-            <img loading="lazy" src="{{ review.image.url}}" alt="Review" />
+            <img loading="lazy"   src="{{ review.image.url}}" alt="Review" />
           </div>
           <div>
             <h5>{{ review.name }}</h5>
@@ -98,14 +123,14 @@
       <div class="question">
         <i class="fa-solid fa-circle"></i>
         <h2>{{ faq.question|linebreaksbr }}</h2>
-        <img
-          loading="lazy"
+        <img loading="lazy" 
+          
           class="plus-icon"
           src="{% static '/images/plus.svg' %}"
           alt="Plus Icon"
         />
-        <img
-          loading="lazy"
+        <img loading="lazy" 
+          
           class="minus-icon"
           src="{% static '/images/minus.svg' %}"
           alt="Minus Icon"
@@ -124,8 +149,8 @@
 </section>
 
 <section class="coorperation-section">
-  <img
-    loading="lazy"
+  <img loading="lazy" 
+    
     class="bg-image"
     src="{% static 'images/shutterstock.webp' %}"
     alt="Coorperation background image"

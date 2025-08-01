@@ -15,7 +15,47 @@
 </noscript>
 {% endblock %} 
 
-{% block extra_schema %} 
+{% block extra_schema %}
+<script>
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "{% trans 'home_meta_title' %}",
+  "description": "{% trans 'home_meta_description' %}",
+  "url": "{{ request.build_absolute_uri }}",
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "{% trans 'Home page' %}",
+        "item": "{{ request.build_absolute_uri }}"
+      }
+    ]
+  },
+  "mainEntity": {
+    "@type": "Organization",
+    "name": "Avtoil",
+    "url": "https://avtoil.de",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://avtoil.de/static/images/avtoil-logo.png"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "DE"
+    },
+    "sameAs": [
+      "https://www.instagram.com/...",
+      "https://www.facebook.com/...",
+      "https://www.linkedin.com/...",
+      "https://www.youtube.com/..."
+    ]
+  }
+}
+
+</script>
 {% endblock %} 
 
 {% block content %}
@@ -26,7 +66,7 @@
     <div class="swiper-wrapper">
       {% for swiper in swiper_images %}
       <div class="swiper-slide">
-        <img
+        <img 
           class="background-image"
           src="{{ swiper.image.url }}"
           alt="{{ swiper.image.url }} Slider Image"
@@ -67,8 +107,8 @@
         aria-label="H{{ product_group.title }}"
       >
         <div class="category-image">
-          <img
-            loading="lazy"
+          <img loading="lazy" 
+            
             src="{{ product_group.image.url }}"
             alt="{{ product_group.title }} {% trans 'PRODUCT GROUP' %}"
           />
@@ -94,8 +134,8 @@
 
 <div class="container">
   <section class="production-section">
-    <img
-      loading="lazy"
+    <img loading="lazy" 
+      
       class="bg-image"
       src="{% static 'images/production-bg.webp' %}"
       alt="Production background image"
@@ -119,7 +159,7 @@
       <div class="video-container" id="videoContainer">
         <iframe
           width="560"
-          loading="lazy"
+          
           height="315"
           src="https://www.youtube-nocookie.com/embed/7NdBMqxDMrE?rel=0&showinfo=0&modestbranding=1"
           title="YouTube video player"
@@ -133,10 +173,11 @@
   </section>
 </div>
 
-<div class="map-section">
+<section>
   <div class="section-header">
     <h2>{% trans "Global Presence" %}</h2>
   </div>
+<div class="map-section">
   <div class="page-wrapper">
     <main class="main-content">
       <section id="preview" class="preview section-margin-b-m">
@@ -147,7 +188,7 @@
     </main>
   </div>
 </div>
-
+</section>
 {% if service_contents %}
 <div class="services">
   <div class="section-header">
@@ -161,8 +202,8 @@
         <p>{{ content.description|linebreaksbr }}</p>
       </div>
 
-      <img
-        loading="lazy"
+      <img loading="lazy" 
+        
         class="image-container"
         src="{{ content.image.url }}"
         alt="{{ content.title }}"
@@ -179,7 +220,7 @@
 {% endif %}
 
 <section class="become-partner container">
-  <img  loading="lazy" class="bg-image"
+  <img loading="lazy"    class="bg-image"
     src="{{ become_partner.image.url }}" alt="{{ become_partner.title }}"
     width="100%" />
 
@@ -205,10 +246,10 @@
       <div class="news-card">
         <div class="news-image">
           {% if news.image %}
-          <img loading="lazy" src="{{ news.image.url }}" alt="{{ news.title }}" />
+          <img loading="lazy"   src="{{ news.image.url }}" alt="{{ news.title }}" />
           {% else %}
-          <img
-            loading="lazy"
+          <img loading="lazy" 
+            
             src="{% static 'images_folder/default-news.webp' %}"
             alt="{{ news.title }}"
           />
@@ -235,8 +276,8 @@
 </section>
 
 <section class="electric-solutions container">
-  <img
-    loading="lazy"
+  <img loading="lazy" 
+    
     class="bg-image"
     src="{% static 'images/electric-solutions-bg.webp' %}"
     alt="Electric Solutions Image"
@@ -263,7 +304,7 @@
 
 <section class="sustainability-section container">
   <div class="sustainability-image">
-    <img loading="lazy" src="{{ sustainability_image.url}}" alt="{{ sustainability.title}}" />
+    <img loading="lazy"   src="{{ sustainability_image.url}}" alt="{{ sustainability.title}}" />
     <div class="property">
       <span>{%trans '100,000 tonnes'%}</span>
       <p>{%trans 'Production capacity'%}</p>
@@ -296,10 +337,10 @@
     <h2>{% trans "FEATURED PRODUCTS" %}</h2>
   </div>
   <div class="featured-section">
-    <img
+    <img loading="lazy" 
       src="{% static 'images/Vector.svg' %}"
       alt="Decorative vector background"
-      loading="lazy"
+      
       class="background-svg"
     />
     <div class="background-overlay"></div>
@@ -312,8 +353,8 @@
           <div class="product-card">
             <div class="product-image">
               <a href="{% url 'products:product_detail' slug=product.slug %}">
-                <img
-                  loading="lazy"
+                <img loading="lazy" 
+                  
                   src="{{ product.image.url }}"
                   alt="{{ product.title|linebreaksbr }}"
                 />

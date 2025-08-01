@@ -38,6 +38,7 @@ urlpatterns += i18n_patterns(
     path('', include('products.urls')),
     path('', include('partnership.urls')),
     path('', include('search.urls')),
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
     prefix_default_language=False
     )
 

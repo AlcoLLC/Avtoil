@@ -1,13 +1,10 @@
 from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
-from django.utils import timezone
 
-from products.models import Product, Product_group, Segments, Oil_Types, Viscosity
+from products.models import Product
 from news.models import News
-from faq.models import FAQ
-from about.models import AboutAvtoil, AboutContent, Sustainability, DocumentsCertification
-from brands.models import Brand_Portal, Brand_Portal_Content
-from services.models import Service
+from brands.models import Brand_Portal_Content
+
 class StaticViewSitemap(Sitemap):
     priority = 0.8
     changefreq = 'monthly'
@@ -17,7 +14,7 @@ class StaticViewSitemap(Sitemap):
             'home:home',
             'about:about',
             'products:product',
-            'services: services', 
+            'services:services', 
             'contact:contact',
             'partnership:partnership',
             'news:news',
@@ -27,6 +24,16 @@ class StaticViewSitemap(Sitemap):
     def location(self, item):
         return reverse(item)
 
+class HomeStaticSitemap(Sitemap):
+    priority = 1.0
+    changefreq = 'daily'
+
+    def items(self):
+        return ['home:home'] 
+
+    def location(self, item):
+        return reverse(item)
+    
 
 class ProductSitemap(Sitemap):
     changefreq = 'weekly'
@@ -41,7 +48,6 @@ class ProductSitemap(Sitemap):
     def location(self, obj):
         return reverse('products:product_detail', kwargs={'slug': obj.slug})
 
-
 class NewsSitemap(Sitemap):
     changefreq = 'daily'
     priority = 0.7
@@ -55,101 +61,78 @@ class NewsSitemap(Sitemap):
     def location(self, obj):
         return reverse('news:news_detail', kwargs={'pk': obj.pk})
 
-
 class FAQSitemap(Sitemap):
     changefreq = 'monthly'
     priority = 0.6
-    
-    def items(self):
-        return FAQ.objects.filter(is_active=True)
-    
-    def lastmod(self, obj):
-        return obj.updated_at
-    
-    def location(self, obj):
-        # FAQ için spesifik URL pattern bulunamadı, 
-        # muhtemelen faq:faq_detail olmalı
-        return reverse('faq:faq_detail', kwargs={'id': obj.id})
 
+    def items(self):
+        return []
+
+    def location(self, obj):
+        return reverse('faq:faq')  
 
 class BrandPortalContentSitemap(Sitemap):
     changefreq = 'weekly'
     priority = 0.5
-    
+
     def items(self):
-        return Brand_Portal_Content.objects.all()
-    
+        return Brand_Portal_Content.objects.all().order_by('order')
+
     def lastmod(self, obj):
         return obj.updated_at
-    
+
     def location(self, obj):
-        # Brand portal content için spesifik detail URL'i brands.urls'de görünmüyor
-        # Bu sınıfı kaldırabilir ya da uygun URL pattern ekleyebilirsiniz
-        return reverse('brands:brand_portal_content_detail', kwargs={'id': obj.id})
+        return reverse('brands:brands') 
 
-
-
-class AboutSitemap(Sitemap):
-    changefreq = 'monthly'
+class AboutStaticSitemap(Sitemap):
     priority = 0.7
-    
+    changefreq = 'monthly'
+
     def items(self):
-        about_pages = []
-        
-        # about.urls'de sadece 'about_page' var
-        # Diğer sayfalar için URL pattern'ler eklenmeli
-        if AboutAvtoil.objects.exists():
-            about_pages.append('about:about')
-            
-        if DocumentsCertification.objects.exists():
-            about_pages.append('about:documents_certification')
-            
-        return about_pages
-    
+        return ['about:about']  
+
     def location(self, item):
         return reverse(item)
 
-
-
-class DocumentsCertificationSitemap(Sitemap):
-    changefreq = 'monthly'
-    priority = 0.6
-    
-    def items(self):
-        return DocumentsCertification.objects.all()
-    
-    def location(self, obj):
-        return reverse('about:documents_certification_detail', kwargs={'id': obj.id})
-
-
-class ServicesSitemap(Sitemap):
-    changefreq = 'monthly'
+class ServicesStaticSitemap(Sitemap):
     priority = 0.7
-    
+    changefreq = 'monthly'
+
     def items(self):
-        services = []
-        services.extend([
-            'services:services',
-        ])
-            
-        return services
-    
+        return ['services:services'] 
+
     def location(self, item):
         return reverse(item)
 
+class PartnershipStaticSitemap(Sitemap):
+    priority = 0.7
+    changefreq = 'monthly'
 
+    def items(self):
+        return ['partnership:partnership']  
+    def location(self, item):
+        return reverse(item)
 
+class ContactStaticSitemap(Sitemap):
+    priority = 0.7
+    changefreq = 'monthly'
 
-# Mevcut URL pattern'lere göre çalışacak sitemaps
+    def items(self):
+        return ['contact:contact'] 
+
+    def location(self, item):
+        return reverse(item)
+    
+
 sitemaps = {
+    'home': HomeStaticSitemap,
     'static': StaticViewSitemap,
     'products': ProductSitemap,
     'news': NewsSitemap,
-    # Aşağıdaki sitemaps için önce URL pattern'ler eklenmeli:
-    # 'faq': FAQSitemap,
-    # 'brand_portal_content': BrandPortalContentSitemap,
-    # 'about': AboutSitemap,
-    # 'we_guarantee': WeGuaranteeSitemap,
-    # 'documents_certification': DocumentsCertificationSitemap,
-    # 'services': ServicesSitemap,
+    'faq': FAQSitemap,
+    'brands': BrandPortalContentSitemap,
+    'about': AboutStaticSitemap,
+    'services': ServicesStaticSitemap,
+    'partnership': PartnershipStaticSitemap,
+    'contact': ContactStaticSitemap,
 }

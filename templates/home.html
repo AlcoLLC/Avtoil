@@ -103,7 +103,7 @@
     <div class="category-card {% if forloop.counter > 8 %}hidden{% endif %}">
       <a
         href="{% url 'products:product' %}?product_group={{ product_group.slug }}"
-        aria-label="H{{ product_group.title }}"
+        aria-label="{{ product_group.title }}"
       >
         <div class="category-image">
           <img loading="lazy" 

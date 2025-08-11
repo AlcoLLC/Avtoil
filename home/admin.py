@@ -230,9 +230,12 @@ class ReviewAdmin(TranslationAdmin):
     )
     
     def rating_stars(self, obj):
-        """Display rating with stars"""
+     
+        if not obj.rating:  
+            return ""
         stars = "★" * obj.rating + "☆" * (5 - obj.rating)
         return format_html(f'<span style="color: #ffc107; font-size: 16px;">{stars}</span> ({obj.rating})')
+
     rating_stars.short_description = "Rating"
     rating_stars.admin_order_field = 'rating'
     

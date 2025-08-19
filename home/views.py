@@ -28,8 +28,8 @@ def home_view(request):
     """Home page view - only handles GET requests"""
     swiper_images = HomeSwiper.objects.filter(is_active=True).order_by('order')
     latest_news = News.objects.filter(is_active=True)[:3]   
-    product_groups = Product_group.objects.all().order_by('-in_home', 'order')  
-    products = Product.objects.all().order_by('-in_home', 'order')  
+    product_groups= Product_group.objects.filter(in_home=True).order_by('order')  
+    products = Product.objects.filter(in_home=True).order_by('order') 
     partner_logos = PartnerLogo.objects.all()
     images = GalleryImage.objects.all().order_by('order')
     service_contents = Service_Content.objects.filter(in_home=True)

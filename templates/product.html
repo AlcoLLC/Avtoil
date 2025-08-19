@@ -347,7 +347,7 @@
       <button type="button" class="filter-results-button" id="filterResultsBtn">{% trans "View Result" %}</button>
   </div>
 </div>
-    <div class="products-list"s>
+    <div class="products-list">
       {% for product in products %}
       <div class="product-card">
         <div class="product-image">
@@ -481,28 +481,28 @@
 
 
   <!-- Always show pagination for testing -->
-    <div class="pagination-container">
-      <button class="pagination-arrow prev" id="prevPage" {% if not page_obj.has_previous %}disabled{% endif %}>
-        <i class="fa-solid fa-chevron-left"></i>
-      </button>
+  <div class="pagination-container">
+    <button class="pagination-arrow prev" id="prevPage" {% if not page_obj.has_previous %}disabled{% endif %}>
+      <i class="fa-solid fa-chevron-left"></i>
+    </button>
 
     <div class="pagination-numbers" id="paginationNumbers">
       {% for num in page_obj.paginator.page_range %}
-        {% if page_obj.number == num %}
+          {% if page_obj.number == num %}
           <a href="#" aria-label="Total page number" class="page-number active" data-page="{{ num }}">{{ num }}</a>
-        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
           <a href="#" aria-label="Total page number" class="page-number" data-page="{{ num }}">{{ num }}</a>
-        {% elif num == 1 %}
+          {% elif num == 1 %}
           <a href="#" aria-label="Total page number" class="page-number" data-page="{{ num }}">{{ num }}</a>
           {% if page_obj.number > 4 %}
             <span class="ellipsis">...</span>
           {% endif %}
-        {% elif num == page_obj.paginator.num_pages %}
+          {% elif num == page_obj.paginator.num_pages %}
           {% if page_obj.number < page_obj.paginator.num_pages|add:'-3' %}
             <span class="ellipsis">...</span>
           {% endif %}
           <a href="#" aria-label="Total page number" class="page-number" data-page="{{ num }}">{{ num }}</a>
-        {% endif %}
+          {% endif %}
       {% endfor %}
     </div>
 

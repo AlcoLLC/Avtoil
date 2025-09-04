@@ -3,45 +3,81 @@ from django.db import transaction
 from products.models import Product, Product_group, Segments, Oil_Types, Viscosity, Liter
 import csv
 import os
+import pandas as pd
 
 
 class Command(BaseCommand):
-    help = 'Import products from CSV file'
+    help = 'Import products from CSV or Excel file'
 
     def add_arguments(self, parser):
-        parser.add_argument('csv_file', type=str, help='Path to the CSV file')
+        parser.add_argument('file_path', type=str, help='Path to the CSV or Excel file')
+        parser.add_argument(
+            '--sheet', 
+            type=str, 
+            default=None, 
+            help='Excel sheet name (if not specified, uses the first sheet)'
+        )
 
     def handle(self, *args, **options):
-        csv_file_path = options['csv_file']
+        file_path = options['file_path']
+        sheet_name = options.get('sheet')
         
-        if not os.path.exists(csv_file_path):
+        if not os.path.exists(file_path):
             self.stdout.write(
-                self.style.ERROR(f'File {csv_file_path} does not exist')
+                self.style.ERROR(f'File {file_path} does not exist')
             )
             return
 
-        with open(csv_file_path, 'r', encoding='utf-8') as file:
-            # Read CSV with proper handling
-            csv_reader = csv.DictReader(file)
+        try:
+            # Determine file type and read accordingly
+            if file_path.lower().endswith(('.xlsx', '.xls')):
+                df = pd.read_excel(file_path, sheet_name=sheet_name)
+                self.stdout.write(f"Reading Excel file: {file_path}")
+                if sheet_name:
+                    self.stdout.write(f"Sheet: {sheet_name}")
+            elif file_path.lower().endswith('.csv'):
+                # Try different encodings for CSV files
+                encodings_to_try = ['utf-8', 'latin-1', 'cp1252', 'iso-8859-1']
+                df = None
+                
+                for encoding in encodings_to_try:
+                    try:
+                        df = pd.read_csv(file_path, encoding=encoding)
+                        self.stdout.write(f"Successfully read CSV with {encoding} encoding")
+                        break
+                    except UnicodeDecodeError:
+                        continue
+                
+                if df is None:
+                    self.stdout.write(
+                        self.style.ERROR('Could not read CSV file with any supported encoding')
+                    )
+                    return
+            else:
+                self.stdout.write(
+                    self.style.ERROR('Unsupported file format. Please use .xlsx, .xls, or .csv')
+                )
+                return
+
+            # Display columns found
+            columns = df.columns.tolist()
+            self.stdout.write(f"Columns found: {columns}")
             
-            # Get the fieldnames to understand the structure
-            fieldnames = csv_reader.fieldnames
-            self.stdout.write(f"CSV columns: {fieldnames}")
+            # Replace NaN values with empty strings
+            df = df.fillna('')
             
             success_count = 0
             error_count = 0
             
-            for row_num, row in enumerate(csv_reader, start=2):  # Start from 2 because header is row 1
+            for index, row in df.iterrows():
                 try:
                     with transaction.atomic():
                         self.import_product(row)
                         success_count += 1
-                        self.stdout.write(f"Successfully imported row {row_num}")
-                        
                 except Exception as e:
                     error_count += 1
                     self.stdout.write(
-                        self.style.ERROR(f'Error importing row {row_num}: {str(e)}')
+                        self.style.ERROR(f'Error importing row {index + 2}: {str(e)}')
                     )
                     
             self.stdout.write(
@@ -50,152 +86,121 @@ class Command(BaseCommand):
                 )
             )
 
+        except Exception as e:
+            self.stdout.write(
+                self.style.ERROR(f'Error reading file: {str(e)}')
+            )
+            return
+
     def import_product(self, row):
-        """Import a single product from CSV row"""
+        """Import a single product from a pandas Series (row)"""
         
-        # Extract basic product data
+        # Convert pandas Series to dict-like access
+        def safe_get(key, default=''):
+            try:
+                value = row.get(key, default)
+                return str(value).strip() if pd.notna(value) else default
+            except:
+                return default
+
+        # Get Product ID
+        product_id = safe_get('Product ID')
+        if not product_id:
+            raise ValueError("Product ID is required but was not found in the row.")
+
+        # Skip if product already exists
+        if Product.objects.filter(product_id=product_id).exists():
+            self.stdout.write(f'Skipping existing product with ID: {product_id}')
+            return
+
         product_data = {
-            'title': row.get('title', '').strip(),
-            'description': row.get('description', '').strip(),
-            'features_benefits': row.get('features_benefits', '').strip(),
-            'application': row.get('application', '').strip(),
-            'product_id': row.get('product_id', '').strip(),
-            'slug': row.get('slug', '').strip(),
-            'api': row.get('api', '').strip() or None,
-            'ilsac': row.get('ilsac', '').strip() or None,
-            'acea': row.get('acea', '').strip() or None,
-            'jaso': row.get('jaso', '').strip() or None,
-            'oem_sertification': row.get('oem_sertification', '').strip() or None,
-            'recommendations': row.get('recommendations', '').strip() or None,
-            'pds_url': row.get('pds_url', '').strip() or None,
-            'sds_url': row.get('sds_url', '').strip() or None,
+            'product_id': product_id,
+            'title': safe_get('Product Name'),
+            'description': safe_get('Description'),
+            'features_benefits': safe_get('Features & Benefits'),
+            'application': safe_get('Application'),
+            
+            # Performance columns
+            'api': safe_get('API') or None,
+            'ilsac': safe_get('ILSAC') or None,
+            'acea': safe_get('ACEA') or None,
+            'jaso': safe_get('JASO') or None,
+            
+            # Other specifications
+            'oem_sertification': safe_get('OEM Specifications') or None,
+            'recommendations': safe_get('Recommendation') or None,
+            
+            # Additional fields
+            'slug': safe_get('slug') or None,
+            'pds_url': safe_get('pds_url') or None,
+            'sds_url': safe_get('sds_url') or None,
         }
         
-        # Handle image field
-        image_path = row.get('image', '').strip()
-        if image_path:
-            product_data['image'] = image_path
-            
-        # Create or get foreign key relationships
+        # --- Related Models Management ---
         
-        # Handle Product Group
+        # Product Group
         product_group = None
-        product_group_id = row.get('product_group_id', '').strip()
+        product_group_id = safe_get('product_group_id')
         if product_group_id:
             try:
                 product_group = Product_group.objects.get(id=int(product_group_id))
             except (Product_group.DoesNotExist, ValueError):
-                self.stdout.write(
-                    self.style.WARNING(f'Product group with ID {product_group_id} not found')
-                )
-        
-        # Handle Oil Type
+                self.stdout.write(self.style.WARNING(f'Product group with ID {product_group_id} not found.'))
+
+        # Oil Type
         oil_type = None
-        oil_type_id = row.get('oil_type_id', '').strip()
+        oil_type_id = safe_get('oil_type_id')
         if oil_type_id:
             try:
                 oil_type = Oil_Types.objects.get(id=int(oil_type_id))
             except (Oil_Types.DoesNotExist, ValueError):
-                self.stdout.write(
-                    self.style.WARNING(f'Oil type with ID {oil_type_id} not found')
-                )
-        
-        # Handle Viscosity
+                self.stdout.write(self.style.WARNING(f'Oil type with ID {oil_type_id} not found.'))
+
+        # Viscosity
         viscosity = None
-        viscosity_id = row.get('viscosity_id', '').strip()
+        viscosity_id = safe_get('viscosity_id')
         if viscosity_id:
             try:
                 viscosity = Viscosity.objects.get(id=int(viscosity_id))
             except (Viscosity.DoesNotExist, ValueError):
-                self.stdout.write(
-                    self.style.WARNING(f'Viscosity with ID {viscosity_id} not found')
-                )
-        
-        # Create or update the product
-        if Product.objects.filter(product_id=product_data['product_id']).exists():
-            self.stdout.write(f'Skipped existing product: {product_data["title"]}')
-            return  # Skip existing product
+                self.stdout.write(self.style.WARNING(f'Viscosity with ID {viscosity_id} not found.'))
 
-        # Create new product
+        # Create the product
         product = Product.objects.create(
             **product_data,
             product_group=product_group,
             oil_type=oil_type,
             viscosity=viscosity,
         )
-        created = True
         
-        # Handle Many-to-Many relationships
-        
-        # Handle Segments
-        segments_data = row.get('segments', '').strip()
+        # --- Many-to-Many Relationships ---
+
+        # Segments
+        segments_data = safe_get('segments')
         if segments_data:
-            # If segments are stored as comma-separated IDs or names
-            segment_items = [item.strip() for item in segments_data.split(',') if item.strip()]
-            
+            segment_items = [item.strip() for item in str(segments_data).split(',') if item.strip()]
             for segment_item in segment_items:
                 try:
-                    # Try to get by ID first
                     if segment_item.isdigit():
                         segment = Segments.objects.get(id=int(segment_item))
                     else:
-                        # Try to get by name
                         segment = Segments.objects.get(name__iexact=segment_item)
-                    
                     product.segments.add(segment)
-                    
                 except Segments.DoesNotExist:
-                    self.stdout.write(
-                        self.style.WARNING(f'Segment "{segment_item}" not found')
-                    )
-        
-        # Handle Liters
-        liters_data = row.get('liters', '').strip()
+                    self.stdout.write(self.style.WARNING(f'Segment "{segment_item}" not found.'))
+
+        # Liters
+        liters_data = safe_get('liters')
         if liters_data:
-            # If liters are stored as comma-separated values
-            liter_items = [item.strip() for item in liters_data.split(',') if item.strip()]
-            
+            liter_items = [item.strip() for item in str(liters_data).split(',') if item.strip()]
             for liter_item in liter_items:
                 try:
-                    # Try to get by ID first
                     if liter_item.isdigit():
                         liter = Liter.objects.get(id=int(liter_item))
                     else:
-                        # Try to get by value
                         liter = Liter.objects.get(value__iexact=liter_item)
-                    
                     product.liters.add(liter)
-                    
                 except Liter.DoesNotExist:
-                    self.stdout.write(
-                        self.style.WARNING(f'Liter "{liter_item}" not found')
-                    )
-        
-        action = "Created" if created else "Updated"
-        self.stdout.write(f'{action} product: {product.title}')
-        
-        return product
+                    self.stdout.write(self.style.WARNING(f'Liter "{liter_item}" not found.'))
 
-    def get_or_create_related_object(self, model_class, identifier, name_field='name'):
-        """Helper method to get or create related objects"""
-        if not identifier:
-            return None
-            
-        try:
-            # Try to get by ID first
-            if str(identifier).isdigit():
-                return model_class.objects.get(id=int(identifier))
-            else:
-                # Try to get by name field
-                filter_kwargs = {f'{name_field}__iexact': identifier}
-                return model_class.objects.get(**filter_kwargs)
-                
-        except model_class.DoesNotExist:
-            # Create new object if it doesn't exist (optional)
-            if hasattr(model_class, name_field):
-                create_kwargs = {name_field: identifier}
-                obj, created = model_class.objects.get_or_create(**create_kwargs)
-                if created:
-                    self.stdout.write(f'Created new {model_class.__name__}: {identifier}')
-                return obj
-            return None
+        self.stdout.write(self.style.SUCCESS(f'Successfully created product: {product.title}'))

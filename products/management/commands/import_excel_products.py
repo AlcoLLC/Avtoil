@@ -1,171 +1,220 @@
 from django.core.management.base import BaseCommand
 from django.db import transaction
+from django.utils.text import slugify
 from products.models import Product, Product_group, Segments, Oil_Types, Viscosity, Liter
-import csv
-import os
 import pandas as pd
-
+import os
 
 class Command(BaseCommand):
-    help = 'Import products from CSV or Excel file'
+    help = 'Import products from all sheets of an Excel file with a flexible key column for product identification.'
 
     def add_arguments(self, parser):
-        parser.add_argument('file_path', type=str, help='Path to the CSV or Excel file')
+        parser.add_argument('file_path', type=str, help='Path to the Excel file')
+        # NEW: Add a flexible argument for the key column name.
         parser.add_argument(
-            '--sheet', 
-            type=str, 
-            default=None, 
-            help='Excel sheet name (if not specified, uses the first sheet)'
+            '--key-column',
+            type=str,
+            default='Product ID',
+            help='The name of the column that uniquely identifies a product. Defaults to "Product ID".'
         )
+
+    # products/management/commands/import_excel_products.py
+
+# ... (diğer her şey aynı kalacak) ...
+
+    # products/management/commands/import_excel_products.py
+
+# ... (diğer her şey aynı kalacak) ...
 
     def handle(self, *args, **options):
         file_path = options['file_path']
-        sheet_name = options.get('sheet')
+        key_column_name = options['key_column']
         
         if not os.path.exists(file_path):
-            self.stdout.write(
-                self.style.ERROR(f'File {file_path} does not exist')
-            )
+            self.stdout.write(self.style.ERROR(f'File {file_path} does not exist'))
             return
+
+        if not file_path.lower().endswith(('.xlsx', '.xls')):
+            self.stdout.write(self.style.ERROR('This command only supports Excel files (.xlsx, .xls)'))
+            return
+
+        self.stdout.write(self.style.SUCCESS(f"Using '{key_column_name}' as the key identifier column."))
 
         try:
-            # Determine file type and read accordingly
-            if file_path.lower().endswith(('.xlsx', '.xls')):
-                df = pd.read_excel(file_path, sheet_name=sheet_name)
-                self.stdout.write(f"Reading Excel file: {file_path}")
-                if sheet_name:
-                    self.stdout.write(f"Sheet: {sheet_name}")
-            elif file_path.lower().endswith('.csv'):
-                # Try different encodings for CSV files
-                encodings_to_try = ['utf-8', 'latin-1', 'cp1252', 'iso-8859-1']
-                df = None
-                
-                for encoding in encodings_to_try:
-                    try:
-                        df = pd.read_csv(file_path, encoding=encoding)
-                        self.stdout.write(f"Successfully read CSV with {encoding} encoding")
-                        break
-                    except UnicodeDecodeError:
-                        continue
-                
-                if df is None:
-                    self.stdout.write(
-                        self.style.ERROR('Could not read CSV file with any supported encoding')
-                    )
-                    return
-            else:
-                self.stdout.write(
-                    self.style.ERROR('Unsupported file format. Please use .xlsx, .xls, or .csv')
-                )
-                return
+            xls = pd.ExcelFile(file_path)
+            
+            total_success = 0
+            total_errors = 0
 
-            # Display columns found
-            columns = df.columns.tolist()
-            self.stdout.write(f"Columns found: {columns}")
-            
-            # Replace NaN values with empty strings
-            df = df.fillna('')
-            
-            success_count = 0
-            error_count = 0
-            
-            for index, row in df.iterrows():
-                try:
-                    with transaction.atomic():
-                        self.import_product(row)
-                        success_count += 1
-                except Exception as e:
-                    error_count += 1
-                    self.stdout.write(
-                        self.style.ERROR(f'Error importing row {index + 2}: {str(e)}')
-                    )
+            for sheet_name in xls.sheet_names:
+                self.stdout.write(self.style.HTTP_INFO(f'\n--- Processing sheet: {sheet_name} ---'))
+                
+                df_for_header_find = pd.read_excel(xls, sheet_name=sheet_name, header=None)
+                
+                header_row_index = -1
+                for i, row in df_for_header_find.iterrows():
+                    if key_column_name in [str(x).strip() for x in row.values]:
+                        header_row_index = i
+                        break
+                
+                if header_row_index == -1:
+                    self.stdout.write(self.style.WARNING(f"Could not find a header row with '{key_column_name}' in sheet '{sheet_name}'. Skipping sheet."))
+                    continue
+
+                # --- YENİ MANTIK: Başlık yapısını otomatik algıla ---
+                is_multi_level = False
+                # Bir sonraki satırın var olup olmadığını kontrol et
+                if header_row_index + 1 < len(df_for_header_find):
+                    next_row_values = [str(x).strip() for x in df_for_header_find.iloc[header_row_index + 1].values]
+                    # Çok seviyeli başlıklarda bulunan anahtar kelimeler
+                    sub_header_keywords = ['API', 'ILSAC', 'ACEA', 'JASO', 'OEM specifications']
+                    if any(keyword in next_row_values for keyword in sub_header_keywords):
+                        is_multi_level = True
+
+                if is_multi_level:
+                    # Bu sayfa ÇOK SEVİYELİ bir başlığa sahip
+                    self.stdout.write(self.style.HTTP_INFO(f"Detected multi-level header in sheet '{sheet_name}'."))
+                    df = pd.read_excel(xls, sheet_name=sheet_name, header=[header_row_index, header_row_index + 1])
                     
-            self.stdout.write(
-                self.style.SUCCESS(
-                    f'Import completed. Success: {success_count}, Errors: {error_count}'
-                )
-            )
+                    # Çok seviyeli başlığı tek seviyeye indir (flatten)
+                    new_columns = []
+                    for col in df.columns:
+                        top_level_header = str(col[0]).strip()
+                        sub_level_header = str(col[1]).strip()
+                        if top_level_header == key_column_name:
+                            new_columns.append(key_column_name)
+                        elif 'unnamed' in sub_level_header.lower():
+                            new_columns.append(top_level_header)
+                        else:
+                            new_columns.append(sub_level_header)
+                    df.columns = new_columns
+                else:
+                    # Bu sayfa TEK SEVİYELİ bir başlığa sahip
+                    self.stdout.write(self.style.HTTP_INFO(f"Detected single-level header in sheet '{sheet_name}'."))
+                    df = pd.read_excel(xls, sheet_name=sheet_name, header=header_row_index)
+                    # Sütun isimlerindeki olası boşlukları temizle
+                    df.columns = [str(col).strip() for col in df.columns]
+                # --- OTOMATİK ALGILAMA MANTIĞININ SONU ---
+
+                if key_column_name not in df.columns:
+                    self.stdout.write(self.style.ERROR(f"Key column '{key_column_name}' not found in the final headers for sheet '{sheet_name}'. Skipping sheet."))
+                    continue
+                
+                df.dropna(subset=[key_column_name], inplace=True, how='all')
+                
+                id_cols = [key_column_name, 'Product Name', 'product_group_id', 'oil_type_id', 'viscosity_id', 'segments', 'liters']
+                for col in id_cols:
+                    if col in df.columns:
+                        df[col] = df[col].ffill()
+
+                agg_funcs = {}
+                for col in df.columns:
+                    if col in df:
+                        if df[col].dtype == 'object':
+                            agg_funcs[col] = lambda x: '\n'.join(x.dropna().astype(str).unique())
+                        else:
+                            agg_funcs[col] = 'first'
+                
+                if key_column_name in agg_funcs:
+                    agg_funcs.pop(key_column_name)
+                
+                processed_df = df.groupby(key_column_name).agg(agg_funcs).reset_index()
+
+                data = processed_df.to_dict('records')
+                
+                success_count = 0
+                error_count = 0
+                
+                for row_num, row in enumerate(data, start=1):
+                    try:
+                        with transaction.atomic():
+                            self.import_product(row, key_column_name)
+                            success_count += 1
+                    except Exception as e:
+                        self.stdout.write(self.style.ERROR(f'Error importing product from sheet "{sheet_name}" (row {row_num}): {row.get(key_column_name)}. Reason: {str(e)}'))
+                        error_count += 1
+                
+                self.stdout.write(self.style.SUCCESS(f'Sheet "{sheet_name}" processing complete. Success: {success_count}, Errors: {error_count}'))
+                total_success += success_count
+                total_errors += error_count
+
+            self.stdout.write(self.style.SUCCESS(f'\nImport finished for all sheets. Total Success: {total_success}, Total Errors: {total_errors}'))
 
         except Exception as e:
-            self.stdout.write(
-                self.style.ERROR(f'Error reading file: {str(e)}')
-            )
-            return
+            self.stdout.write(self.style.ERROR(f'An unexpected error occurred: {str(e)}'))
+               
+    # MODIFIED: The function now accepts key_column_name as an argument.
+    def import_product(self, row, key_column_name):
+        def get_value(key, default=''):
+            value = row.get(key, default)
+            value_str = str(value).strip()
+            return '' if pd.isna(value) or value_str.lower() == 'nan' else value_str
 
-    def import_product(self, row):
-        """Import a single product from a pandas Series (row)"""
-        
-        # Convert pandas Series to dict-like access
-        def safe_get(key, default=''):
-            try:
-                value = row.get(key, default)
-                return str(value).strip() if pd.notna(value) else default
-            except:
-                return default
-
-        # Get Product ID
-        product_id = safe_get('Product ID')
+        # MODIFIED: Use the key_column_name to get the product ID.
+        product_id = get_value(key_column_name)
         if not product_id:
-            raise ValueError("Product ID is required but was not found in the row.")
+            raise ValueError(f"Row has no value in the key column '{key_column_name}'.")
 
-        # Skip if product already exists
         if Product.objects.filter(product_id=product_id).exists():
             self.stdout.write(f'Skipping existing product with ID: {product_id}')
             return
 
+        title = get_value('Product Name')
+        if not title:
+            title = f"Product {product_id}"
+
+        product_slug = slugify(title)
+        if not product_slug:
+             product_slug = str(product_id) # Ensure slug is a string
+        
+        counter = 1
+        original_slug = product_slug
+        while Product.objects.filter(slug=product_slug).exists():
+            product_slug = f'{original_slug}-{counter}'
+            counter += 1
+
         product_data = {
             'product_id': product_id,
-            'title': safe_get('Product Name'),
-            'description': safe_get('Description'),
-            'features_benefits': safe_get('Features & Benefits'),
-            'application': safe_get('Application'),
-            
-            # Performance columns
-            'api': safe_get('API') or None,
-            'ilsac': safe_get('ILSAC') or None,
-            'acea': safe_get('ACEA') or None,
-            'jaso': safe_get('JASO') or None,
-            
-            # Other specifications
-            'oem_sertification': safe_get('OEM Specifications') or None,
-            'recommendations': safe_get('Recommendation') or None,
-            
-            # Additional fields
-            'slug': safe_get('slug') or None,
-            'pds_url': safe_get('pds_url') or None,
-            'sds_url': safe_get('sds_url') or None,
+            'title': title,
+            'slug': product_slug,
+            'description': get_value('Description'),
+            'features_benefits': get_value('Features & Benefits'),
+            'application': get_value('Application'),
+            'api': get_value('API') or None,
+            'ilsac': get_value('ILSAC') or None,
+            'acea': get_value('ACEA') or None,
+            'jaso': get_value('JASO') or None,
+            'oem_sertification': get_value('OEM specifications'),
+            'recommendations': get_value('Recommendation') or None,
+            'pds_url': get_value('pds_url') or None,
+            'sds_url': get_value('sds_url') or None,
         }
         
-        # --- Related Models Management ---
-        
-        # Product Group
+        # Foreign Key and M2M relations remain the same...
         product_group = None
-        product_group_id = safe_get('product_group_id')
+        product_group_id = get_value('product_group_id')
         if product_group_id:
             try:
-                product_group = Product_group.objects.get(id=int(product_group_id))
+                product_group = Product_group.objects.get(id=int(float(product_group_id)))
             except (Product_group.DoesNotExist, ValueError):
-                self.stdout.write(self.style.WARNING(f'Product group with ID {product_group_id} not found.'))
+                self.stdout.write(self.style.WARNING(f'Product group ID {product_group_id} not found for product {product_id}.'))
 
-        # Oil Type
         oil_type = None
-        oil_type_id = safe_get('oil_type_id')
+        oil_type_id = get_value('oil_type_id')
         if oil_type_id:
             try:
-                oil_type = Oil_Types.objects.get(id=int(oil_type_id))
+                oil_type = Oil_Types.objects.get(id=int(float(oil_type_id)))
             except (Oil_Types.DoesNotExist, ValueError):
-                self.stdout.write(self.style.WARNING(f'Oil type with ID {oil_type_id} not found.'))
+                self.stdout.write(self.style.WARNING(f'Oil type ID {oil_type_id} not found for product {product_id}.'))
 
-        # Viscosity
         viscosity = None
-        viscosity_id = safe_get('viscosity_id')
+        viscosity_id = get_value('viscosity_id')
         if viscosity_id:
             try:
-                viscosity = Viscosity.objects.get(id=int(viscosity_id))
+                viscosity = Viscosity.objects.get(id=int(float(viscosity_id)))
             except (Viscosity.DoesNotExist, ValueError):
-                self.stdout.write(self.style.WARNING(f'Viscosity with ID {viscosity_id} not found.'))
+                self.stdout.write(self.style.WARNING(f'Viscosity ID {viscosity_id} not found for product {product_id}.'))
 
-        # Create the product
         product = Product.objects.create(
             **product_data,
             product_group=product_group,
@@ -173,34 +222,24 @@ class Command(BaseCommand):
             viscosity=viscosity,
         )
         
-        # --- Many-to-Many Relationships ---
-
-        # Segments
-        segments_data = safe_get('segments')
+        segments_data = get_value('segments')
         if segments_data:
-            segment_items = [item.strip() for item in str(segments_data).split(',') if item.strip()]
+            segment_items = [item.strip() for item in segments_data.split(',') if item.strip()]
             for segment_item in segment_items:
                 try:
-                    if segment_item.isdigit():
-                        segment = Segments.objects.get(id=int(segment_item))
-                    else:
-                        segment = Segments.objects.get(name__iexact=segment_item)
+                    segment = Segments.objects.get(id=int(segment_item)) if segment_item.isdigit() else Segments.objects.get(title__iexact=segment_item)
                     product.segments.add(segment)
                 except Segments.DoesNotExist:
-                    self.stdout.write(self.style.WARNING(f'Segment "{segment_item}" not found.'))
+                    self.stdout.write(self.style.WARNING(f'Segment "{segment_item}" not found for product {product_id}.'))
 
-        # Liters
-        liters_data = safe_get('liters')
+        liters_data = get_value('liters')
         if liters_data:
             liter_items = [item.strip() for item in str(liters_data).split(',') if item.strip()]
             for liter_item in liter_items:
                 try:
-                    if liter_item.isdigit():
-                        liter = Liter.objects.get(id=int(liter_item))
-                    else:
-                        liter = Liter.objects.get(value__iexact=liter_item)
+                    liter = Liter.objects.get(volume=float(liter_item)) if liter_item.replace('.', '', 1).isdigit() else Liter.objects.get(id=int(liter_item))
                     product.liters.add(liter)
-                except Liter.DoesNotExist:
-                    self.stdout.write(self.style.WARNING(f'Liter "{liter_item}" not found.'))
+                except (Liter.DoesNotExist, ValueError):
+                    self.stdout.write(self.style.WARNING(f'Liter "{liter_item}" not found for product {product_id}.'))
 
         self.stdout.write(self.style.SUCCESS(f'Successfully created product: {product.title}'))

@@ -57,8 +57,17 @@ if DEBUG:
         'http://127.0.0.1:8000',
     ]
 else:
-    CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', '').split(',')
-    CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',')
+    CORS_ALLOWED_ORIGINS = [
+        'http://162.55.55.226',
+        "https://162.55.55.226",
+        'http://162.55.55.226:300',
+        "https://162.55.55.226:300",
+    ]
+
+    CSRF_TRUSTED_ORIGINS = [
+        'http://162.55.55.226',
+        "https://162.55.55.226"
+    ]
 
 
 # Application definition

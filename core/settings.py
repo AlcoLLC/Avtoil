@@ -57,6 +57,7 @@ if DEBUG:
         'http://127.0.0.1:8000',
     ]
 else:
+    ALLOWED_HOSTS = ['*']
     CORS_ALLOWED_ORIGINS = [
         'http://162.55.55.226',
         "https://162.55.55.226",

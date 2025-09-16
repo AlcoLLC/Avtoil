@@ -9,7 +9,10 @@ class ProductGroupAdmin(TranslationAdmin):
     prepopulated_fields = {'slug': ('title',)}
     search_fields = ('title',)
     
-    def get_queryset(self, request):
+    def get_queryset(self, request): 
+
+
+        
         qs = super().get_queryset(request)
         return qs
     

@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <script src="{% static 'assets/js/swiper-bundle.min.js' %}" defer></script>
 {% endblock %}
 
-
+{% if images.count > 0 %}
 <section class="gallery-section">
     <div class="section-header">
         <h3>{% trans "GALLERY" %}</h3>
@@ -37,3 +37,4 @@ document.addEventListener("DOMContentLoaded", function() {
         <div class="swiper-button-prev"></div>
     </div>
 </section>
+{% endif %}

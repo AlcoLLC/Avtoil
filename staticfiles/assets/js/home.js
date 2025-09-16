@@ -20,7 +20,6 @@ const swiper = new Swiper('.home-header .mySwiper', {
 });
 
 
-
 document.addEventListener('DOMContentLoaded', function () {
   const playButton = document.getElementById('playButton');
   const textContent = document.getElementById('textContent');

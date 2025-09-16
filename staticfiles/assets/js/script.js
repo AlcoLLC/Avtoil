@@ -1,23 +1,9 @@
 window.addEventListener('scroll', function () {
   const fixedWhatsapp = document.querySelector('.fixed-whatsapp');
   const scrollPosition = window.scrollY;
-
   if (scrollPosition > 100) {
-    fixedWhatsapp.style.opacity = '1';
-    fixedWhatsapp.style.visibility = 'visible';
-
-    if (headerWhatsapp) {
-      headerWhatsapp.style.opacity = '0';
-      headerWhatsapp.style.visibility = 'hidden';
-    }
-  } else {
     fixedWhatsapp.style.opacity = '0';
     fixedWhatsapp.style.visibility = 'hidden';
-
-    if (headerWhatsapp) {
-      headerWhatsapp.style.opacity = '1';
-      headerWhatsapp.style.visibility = 'visible';
-    }
   }
 });
 

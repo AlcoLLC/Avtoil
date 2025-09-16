@@ -11,23 +11,9 @@ class ProductGroupAdmin(TranslationAdmin):
     
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        home_count = qs.filter(in_home=True).count()
         return qs
     
-    def save_model(self, request, obj, form, change):
-        if obj.in_home:
-            current_home_count = Product_group.objects.filter(in_home=True).count()
-            if not change:
-                if current_home_count >= 8:
-                    from django.contrib import messages
-                    messages.error(request, "A maximum of 8 product groups can be displayed on the home page.")
-                    obj.in_home = False
-            elif change:
-                if current_home_count >= 8 and not Product_group.objects.get(pk=obj.pk).in_home:
-                    from django.contrib import messages
-                    messages.error(request, "A maximum of 8 product groups can be displayed on the home page.")
-                    obj.in_home = False
-        
+    def save_model(self, request, obj, form, change):     
         super().save_model(request, obj, form, change)
     
     class Media:

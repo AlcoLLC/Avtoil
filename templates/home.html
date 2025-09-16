@@ -126,7 +126,7 @@
     {% endfor %}
   </div>
 
-  {% if product_groups|length > 8 %}
+  {% if product_groups|length > 0 %}
   <button class="button-style" id="seeMoreBtn">{% trans "See more" %}</button>
   {% endif %}
 </div>
@@ -391,8 +391,8 @@
 
 
 {% block page_js %}
-<script src="{% static 'assets/js/home.min.js' %}" defer></script>
 <script src="{% static 'assets/js/swiper-bundle.min.js' %}" defer></script>
+<script src="{% static 'assets/js/home.min.js' %}" defer></script>
 <script src="{% static 'assets/js/raphael.min.js' %}" defer></script>
 <script src="{% static 'assets/js/settings.min.js' %}" defer></script>
 <script src="{% static 'assets/js/paths.min.js' %}" defer></script>

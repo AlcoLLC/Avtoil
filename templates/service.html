@@ -35,71 +35,41 @@
 
 <!-- Breadcrumb -->
 <div class="breadcrumb container">
-  <a href="{% url 'home:home' %}" aria-label="Home Page">{% trans "Home page" %}</a>|
-  <p>{% trans "Services" %}</p>
+  <a href="{% url 'home:home' %}" aria-label="Home Page">{% trans "Home page" %}</a>|
+  <p>{% trans "Services" %}</p>
 </div>
-
-{% if service_highlights %}
-<section class="service-main-content container">
-  <h2>{{ service_highlights.title1 }}</h2>
-  <img loading="lazy"  src="{{ service_highlights.image1.url }}" alt="" />
-</section>
-{% endif %}
-
-{% if service_contents %}
-
-<div class="services">
-  <div class="container services-sections">
-    {% for content in service_contents %}
-    <div class="section">
-      <div class="content">
-        <h2>{{ content.title|linebreaksbr }}</h2>
-        <p>{{ content.description|linebreaksbr }}</p>
-        {% comment %} <a href="#" class="button-style">{% trans "Discover more" %}</a> {% endcomment %}
-      </div>
-
-      <img loading="lazy" 
-        
-        class="image-container"
-        src="{{ content.image.url }}"
-        alt="{{ content.title }}"
-      />
-    </div>
-    {% endfor %}
-    
-  </div>
-</div>
-{% endif %}
-
-{% if service_highlights.title2 %}
-<section class="service-main-content container">
-  <h2>{{ service_highlights.title2 }}</h2>
-  <img loading="lazy"  src="{{ service_highlights.image2.url }}" alt="" />
-</section>
-
-{% endif %} 
 
 {% if services %}
-<div class="image-text-section container">
   {% for service in services %}
+    <section class="service-main-content container">
+      <h2>{{ service.title }}</h2>
+      <img loading="lazy" src="{{ service.image.url }}" alt="{{ service.title }}" />
+      {% if service.description %}
+        <p>{{ service.description|linebreaksbr }}</p>
+      {% endif %}
+    </section>
 
-  <div class="image-text-content">
-    <img loading="lazy"   src="{{ service.image.url }}" alt="{{ service.title }}" />
-    <div class="text-container">
-      <h3>{{ service.title|linebreaksbr }}</h3>
-      <p>{{ service.description|linebreaksbr }}</p>
-    </div>
-  </div>
-
-  {% endfor %}
-</div>
-{% endif %} 
-
-{% if service_highlights.title3 %}
-<section class="service-main-content container">
-  <h2>{{ service_highlights.title3 }}</h2>
-  <img loading="lazy"  src="{{ service_highlights.image3.url }}" alt="" />
-</section>
+    {% if service.service.all %}
+      <div class="services">
+        <div class="container services-sections">
+          {% for content in service.service.all %}
+            <div class="section">
+              <div class="content">
+                <h2>{{ content.title|linebreaksbr }}</h2>
+                <p>{{ content.description|linebreaksbr }}</p>
+              </div>
+              <img
+                loading="lazy"
+                class="image-container"
+                src="{{ content.image.url }}"
+                alt="{{ content.title }}"
+              />
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+    {% endfor %}
 {% endif %}
 
 

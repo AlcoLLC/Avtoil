@@ -1,23 +1,20 @@
+# views.py
+
 from django.shortcuts import render
-from .models import (
-    Service,
-    Service_Content,
-    ServiceHighlight
-)
-from home.models import PartnerLogo, Gallery as  Supplier
+from .models import Service, ServiceLastContent
+from home.models import PartnerLogo
 from django.utils.translation import gettext_lazy as _
 
 
 def service_view(request):
-    services = Service.objects.all()
-    service_contents = Service_Content.objects.all() 
+    services = Service.objects.prefetch_related('service').all()
+    service_last_content = ServiceLastContent.objects.first()
     partner_logos = PartnerLogo.objects.all()
-    service_highlights = ServiceHighlight.objects.first()
+    
     context = {
         'services': services,
-        'service_contents': service_contents,
+        'service_last_content': service_last_content, 
         'partner_logos': partner_logos,
-        'service_highlights': service_highlights,
     }
     
     return render(request, 'service.html', context)

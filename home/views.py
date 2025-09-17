@@ -10,7 +10,7 @@ from datetime import timedelta
 import json
 
 from news.models import News
-from services.models import Service, Service_Content
+from services.models import Service, ServiceContent
 from products.models import Product_group, Product
 from about.models import Sustainability
 from .models import PartnerLogo, Gallery as GalleryImage, HomeSwiper, BecomePartner, SolutionsHybrid, Review
@@ -32,7 +32,7 @@ def home_view(request):
     products = Product.objects.filter(in_home=True).order_by('order') 
     partner_logos = PartnerLogo.objects.all()
     images = GalleryImage.objects.all().order_by('order')
-    service_contents = Service_Content.objects.filter(in_home=True)
+    service_contents = ServiceContent.objects.filter(in_home=True)
     sustainability = Sustainability.objects.last()
     sustainability_image = sustainability.image if sustainability else None
     become_partner = BecomePartner.objects.last()      

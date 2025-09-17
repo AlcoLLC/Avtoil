@@ -1,25 +1,18 @@
 from django.contrib import admin
-from django.contrib import messages
 from modeltranslation.admin import TranslationAdmin, TranslationTabularInline
-from .models import (
-    Service,
-    Service_Content,
-    ServiceHighlight
-)
+from .models import Service, ServiceContent, ServiceLastContent
 
-class Service_ContentInline(TranslationTabularInline):
-    model = Service_Content
+class ServiceContentInline(TranslationTabularInline):
+    model = ServiceContent
     extra = 1
+    fields = ('title', 'description', 'image', 'in_home')
 
 
 @admin.register(Service)
 class ServiceAdmin(TranslationAdmin):
     list_display = ('title',)
     search_fields = ('title',)
-
-    fields = (
-        'title', 'description', 'image'
-    )
+    inlines = [ServiceContentInline]
     
     class Media:
         js = (
@@ -31,31 +24,16 @@ class ServiceAdmin(TranslationAdmin):
             'screen': ('modeltranslation/css/tabbed_translation_fields.css',),
         }
 
-
-@admin.register(Service_Content)
+@admin.register(ServiceContent)
 class ServiceContentAdmin(TranslationAdmin):
-    list_display = ('title', 'in_home',)
-    search_fields = ('title', )
-    
-    fields = (
-        'title', 
-        'description', 
-        'image', 
-        'in_home'
-    )
+    list_display = ('title', 'service', 'in_home')
+    list_filter = ('in_home', 'service') 
+    search_fields = ('title', 'description')
+    fields = ('service', 'title', 'description', 'image', 'in_home')
 
 
-@admin.register(ServiceHighlight)
-class ServiceHighlightAdmin(TranslationAdmin):
-    fields = ('title1', 'image1', 'title2', 'image2', 'title3', 'image3')
-    list_display = ('title1', 'title2', 'title3')
-
-    def has_add_permission(self, request):
-        if ServiceHighlight.objects.exists():
-            return False
-        return True
-
-    def changelist_view(self, request, extra_context=None):
-        if not ServiceHighlight.objects.exists():
-            messages.info(request, "Please add the data only once. ")
-        return super().changelist_view(request, extra_context)
+@admin.register(ServiceLastContent)
+class ServiceLastContentAdmin(TranslationAdmin):
+    list_display = ('title',)
+    search_fields = ('title',)
+    fields = ('title', 'description', 'image')

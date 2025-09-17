@@ -11,7 +11,7 @@ from contact.models import  ContactInfo
 from faq.models import FAQ
 from home.models import HomeSwiper, BecomePartner, SolutionsHybrid, SolutionsHybridContent, Review
 from news.models import News, News_Content
-from services.models import Service, Service_Content
+from services.models import Service, ServiceContent, ServiceLastContent
 from partnership.models import Partnership, Partnership_Content, PartnerReview, PartnerFAQ
 
 
@@ -333,6 +333,7 @@ def search_view(request):
             })
         
         # Search Service
+        # Search Service
         if is_english:
             service_fields = ['title', 'description']
         else:
@@ -347,7 +348,7 @@ def search_view(request):
                 'title': title,
                 'description': description[:200] + '...' if description and len(description) > 200 else description,
                 'url': '/services/',
-                'type': 'Service',
+                'type': 'Xidmət',
                 'image': service.image.url if service.image else None
             })
         
@@ -356,17 +357,37 @@ def search_view(request):
             service_content_fields = ['title', 'description']
         else:
             service_content_fields = ['title', 'description']
-        
-        service_contents = Service_Content.objects.filter(build_search_q(query, service_content_fields)).distinct()
+            
+        service_contents = ServiceContent.objects.filter(build_search_q(query, service_content_fields)).distinct()
 
         for content in service_contents:
+            title = content.title or ''
+            description = content.description or ''
+            parent_service_title = f"{content.service.title}: " if content.service else ""
+            results.append({
+                'title': f"{parent_service_title}{title}",
+                'description': description[:200] + '...' if description and len(description) > 200 else description,
+                'url': '/services/',
+                'type': 'Xidmət Məzmunu',
+                'image': content.image.url if content.image else None
+            })
+            
+        # Search Service Last Content
+        if is_english:
+            service_last_content_fields = ['title', 'description']
+        else:
+            service_last_content_fields = ['title', 'description']
+            
+        service_last_contents = ServiceLastContent.objects.filter(build_search_q(query, service_last_content_fields)).distinct()
+        
+        for content in service_last_contents:
             title = content.title or ''
             description = content.description or ''
             results.append({
                 'title': title,
                 'description': description[:200] + '...' if description and len(description) > 200 else description,
                 'url': '/services/',
-                'type': 'Service Content',
+                'type': 'Xidmət Məlumatı',
                 'image': content.image.url if content.image else None
             })
         

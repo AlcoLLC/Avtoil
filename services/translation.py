@@ -1,5 +1,5 @@
 from modeltranslation.translator import register, TranslationOptions
-from .models import Service,  Service_Content, ServiceHighlight
+from .models import Service, ServiceContent, ServiceLastContent
 
 
 @register(Service)
@@ -7,13 +7,11 @@ class ServiceTranslationOptions(TranslationOptions):
     fields = ('title', 'description')
 
 
-@register(Service_Content)
+@register(ServiceContent)
 class ServiceContentTranslationOptions(TranslationOptions):
     fields = ('title', 'description')
 
 
-@register(ServiceHighlight)
-class ServiceContentTranslationOptions(TranslationOptions):
-    fields = ('title1', 'title2', 'title3')
-
-
+@register(ServiceLastContent)
+class ServiceLastContentTranslationOptions(TranslationOptions):
+    fields = ('title', 'description')

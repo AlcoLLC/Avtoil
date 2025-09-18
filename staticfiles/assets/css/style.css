@@ -1530,7 +1530,7 @@ footer .alco-privacy p {
     max-height: 35px;
   }
 
-    .brochure-text-section h4 {
+  .brochure-text-section h4 {
     font-size: 20px;
     line-height: 22px;
   }
@@ -1543,7 +1543,6 @@ footer .alco-privacy p {
     font-size: 16px;
     line-height: 20px;
   }
-
 }
 @media (max-width: 480px) {
   .logos-section .content {
@@ -1660,6 +1659,7 @@ footer .alco-privacy p {
   letter-spacing: -1%;
   color: #0056b8;
   margin-bottom: 16px;
+  text-align: left;
 }
 .services-sections p {
   font-weight: 400;
@@ -1668,6 +1668,7 @@ footer .alco-privacy p {
   letter-spacing: 0;
   color: #0056b8;
   margin-bottom: 24px;
+  text-align: left;
 }
 @media (max-width: 900px) {
   .services-sections .image-container {
@@ -1880,15 +1881,14 @@ footer .alco-privacy p {
   }
 }
 
-
-.text-image- {
+.text-image-section {
   margin: 60px auto;
   display: flex;
   flex-direction: column;
   gap: 30px;
 }
 
-.image-text-section .image-text-content {
+.text-image-section .text-image-content {
   display: flex;
   align-items: stretch;
   justify-content: space-between;
@@ -1897,19 +1897,24 @@ footer .alco-privacy p {
   min-height: 300px;
 }
 
-.image-text-section .image-text-content:nth-child(even) {
+.text-image-section .content {
+  width: 100%;
+  min-height: 300px;
+}
+
+.text-image-section .image-text-content:nth-child(even) {
   flex-direction: row-reverse;
 }
 
-.image-text-section img {
+.text-image-section .content img {
   display: block;
-  width: 40%;
-  min-height: 100%;
+  width: 100%;
+  height: 200px;
   border-radius: 10px;
   object-fit: cover;
 }
-.image-text-section .text-container {
-  width: 60%;
+.text-image-section .text-container {
+  width: 100%;
   min-height: 100%;
   border-radius: 10px;
   padding: 30px;
@@ -1922,17 +1927,17 @@ footer .alco-privacy p {
   gap: 20px;
 }
 
-.image-text-section .image-text-content:nth-child(even) .text-container {
+.text-image-section .image-text-content:nth-child(even) .text-container {
   background-color: #0056b8;
   color: #fff;
 }
 
-.image-text-section .text-container h3 {
+.text-image-section .text-container h3 {
   font-weight: 600;
   font-size: 24px;
   line-height: 26px;
 }
-.image-text-section .text-container p {
+.text-image-section .text-container p {
   line-height: 18px;
   font-size: 16px;
   font-weight: 400;
@@ -2003,5 +2008,67 @@ footer .alco-privacy p {
   to {
     opacity: 0;
     transform: translateX(100%);
+  }
+}
+
+.service-main-content {
+  margin: 50px auto;
+  margin-top: 70px;
+}
+
+.service-main-content h2 {
+  font-weight: 600;
+  font-size: 44px;
+  line-height: 50px;
+  color: #001c5c;
+  max-width: 80%;
+  margin-bottom: 50px;
+  text-align: left;
+}
+
+.service-main-content img {
+  width: 100%;
+  height: 450px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+}
+.service-main-content p {
+  text-align: left;
+}
+
+@media (max-width: 950px) {
+  .service-main-content h2 {
+    font-size: 38px;
+    line-height: 42px;
+    margin-bottom: 40px;
+  }
+
+  .service-main-content img {
+    height: 400px;
+  }
+}
+
+@media (max-width: 700px) {
+  .service-main-content h2 {
+    font-size: 32px;
+    line-height: 38px;
+    margin-bottom: 30px;
+  }
+
+  .service-main-content img {
+    height: 350px;
+  }
+}
+@media (max-width: 500px) {
+  .service-main-content h2 {
+    font-size: 26px;
+    line-height: 30px;
+    margin-bottom: 20px;
+  }
+
+  .service-main-content img {
+    height: 260px;
   }
 }

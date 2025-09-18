@@ -42,7 +42,9 @@
 {% if services %}
   {% for service in services %}
     <section class="service-main-content section-content container">
+      {% if service.title %}
       <h2>{{ service.title }}</h2>
+      {% endif %}
       <img loading="lazy" src="{{ service.image.url }}" alt="{{ service.title }}" />
       {% if service.description %}
             <p>{{ service.description|safe|linebreaksbr }}</p>

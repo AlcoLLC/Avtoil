@@ -136,10 +136,10 @@ class Review(models.Model):
 class PageHeader(models.Model):
     slug = models.SlugField(
     unique=True,
-    help_text="This must exactly match the <strong>name</strong> used in the URL pattern. For example: <code>about</code> "
+    help_text="This must exactly match the <strong>name</strong> used in the URL pattern. For example: <code>about</code>"
     ) 
-    title = models.CharField(max_length=255)
-    description = models.TextField()
+    title = models.CharField(max_length=255, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to='page-headers/')
     link = models.URLField(blank=True, null=True)
 

@@ -63,11 +63,17 @@ else:
         "https://162.55.55.226",
         'http://162.55.55.226:300',
         "https://162.55.55.226:300",
+        'https://www.avtoil.de',
+        'http://www.avtoil.de',
+        'https://avtoil.de',
+        'http://avtoil.de',
     ]
 
     CSRF_TRUSTED_ORIGINS = [
         'http://162.55.55.226',
-        "https://162.55.55.226"
+        "https://162.55.55.226",
+        'http://avtoil.de',
+        'https://avtoil.de',
     ]
 
 

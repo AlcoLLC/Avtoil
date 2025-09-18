@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from itertools import zip_longest
 from .models import (
     AboutAvtoil, AboutContent, AboutLastContent, DocumentsCertification, Sustainability
 )
@@ -15,10 +16,17 @@ def about_page_view(request):
     car_logos = CarLogo.objects.all()
     images = GalleryImage.objects.all().order_by('order')
 
+    # iki-iki qruplaşdırmaq
+    def grouper(iterable, n):
+        args = [iter(iterable)] * n
+        return zip_longest(*args)
+
+    about_last_contents_grouped = list(grouper(about_last_contents, 2))
+
     context = {
         'about_avtoil': about_avtoil,
         'about_contents': about_contents,
-        'about_last_contents': about_last_contents,
+        'about_last_contents_grouped': about_last_contents_grouped,
         'documents_cert': documents_cert,
         'sustainability': sustainability,
         'sustainability_image': sustainability_image,

@@ -154,17 +154,24 @@
 </div>
 
 <div class="text-image-section container">
-  {%for content in about_last_contents %}
-  <div class="content">
-    {% if content.image %}
-    <img loading="lazy"   src="{{ content.image.url }}" alt="{{ content.title }}" />
-    {% endif %}
-    <div class="text-container">
-      <p>{{ content.description|linebreaksbr }}</p>
-    </div>
+  {% for group in about_last_contents_grouped %}
+  <div class="text-image-content">
+    {% for content in group %}
+      {% if content %}
+      <div class="content">
+        <div class="text-container">
+          <p>{{ content.description|linebreaksbr }}</p>
+        </div>
+        {% if content.image %}
+        <img loading="lazy" src="{{ content.image.url }}" alt="{{ content.title }}">
+        {% endif %}
+      </div>
+      {% endif %}
+    {% endfor %}
   </div>
   {% endfor %}
 </div>
+
 
 {% if sustainability %}
 <div class="sustainability-container">

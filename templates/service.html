@@ -41,11 +41,11 @@
 
 {% if services %}
   {% for service in services %}
-    <section class="service-main-content container">
+    <section class="service-main-content section-content container">
       <h2>{{ service.title }}</h2>
       <img loading="lazy" src="{{ service.image.url }}" alt="{{ service.title }}" />
       {% if service.description %}
-        <p>{{ service.description|linebreaksbr }}</p>
+            <p>{{ service.description|safe|linebreaksbr }}</p>
       {% endif %}
     </section>
 
@@ -56,7 +56,7 @@
             <div class="section">
               <div class="content">
                 <h2>{{ content.title|linebreaksbr }}</h2>
-                <p>{{ content.description|linebreaksbr }}</p>
+                <p>{{ content.description|safe|linebreaksbr }}</p>
               </div>
               <img
                 loading="lazy"
@@ -71,6 +71,21 @@
     {% endif %}
     {% endfor %}
 {% endif %}
+
+{% if service_last_content %}
+<section class="service-main-content section-content container">
+      {% if service_last_content.title  %}
+           <h2>{{ service_last_content.title }}</h2>
+      {% endif %}
+      <img loading="lazy" src="{{ service_last_content.image.url }}" alt="{{ service.title }}" />
+      {% if service_last_content.description %}
+            <p>{{ service_last_content.description|safe|linebreaksbr }}</p>
+      {% endif %}
+</section>
+
+{% endif %}
+
+
 
 
 

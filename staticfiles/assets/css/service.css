@@ -18,6 +18,10 @@
   object-fit: cover;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+}
+.service-main-content p {
+  text-align: left;
 }
 
 @media (max-width: 950px) {

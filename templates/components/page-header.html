@@ -7,14 +7,22 @@
   <div class="header-content container">
     {% if page_header.link %}
     <a class="header-text" aria-label="Page header content" href="{{ page_header.link }}">
+      {% if page_header.title %}
       <h1>{{ page_header.title }}</h1>
+      {% endif %}
+      {% if page_header.description %}
       <p>{{ page_header.description }}</p>
+      {% endif %}
       <span class="button-style">{% trans "Go to catalog" %}</span>
     </a>
      {% else %}
     <div class="header-text">
+      {% if page_header.title %}
       <h1>{{ page_header.title }}</h1>
+      {% endif %}
+      {% if page_header.description %}
       <p>{{ page_header.description }}</p>
+      {% endif %}
     </div>
     {% endif %}
   </div>

@@ -158,7 +158,7 @@
   <div class="text-image-content">
     {% for content in group %}
       {% if content %}
-      <div class="content">
+      <div class="content {% if forloop.parentloop.counter0|divisibleby:2 %}{% if forloop.counter0 == 1 %}blue-bg{% endif %}{% else %}{% if forloop.counter0 == 0 %}blue-bg{% endif %}{% endif %}">
         <div class="text-container">
           <p>{{ content.description|linebreaksbr }}</p>
         </div>
@@ -171,7 +171,6 @@
   </div>
   {% endfor %}
 </div>
-
 
 {% if sustainability %}
 <div class="sustainability-container">

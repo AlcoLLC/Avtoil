@@ -1254,6 +1254,30 @@ footer .alco-privacy p {
 .brochure img {
   width: 100%;
 }
+.brochure-text-section h4 {
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 40px;
+  letter-spacing: 0%;
+  color: #8c8c8c;
+  margin: 30px 0;
+}
+.brochure-text-section .brochure-text {
+  display: flex;
+  gap: 50px;
+  align-items: start;
+  justify-content: space-between;
+  margin-top: 20px;
+  color: #8c8c8c;
+}
+
+.brochure-text-section .brochure-text p {
+  color: #8c8c8c;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 28px;
+}
+
 @media (min-width: 521px) and (max-width: 1024px) {
   .gallery-section .swiper {
     height: 33vh;
@@ -1409,6 +1433,20 @@ footer .alco-privacy p {
     line-height: 26px;
     padding: 0 20px;
   }
+
+  .brochure-text-section h4 {
+    font-size: 26px;
+    line-height: 30px;
+    margin: 25px 0;
+  }
+  .brochure-text-section .brochure-text {
+    gap: 40px;
+  }
+
+  .brochure-text-section .brochure-text p {
+    font-size: 18px;
+    line-height: 22px;
+  }
 }
 @media (max-width: 992px) {
   .logos-section .next,
@@ -1463,6 +1501,16 @@ footer .alco-privacy p {
     width: 100px;
     max-height: 42px;
   }
+
+  .brochure-text-section h4 {
+    font-size: 22px;
+    line-height: 26px;
+  }
+
+  .brochure-text-section .brochure-text p {
+    font-size: 16px;
+    line-height: 20px;
+  }
 }
 @media (max-width: 576px) {
   .logos-section .next,
@@ -1481,6 +1529,21 @@ footer .alco-privacy p {
     width: 100px;
     max-height: 35px;
   }
+
+    .brochure-text-section h4 {
+    font-size: 20px;
+    line-height: 22px;
+  }
+  .brochure-text-section .brochure-text {
+    gap: 20px;
+    flex-direction: column;
+  }
+
+  .brochure-text-section .brochure-text p {
+    font-size: 16px;
+    line-height: 20px;
+  }
+
 }
 @media (max-width: 480px) {
   .logos-section .content {
@@ -1815,6 +1878,64 @@ footer .alco-privacy p {
     font-size: 14px;
     line-height: 16px;
   }
+}
+
+
+.text-image- {
+  margin: 60px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.image-text-section .image-text-content {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 30px;
+  width: 100%;
+  min-height: 300px;
+}
+
+.image-text-section .image-text-content:nth-child(even) {
+  flex-direction: row-reverse;
+}
+
+.image-text-section img {
+  display: block;
+  width: 40%;
+  min-height: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+}
+.image-text-section .text-container {
+  width: 60%;
+  min-height: 100%;
+  border-radius: 10px;
+  padding: 30px;
+  background-color: #f5f5f5;
+  color: #001c5c;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.image-text-section .image-text-content:nth-child(even) .text-container {
+  background-color: #0056b8;
+  color: #fff;
+}
+
+.image-text-section .text-container h3 {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 26px;
+}
+.image-text-section .text-container p {
+  line-height: 18px;
+  font-size: 16px;
+  font-weight: 400;
 }
 
 /* Messages styling */

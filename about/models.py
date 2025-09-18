@@ -16,7 +16,14 @@ class AboutContent(models.Model):
 
     def __str__(self):
         return f"{self.title}"
+    
+class AboutLastContent(models.Model):
+    image = models.ImageField(upload_to='about_last_content/',  blank=True, null=True)
+    description = models.TextField()
 
+    def __str__(self):
+        return f"{self.description[:50]}"
+    
 class DocumentsCertification(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
@@ -31,3 +38,5 @@ class Sustainability(models.Model):
         upload_to='sustainability/', blank=True, null=True)
      def __str__(self):
         return f"{self.title}"
+     
+    

@@ -1,6 +1,6 @@
 from modeltranslation.translator import register, TranslationOptions
 from .models import (
-    AboutAvtoil, AboutContent, DocumentsCertification, Sustainability
+    AboutAvtoil, AboutContent,AboutLastContent, DocumentsCertification, Sustainability
 )
 
 from django.utils import translation
@@ -16,6 +16,10 @@ class AboutAvtoilTranslationOptions(TranslationOptions):
 class AboutContentTranslationOptions(TranslationOptions):
     fields = ('title', 'description')
 
+
+@register(AboutLastContent)
+class AboutLastContentTranslationOptions(TranslationOptions):
+    fields = ('description',)
 
 
 @register(DocumentsCertification)

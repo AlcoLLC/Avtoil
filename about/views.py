@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import (
-    AboutAvtoil, AboutContent, DocumentsCertification, Sustainability
+    AboutAvtoil, AboutContent, AboutLastContent, DocumentsCertification, Sustainability
 )
 from home.models import PartnerLogo, CarLogo, Gallery as GalleryImage
 
@@ -10,16 +10,15 @@ def about_page_view(request):
     sustainability = Sustainability.objects.last()
     sustainability_image = sustainability.image if sustainability else None
     about_contents = AboutContent.objects.all()
-    about_content1 = about_contents[:2]
-    about_content2 = about_contents[2:]
+    about_last_contents = AboutLastContent.objects.all()
     partner_logos = PartnerLogo.objects.all()
     car_logos = CarLogo.objects.all()
     images = GalleryImage.objects.all().order_by('order')
 
     context = {
         'about_avtoil': about_avtoil,
-        'about_content1': about_content1,
-        'about_content2': about_content2,
+        'about_contents': about_contents,
+        'about_last_contents': about_last_contents,
         'documents_cert': documents_cert,
         'sustainability': sustainability,
         'sustainability_image': sustainability_image,

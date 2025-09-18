@@ -135,7 +135,7 @@
 </div>
 
 <div class="image-text-section container">
-  {%for content in about_content1 %}
+  {%for content in about_contents %}
   <div class="image-text-content">
     <img loading="lazy"   src="{{ content.image.url }}" alt="{{ content.title }}" />
     <div class="text-container">
@@ -153,12 +153,13 @@
   </div>
 </div>
 
-<div class="image-text-section container">
-  {%for content in about_content2 %}
-  <div class="image-text-content">
+<div class="text-image-section container">
+  {%for content in about_last_contents %}
+  <div class="content">
+    {% if content.image %}
     <img loading="lazy"   src="{{ content.image.url }}" alt="{{ content.title }}" />
+    {% endif %}
     <div class="text-container">
-      <h3>{{ content.title|linebreaksbr }}</h3>
       <p>{{ content.description|linebreaksbr }}</p>
     </div>
   </div>

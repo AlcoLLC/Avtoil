@@ -1882,193 +1882,82 @@ footer .alco-privacy p {
 }
 
 .text-image-section {
-  margin: 60px auto;
   display: flex;
   flex-direction: column;
   gap: 30px;
 }
 
 .text-image-section .text-image-content {
-  display: flex;
-  align-items: stretch;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 30px;
-  width: 100%;
-  min-height: 300px;
+  align-items: stretch;
 }
 
 .text-image-section .content {
-  width: 100%;
-  min-height: 300px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  background: #f5f5f5;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
-.text-image-section .image-text-content:nth-child(even) {
-  flex-direction: row-reverse;
+.text-image-section .text-container {
+  padding: 30px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.text-image-section .text-container p {
+  color: #333;
+  font-size: 16px;
+  line-height: 1.7;
+  margin: 0;
+  text-align: left;
 }
 
 .text-image-section .content img {
-  display: block;
   width: 100%;
-  height: 200px;
-  border-radius: 10px;
-  object-fit: cover;
-}
-.text-image-section .text-container {
-  width: 100%;
-  min-height: 100%;
-  border-radius: 10px;
-  padding: 30px;
-  background-color: #f5f5f5;
-  color: #001c5c;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-}
-
-.text-image-section .image-text-content:nth-child(even) .text-container {
-  background-color: #0056b8;
-  color: #fff;
-}
-
-.text-image-section .text-container h3 {
-  font-weight: 600;
-  font-size: 24px;
-  line-height: 26px;
-}
-.text-image-section .text-container p {
-  line-height: 18px;
-  font-size: 16px;
-  font-weight: 400;
-}
-
-/* Messages styling */
-.messages-container {
-  position: fixed;
-  top: 50px;
-  right: 50px;
-  z-index: 999999999999999;
-  max-width: 400px;
-}
-
-.messages-container .alert {
-  padding: 15px 20px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  position: relative;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  animation: slideIn 0.3s ease-out;
-}
-
-.messages-container .alert-success {
-  background-color: #d4edda;
-  border: 1px solid #c3e6cb;
-  color: #155724;
-}
-
-.messages-container .alert-error {
-  background-color: #f8d7da;
-  border: 1px solid #f5c6cb;
-  color: #721c24;
-}
-
-.messages-container .close-btn {
-  position: absolute;
-  top: 80px;
-  right: 15px;
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  color: inherit;
-  opacity: 0.7;
-}
-
-.messages-container .close-btn:hover {
-  opacity: 1;
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-.alert {
-  animation: slideIn 0.3s ease-out, fadeOut 0.5s ease-in 4.5s forwards;
-}
-
-@keyframes fadeOut {
-  to {
-    opacity: 0;
-    transform: translateX(100%);
-  }
-}
-
-.service-main-content {
-  margin: 50px auto;
-  margin-top: 70px;
-}
-
-.service-main-content h2 {
-  font-weight: 600;
-  font-size: 44px;
-  line-height: 50px;
-  color: #001c5c;
-  max-width: 80%;
-  margin-bottom: 50px;
-  text-align: left;
-}
-
-.service-main-content img {
-  width: 100%;
-  height: 450px;
+  height: 250px;
   object-fit: cover;
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  margin-bottom: 15px;
-}
-.service-main-content p {
-  text-align: left;
 }
 
-@media (max-width: 950px) {
-  .service-main-content h2 {
-    font-size: 38px;
-    line-height: 42px;
-    margin-bottom: 40px;
+.text-image-section .content.blue-bg .text-container {
+  background: #0056b8;
+  color: white;
+}
+
+.text-image-section .content.blue-bg .text-container p {
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .text-image-section .text-image-content {
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
 
-  .service-main-content img {
-    height: 400px;
+  .text-image-section .text-container {
+    padding: 20px;
+  }
+
+  .text-image-section .text-container p {
+    font-size: 14px;
   }
 }
 
-@media (max-width: 700px) {
-  .service-main-content h2 {
-    font-size: 32px;
-    line-height: 38px;
-    margin-bottom: 30px;
+@media (max-width: 480px) {
+  .text-image-section {
+    gap: 20px;
   }
 
-  .service-main-content img {
-    height: 350px;
+  .text-image-section .text-container {
+    padding: 15px;
   }
-}
-@media (max-width: 500px) {
-  .service-main-content h2 {
-    font-size: 26px;
-    line-height: 30px;
-    margin-bottom: 20px;
-  }
-
-  .service-main-content img {
-    height: 260px;
+  .text-image-section .content img {
+    height: 200px;
   }
 }

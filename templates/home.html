@@ -181,19 +181,13 @@
       <main class="main-content">
         <section id="preview" class="preview section-margin-b-m">
           <div class="preview__content">
-            <div id="map-container">
-
-            </div>
+            <div id="map-container"></div>
             <link href="{% static 'assets/css/map.css' %}" rel="stylesheet" />
             <script src="{% static 'assets/js/raphael.min.js' %}"></script>
             <script src="{% static 'assets/js/settings.js' %}"></script>
             <script src="{% static 'assets/js/paths.js' %}"></script>
             <script src="{% static 'assets/js/mapp.js' %}"></script>
-            <script>
-              map_cfg.mapWidth = 0;
-              var map = new FlaMap(map_cfg);
-              map.drawOnDomReady("map-container");
-            </script>
+           
           </div>
         </section>
       </main>

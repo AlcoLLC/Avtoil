@@ -12,10 +12,10 @@ def news_list(request):
     
     return render(request, 'news.html', context)
 
-def news_detail(request, pk):
-    news = get_object_or_404(News, pk=pk, is_active=True)
+def news_detail(request, slug):
+    news = get_object_or_404(News, slug=slug, is_active=True)
     contents = news.contents.all()
-    latest_news = News.objects.filter(is_active=True).exclude(pk=pk)[:3]
+    latest_news = News.objects.filter(is_active=True).exclude(pk=news.pk)[:3]
     
     context = {
         'news': news,

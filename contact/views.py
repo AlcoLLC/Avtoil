@@ -1,5 +1,3 @@
-# contact/views.py
-
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
@@ -11,11 +9,11 @@ import logging
 import requests
 from django.utils.translation import gettext_lazy as _
 
-# Hataları ve işlemleri takip etmek için logger kurulumu
+RECAPTCHA_SITE_KEY = settings.RECAPTCHA_SITE_KEY
+RECAPTCHA_SECRET_KEY = settings.RECAPTCHA_SECRET_KEY
 logger = logging.getLogger(__name__)
 
 def get_client_ip(request):
-    """Kullanıcının IP adresini alır"""
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
         ip = x_forwarded_for.split(',')[0].strip()
@@ -24,55 +22,95 @@ def get_client_ip(request):
     return ip
 
 def verify_recaptcha(recaptcha_response, client_ip=None):
-    """Google reCAPTCHA doğrulamasını yapar"""
-    if not settings.RECAPTCHA_SECRET_KEY:
-        logger.error("RECAPTCHA_SECRET_KEY ayarlanmamış.")
+    """Verify reCAPTCHA response with better error handling"""
+    
+    if not recaptcha_response:
+        logger.warning("Empty reCAPTCHA response received")
         return False
-
+    
+    if not RECAPTCHA_SECRET_KEY:
+        logger.error("RECAPTCHA_SECRET_KEY not configured")
+        return False
+    
+    # Clean the response
+    recaptcha_response = recaptcha_response.strip()
+    
     data = {
-        'secret': settings.RECAPTCHA_SECRET_KEY,
+        'secret': RECAPTCHA_SECRET_KEY,
         'response': recaptcha_response
     }
+    
+    # Add IP address if available
     if client_ip:
         data['remoteip'] = client_ip
-
+    
     try:
-        response = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data, timeout=5)
+        response = requests.post(
+            'https://www.google.com/recaptcha/api/siteverify', 
+            data=data, 
+            timeout=15
+        )
+        
+        logger.debug(f"reCAPTCHA verification HTTP status: {response.status_code}")
         response.raise_for_status()
+        
         result = response.json()
-        logger.debug(f"reCAPTCHA doğrulama sonucu: {result}")
+        logger.debug(f"reCAPTCHA verification result: {result}")
+        
         if not result.get('success', False):
-            logger.warning(f"reCAPTCHA doğrulaması başarısız oldu: {result.get('error-codes')}")
+            error_codes = result.get('error-codes', [])
+            logger.warning(f"reCAPTCHA verification failed with error codes: {error_codes}")
             return False
+        
+        logger.info("reCAPTCHA verification successful")
         return True
+        
     except requests.RequestException as e:
-        logger.error(f"reCAPTCHA doğrulama isteği başarısız: {str(e)}")
+        logger.error(f"reCAPTCHA verification error: {str(e)}")
         return False
 
 def contact_view(request):
-    contact_info = ContactInfo.objects.last()
+    help_choices = [
+        ('buy', _('I would like to buy Avtoil products.')),  
+        ('become_dealer', _('I am interested in becoming a distributor.')),
+        ('technical', _('I need technical support.')),
+        ('other', _('Other'))
+    ]
+
+    form_labels = {
+        'help_type': _('How can we help you?'),
+        'company': _('Company name'),
+        'question': _('Your question, wish and/or clarification'),
+        'first_name': _('First name'),
+        'last_name': _('Last name'),
+        'email': _('Email address'),
+        'phone': _('Phone number'),
+        'required': '*',
+        'send_button': _('Send')
+    }
     
     if request.method == 'POST':
+        # Get reCAPTCHA response
+        recaptcha_response = request.POST.get('g-recaptcha-response')
         client_ip = get_client_ip(request)
         
-        # 1. reCAPTCHA Doğrulaması
-        recaptcha_response = request.POST.get('g-recaptcha-response')
+        # Verify reCAPTCHA
         if not recaptcha_response or not verify_recaptcha(recaptcha_response, client_ip):
             messages.error(request, _("reCAPTCHA verification failed. Please try again."))
-            logger.warning(f"Geçersiz reCAPTCHA denemesi. IP: {client_ip}")
-            # Hata durumunda formu ve girilen verileri korumak için sayfayı yeniden render et
-            return render(request, 'contact.html', {'contact_info': contact_info})
+            logger.warning("Form submission with invalid or missing reCAPTCHA.")
+            return redirect('contact:contact')
 
-        # 2. IP Adresi Gönderim Limiti Kontrolü (5'e çıkarıldı)
+        # Check IP submission limit (allow 5 submissions per IP)
         if client_ip:
-            submission_count = Contact.objects.filter(ip_address=client_ip).count()
-            if submission_count >= 5:
-                messages.error(request, _("You have reached the maximum number of submissions from this IP address."))
-                logger.warning(f"Gönderim limitini aşan IP: {client_ip}")
-                return render(request, 'contact.html', {'contact_info': contact_info})
+            existing_submissions = Contact.objects.filter(ip_address=client_ip).count()
+            logger.info(f"Existing submissions from IP {client_ip}: {existing_submissions}")
+            
+            if existing_submissions >= 5:
+                messages.error(request, _("Maximum number of submissions (5) reached from this IP address. Please contact us directly."))
+                logger.warning(f"IP address {client_ip} exceeded submission limit (5).")
+                return redirect('contact:contact')
 
-        # 3. Form Verisi Eşleştirmesi (KRİTİK DÜZELTME)
-        # HTML'den gelen 'firstName' gibi isimleri formun beklediği 'first_name' gibi isimlere eşleştiriyoruz.
+        # Prepare form data
         form_data = {
             'help_type': request.POST.get('helpType'),
             'company_name': request.POST.get('company'),
@@ -87,62 +125,104 @@ def contact_view(request):
         
         if form.is_valid():
             try:
+                # Save the contact form
                 contact_instance = form.save(commit=False)
-                contact_instance.ip_address = client_ip
+                contact_instance.ip_address = client_ip 
                 contact_instance.save()
-                logger.info(f"Yeni iletişim formu kaydedildi. IP: {client_ip}")
-
-                # E-posta için yardım türünün okunabilir metnini al
-                help_type_display = form.instance.get_help_type_display()
                 
-                # Yönetici Bildirim E-postası
-                admin_subject = f"Yeni İletişim Formu: {form.cleaned_data['first_name']} {form.cleaned_data['last_name']}"
-                admin_html_content = render_to_string('emails/contactform.html', {
-                    'first_name': form.cleaned_data['first_name'],
-                    'last_name': form.cleaned_data['last_name'],
-                    'company': form.cleaned_data['company_name'],
-                    'email': form.cleaned_data['email'],
-                    'phone_number': form.cleaned_data['phone_number'],
-                    'help_type': help_type_display,
-                    'message': form.cleaned_data['question'],
-                    'ip_address': client_ip,
-                })
+                logger.info(f"Contact form saved successfully with ID: {contact_instance.id}")
                 
-                send_mail(
-                    admin_subject, '', settings.EMAIL_HOST_USER,
-                    ['aytacmehdizade08@gmail.com'], # Yönetici e-posta adresi
-                    html_message=admin_html_content,
-                    fail_silently=False
-                )
-
-                # Kullanıcı Onay E-postası
-                user_subject = _("Thank you for contacting Avtoil")
-                user_html_content = f"Dear {form.cleaned_data['first_name']},<br><br>Thank you for contacting Avtoil. We have received your inquiry. Our team will get back to you shortly.<br><br>Best regards,<br>Avtoil Support Team"
-                
-                send_mail(
-                    user_subject, '', settings.EMAIL_HOST_USER,
-                    [form.cleaned_data['email']],
-                    html_message=user_html_content,
-                    fail_silently=False
-                )
+                # Send emails
+                send_contact_emails(contact_instance, form.cleaned_data)
                 
                 messages.success(request, _("Your message has been sent successfully. Thank you for contacting us!"))
-                return redirect('/') # Başarılı olunca ana sayfaya yönlendir
+                return redirect('/')
             
             except Exception as e:
-                logger.error(f"Form işlenirken veya e-posta gönderilirken hata oluştu: {str(e)}", exc_info=True)
+                logger.error(f"Error processing form or sending email: {str(e)}", exc_info=True)
                 messages.error(request, _("An error occurred while sending your message. Please try again or contact us directly."))
-        
-        else: # Form geçersizse
-            logger.warning(f"Form doğrulama hataları: {form.errors.as_json()}")
+                return redirect('contact:contact')
+        else:
+            logger.warning(f"Form validation errors: {form.errors.as_json()}")
             for field, errors in form.errors.items():
                 for error in errors:
                     messages.error(request, f"{field.replace('_', ' ').title()}: {error}")
-    
-    # GET isteği veya başarısız POST sonrası için context
+            return redirect('contact:contact')
+
+    contact_info = ContactInfo.objects.last()
     context = {
+        'help_choices': help_choices,
         'contact_info': contact_info,
-        'recaptcha_site_key': settings.RECAPTCHA_SITE_KEY,
+        'form_labels': form_labels,
+        'recaptcha_site_key': settings.RECAPTCHA_SITE_KEY, 
     }
     
     return render(request, 'contact.html', context)
+
+def send_contact_emails(contact_instance, cleaned_data):
+    """Send both admin notification and user confirmation emails"""
+    
+    logger.info(f"Starting email send process for contact: {cleaned_data['email']}")
+    
+    try:
+        # Get help type display name
+        help_type_display = dict(Contact.HELP_CHOICES).get(cleaned_data['help_type'])
+        
+        # 1. Admin notification email
+        admin_subject = f"New Contact Form Submission from {cleaned_data['first_name']} {cleaned_data['last_name']}"
+        admin_html_email = render_to_string('emails/contactform.html', {
+            'first_name': cleaned_data['first_name'],
+            'last_name': cleaned_data['last_name'],
+            'company': cleaned_data['company_name'],
+            'email': cleaned_data['email'],
+            'phone_number': cleaned_data['phone_number'],
+            'help_type': help_type_display,
+            'message': cleaned_data['question'],
+            'ip_address': contact_instance.ip_address,
+        })
+        
+        # Get admin email from settings or use default
+        admin_emails = getattr(settings, 'CONTACT_ADMIN_EMAIL', ['info@avtoil.de'])
+        if isinstance(admin_emails, str):
+            admin_emails = [admin_emails]
+        
+        send_mail(
+            subject=admin_subject,
+            message='',  # Plain text fallback
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=admin_emails,
+            html_message=admin_html_email,
+            fail_silently=False,
+        )
+        
+        logger.info(f"Admin notification email sent successfully to {admin_emails}")
+        
+        # 2. User confirmation email
+        user_subject = _("Thank you for contacting Avtoil")
+        user_message = f"""
+Dear {cleaned_data['first_name']},
+
+Thank you for contacting Avtoil. We have received your inquiry and our team will get back to you shortly.
+
+Your submission details:
+- Help Type: {help_type_display}
+- Company: {cleaned_data.get('company_name', 'N/A')}
+- Message: {cleaned_data['question'][:100]}{'...' if len(cleaned_data['question']) > 100 else ''}
+
+Best regards,
+Avtoil Support Team
+"""
+        
+        send_mail(
+            subject=user_subject,
+            message=user_message,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[cleaned_data['email']],
+            fail_silently=False,
+        )
+        
+        logger.info(f"User confirmation email sent successfully to {cleaned_data['email']}")
+        
+    except Exception as e:
+        logger.error(f"Failed to send emails: {str(e)}", exc_info=True)
+        raise  # Re-raise to trigger error message in view

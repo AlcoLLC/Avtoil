@@ -125,23 +125,20 @@ def contact_view(request):
         
         if form.is_valid():
             try:
-                # Save the contact form
                 contact_instance = form.save(commit=False)
                 contact_instance.ip_address = client_ip 
                 contact_instance.save()
                 
-                logger.info(f"Contact form saved successfully with ID: {contact_instance.id}")
-                
-                # Send emails
                 send_contact_emails(contact_instance, form.cleaned_data)
                 
-                messages.success(request, _("Your message has been sent successfully. Thank you for contacting us!"))
+                messages.success(request, _("..."))
                 return redirect('/')
             
             except Exception as e:
                 logger.error(f"Error processing form or sending email: {str(e)}", exc_info=True)
                 messages.error(request, _("An error occurred while sending your message. Please try again or contact us directly."))
                 return redirect('contact:contact')
+        
         else:
             logger.warning(f"Form validation errors: {form.errors.as_json()}")
             for field, errors in form.errors.items():

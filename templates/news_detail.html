@@ -104,7 +104,7 @@
           </div>
           <div class="news-content">
             <p>{{ news.content|truncatewords:10 }}</p>
-             <a href="{% url 'news:news_detail' news.pk %}" aria-label="{{ news.title }}"><h2>{{ news.title|linebreaksbr }}</h2> <span>{% trans "Read more" %} <i class="fa-solid fa-chevron-right"></i></span></a>
+             <a href="{% url 'news:news_detail' news.slug %}" aria-label="{{ news.title }}"><h2>{{ news.title|linebreaksbr }}</h2> <span>{% trans "Read more" %} <i class="fa-solid fa-chevron-right"></i></span></a>
           </div>
         </div>
         {% empty %} {% endfor %}

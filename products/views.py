@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 from django.core.paginator import Paginator
-from .models import Product, Product_group, Segments, Oil_Types, Viscosity, ProductProperty
+from .models import Product, Product_group, Segments, Oil_Types, Viscosity, ProductProperty, Product_Group_Category
 from django.http import JsonResponse
 from home.models import PartnerLogo, Gallery as GalleryImage
 import requests
@@ -43,6 +43,15 @@ def product_list(request):
     viscosity_options = Viscosity.objects.all()
     images = GalleryImage.objects.all().order_by('order')
     partner_logos = PartnerLogo.objects.all()
+
+    product_group_categories = None
+    if len(selected_product_groups) == 1:
+        try:
+            selected_group = Product_group.objects.get(slug=selected_product_groups[0])
+            product_group_categories = Product_Group_Category.objects.filter(product_group=selected_group)
+        except Product_group.DoesNotExist:
+            product_group_categories = None
+
     context = {
         'products': page_obj,
         'page_obj': page_obj,
@@ -57,6 +66,7 @@ def product_list(request):
         'selected_viscosity': selected_viscosity,
         'images': images,
         'partner_logos': partner_logos,
+        'product_group_categories': product_group_categories,
     }
     return render(request, 'product.html', context)
 

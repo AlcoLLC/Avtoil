@@ -89,7 +89,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_filters',
-    'django_ckeditor_5',
+    'ckeditor',
+    'ckeditor_uploader',
     'rosetta',
     'django.contrib.sites',
     'django.contrib.sitemaps',
@@ -118,16 +119,20 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CKEDITOR_5_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_IMAGE_BACKEND = "pillow"
+CKEDITOR_JQUERY_URL = 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js'
 
-CKEDITOR_5_CONFIGS = {
+CKEDITOR_CONFIGS = {
     'default': {
-        'toolbar': ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'],
-        'language': 'en',
+        'toolbar': 'full',
+        'height': 300,
+        'width': '400px',
+        'removePlugins': 'stylesheetparser',
+        'allowedContent': True,
+        'extraAllowedContent': '*(*);*{*}',
     },
 }
-
-CKEDITOR5_UPLOAD_PATH = "uploads/ckeditor5/"
 
 
 ROOT_URLCONF = 'core.urls'
@@ -238,15 +243,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafile/')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# CKEditor
-CKEDITOR_5_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
-CKEDITOR5_UPLOAD_PATH = "uploads/ckeditor5/"
-CKEDITOR_5_CONFIGS = {
-    'default': {
-        'toolbar': ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'],
-        'language': 'en',
-    },
-}
 
 DIRECTORIES_TO_PROCESS = [
     {'source': 'staticfiles/images_1', 'target': 'staticfiles/images'},

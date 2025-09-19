@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% load static %} {% load i18n %} 
 
 {% block title %} {{ news.title|truncatechars:57 }} {% endblock %}
-{% block description %} {{ news.content|truncatechars:160 }} {% endblock %}
+{% block description %} {{ news.content|safe|truncatechars:160 }} {% endblock %}
 
 {% block page_css %}
   <link rel="stylesheet" href="{% static 'assets/css/news.css' %}" />
@@ -13,7 +13,7 @@
   "@context": "https://schema.org",
   "@type": "NewsArticle",
   "headline": "{{ news.title|striptags }}",
-  "description": "{{ news.content|striptags|truncatechars:160 }}",
+  "description": "{{ news.content|safe|striptags|truncatechars:160 }}",
   "image": [
     "{{ news.image.url }}"
   ],
@@ -64,7 +64,7 @@
       <h2>{{ news.title|linebreaksbr }}</h2>
       <p>{{ news.published_date|date:"F d, Y" }}</p>
        <img loading="lazy"   src="{{ news.image.url }}" alt="{{ news.title }}" />
-      <p>{{ news.content|linebreaksbr }}</p>
+      <p>{{ news.content|safe|linebreaksbr }}</p>
     </div>
   </div>
 
@@ -103,7 +103,7 @@
             {% endif %}
           </div>
           <div class="news-content">
-            <p>{{ news.content|truncatewords:10 }}</p>
+            <p>{{ news.content|safe|truncatewords:10 }}</p>
              <a href="{% url 'news:news_detail' news.slug %}" aria-label="{{ news.title }}"><h2>{{ news.title|linebreaksbr }}</h2> <span>{% trans "Read more" %} <i class="fa-solid fa-chevron-right"></i></span></a>
           </div>
         </div>

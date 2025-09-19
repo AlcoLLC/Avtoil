@@ -262,7 +262,7 @@
           {% endif %}
         </div>
         <div class="news-content">
-          <p>{{ news.content|truncatewords:10 }}</p>
+          <p>{{ news.content|safe|truncatewords:10 }}</p>
 
           <a href="{% url 'news:news_detail' news.slug %}" aria-label="{{ news.title }}">
             <h2>{{ news.title|linebreaksbr }}</h2>

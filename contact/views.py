@@ -145,12 +145,16 @@ def contact_view(request):
             logger.warning("Form submission with invalid or missing reCAPTCHA.")
             return redirect('contact:contact')
 
-        # IP address check
+        # IP address check - limit to 5 submissions per IP
         client_ip = get_client_ip(request)
-        if client_ip and Contact.objects.filter(ip_address=client_ip).exists():
-            messages.error(request, _("You have already submitted the form from this IP address."))
-            logger.warning(f"Duplicate submission attempt from IP address {client_ip}.")
-            return redirect('contact:contact')
+        if client_ip:
+            ip_submission_count = Contact.objects.filter(ip_address=client_ip).count()
+            if ip_submission_count >= 5:
+                messages.error(request, _("You have reached the maximum number of submissions (5) from this IP address."))
+                logger.warning(f"IP address {client_ip} has reached submission limit: {ip_submission_count} submissions")
+                return redirect('contact:contact')
+            else:
+                logger.info(f"IP address {client_ip} has {ip_submission_count} previous submissions, allowing new submission")
 
         # Form data preparation
         form_data = {
@@ -171,7 +175,7 @@ def contact_view(request):
                 contact_instance = form.save(commit=False)
                 contact_instance.ip_address = client_ip 
                 contact_instance.save()
-                logger.info(f"Contact form saved successfully for {form_data['email']}")
+                logger.info(f"Contact form saved successfully for {form_data['email']} from IP {client_ip}")
                 
                 # Send emails
                 email_success, email_message = send_contact_emails(form.cleaned_data, client_ip)

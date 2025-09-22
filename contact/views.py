@@ -52,18 +52,15 @@ def test_email_configuration():
         return False
 
 def send_contact_emails(form_data, client_ip):
-    """
-    E-postaları göndermek için düzenlenmiş fonksiyon.
-    Artık tek bir e-posta hem yöneticiye hem de kullanıcıya gönderiliyor.
-    """
+    """Separate function for sending emails with better error handling"""
     try:
-        # E-posta ayarlarını test et
+        # Test email configuration first
         test_email_configuration()
         
         help_type_display = dict(Contact.HELP_CHOICES).get(form_data['help_type'])
         
-        # Yönetici ve kullanıcı için ortak e-posta içeriği
-        email_subject = f"İletişim Formu: {form_data['first_name']} {form_data['last_name']}"
+        # Admin email
+        email_subject = f"New Contact Form Submission from {form_data['first_name']} {form_data['last_name']}"
         html_email = render_to_string('emails/contactform.html', {
             'first_name': form_data['first_name'],
             'last_name': form_data['last_name'],
@@ -75,30 +72,48 @@ def send_contact_emails(form_data, client_ip):
             'ip_address': client_ip,
         })
         
-        # E-postayı hem yöneticiye hem de formu dolduran kullanıcıya gönder
-        # Alıcı listesine kullanıcının e-postasını ekledik
-        recipient_list = ['aytacmehdizade08@gmail.com', form_data['email']]
-        
-        email_message = EmailMessage(
+        # Send admin email using EmailMessage for better control
+        admin_email = EmailMessage(
             subject=email_subject,
             body=html_email,
             from_email=settings.EMAIL_HOST_USER,
-            to=recipient_list,
+            to=['aytacmehdizade08@gmail.com', form_data['email']],  # Admin və user emaillərinə göndərilir
         )
-        email_message.content_subtype = "html"
+        admin_email.content_subtype = "html"
         
-        result = email_message.send(fail_silently=False)
-        logger.info(f"E-posta gönderim sonucu: {result}. Alıcılar: {recipient_list}")
+        admin_result = admin_email.send(fail_silently=False)
+        logger.info(f"Admin email send result: {admin_result}")
         
-        return True, "E-posta başarıyla gönderildi."
+        # User confirmation email
+        user_email_subject = "Thank you for contacting Avtoil"
+        user_email_message = f"""
+Dear {form_data['first_name']},
+
+Thank you for contacting Avtoil. We have received your inquiry. Our team will get back to you shortly.
+
+Best regards,
+Avtoil Support Team
+"""
+        
+        user_email = EmailMessage(
+            subject=user_email_subject,
+            body=user_email_message,
+            from_email=settings.EMAIL_HOST_USER,
+            to=[form_data['email']],
+        )
+        
+        user_result = user_email.send(fail_silently=False)
+        logger.info(f"User email send result: {user_result}")
+        
+        return True, "Emails sent successfully"
         
     except SMTPException as smtp_error:
-        error_msg = f"SMTP Hatası: {str(smtp_error)}"
+        error_msg = f"SMTP Error: {str(smtp_error)}"
         logger.error(error_msg, exc_info=True)
         return False, error_msg
     
     except Exception as e:
-        error_msg = f"E-posta gönderme hatası: {str(e)}"
+        error_msg = f"Email sending error: {str(e)}"
         logger.error(error_msg, exc_info=True)
         return False, error_msg
 

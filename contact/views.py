@@ -59,6 +59,9 @@ def send_contact_emails(form_data, client_ip):
         
         help_type_display = dict(Contact.HELP_CHOICES).get(form_data['help_type'])
         
+        user_email = form_data['email']
+        logger.info(f"Attempting to send emails to admin and user: {user_email}")
+        
         # Admin email
         email_subject = f"New Contact Form Submission from {form_data['first_name']} {form_data['last_name']}"
         html_email = render_to_string('emails/contactform.html', {
@@ -72,51 +75,56 @@ def send_contact_emails(form_data, client_ip):
             'ip_address': client_ip,
         })
         
-        # Send admin email using EmailMessage for better control
-        admin_email = EmailMessage(
-            subject=email_subject,
-            body=html_email,
-            from_email=settings.EMAIL_HOST_USER,
-            to=['aytacmehdizade08@gmail.com'],
-        )
-        admin_email.content_subtype = "html"
+        # 1. Send admin email
+        try:
+            admin_email = EmailMessage(
+                subject=email_subject,
+                body=html_email,
+                from_email=settings.EMAIL_HOST_USER,
+                to=['aytacmehdizade08@gmail.com'],
+            )
+            admin_email.content_subtype = "html"
+            admin_result = admin_email.send(fail_silently=False)
+            logger.info(f"Admin email send result: {admin_result}")
+        except Exception as e:
+            logger.error(f"Admin email failed: {str(e)}")
         
-        admin_result = admin_email.send(fail_silently=False)
-        logger.info(f"Admin email send result: {admin_result}")
+        # 2. Send form copy to user
+        try:
+            user_copy_subject = f"Your message copy - Avtoil Contact Form"
+            user_copy_email = EmailMessage(
+                subject=user_copy_subject,
+                body=html_email,
+                from_email=settings.EMAIL_HOST_USER,
+                to=[user_email],
+            )
+            user_copy_email.content_subtype = "html"
+            user_copy_result = user_copy_email.send(fail_silently=False)
+            logger.info(f"User copy email to {user_email} send result: {user_copy_result}")
+        except Exception as e:
+            logger.error(f"User copy email to {user_email} failed: {str(e)}")
         
-        # Send the same form details to the user who submitted the form
-        user_copy_subject = f"Copy of your message to Avtoil - {form_data['first_name']} {form_data['last_name']}"
-        user_copy_email = EmailMessage(
-            subject=user_copy_subject,
-            body=html_email,
-            from_email=settings.EMAIL_HOST_USER,
-            to=[form_data['email']],
-        )
-        user_copy_email.content_subtype = "html"
-        
-        user_copy_result = user_copy_email.send(fail_silently=False)
-        logger.info(f"User copy email send result: {user_copy_result}")
-        
-        # User confirmation email
-        user_email_subject = "Thank you for contacting Avtoil"
-        user_email_message = f"""
-Dear {form_data['first_name']},
+        # 3. Send thank you email to user  
+        try:
+            user_email_subject = "Thank you for contacting Avtoil"
+            user_email_message = f"""Dear {form_data['first_name']},
 
 Thank you for contacting Avtoil. We have received your inquiry. Our team will get back to you shortly.
 
 Best regards,
-Avtoil Support Team
-"""
-        
-        user_email = EmailMessage(
-            subject=user_email_subject,
-            body=user_email_message,
-            from_email=settings.EMAIL_HOST_USER,
-            to=[form_data['email']],
-        )
-        
-        user_result = user_email.send(fail_silently=False)
-        logger.info(f"User email send result: {user_result}")
+Avtoil Support Team"""
+            
+            thank_you_email = EmailMessage(
+                subject=user_email_subject,
+                body=user_email_message,
+                from_email=settings.EMAIL_HOST_USER,
+                to=[user_email],
+            )
+            
+            thank_you_result = thank_you_email.send(fail_silently=False)
+            logger.info(f"Thank you email to {user_email} send result: {thank_you_result}")
+        except Exception as e:
+            logger.error(f"Thank you email to {user_email} failed: {str(e)}")
         
         return True, "Emails sent successfully"
         

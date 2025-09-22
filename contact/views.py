@@ -77,12 +77,25 @@ def send_contact_emails(form_data, client_ip):
             subject=email_subject,
             body=html_email,
             from_email=settings.EMAIL_HOST_USER,
-            to=['aytacmehdizade08@gmail.com', form_data['email']],  # Admin və user emaillərinə göndərilir
+            to=['aytacmehdizade08@gmail.com'],
         )
         admin_email.content_subtype = "html"
         
         admin_result = admin_email.send(fail_silently=False)
         logger.info(f"Admin email send result: {admin_result}")
+        
+        # Send the same form details to the user who submitted the form
+        user_copy_subject = f"Copy of your message to Avtoil - {form_data['first_name']} {form_data['last_name']}"
+        user_copy_email = EmailMessage(
+            subject=user_copy_subject,
+            body=html_email,
+            from_email=settings.EMAIL_HOST_USER,
+            to=[form_data['email']],
+        )
+        user_copy_email.content_subtype = "html"
+        
+        user_copy_result = user_copy_email.send(fail_silently=False)
+        logger.info(f"User copy email send result: {user_copy_result}")
         
         # User confirmation email
         user_email_subject = "Thank you for contacting Avtoil"

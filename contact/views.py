@@ -8,6 +8,8 @@ from .forms import ContactForm
 import logging
 import requests
 from django.utils.translation import gettext_lazy as _
+from smtplib import SMTPException
+from django.core.mail import EmailMessage
 
 RECAPTCHA_SITE_KEY = settings.RECAPTCHA_SITE_KEY
 RECAPTCHA_SECRET_KEY = settings.RECAPTCHA_SECRET_KEY
@@ -36,6 +38,85 @@ def verify_recaptcha(recaptcha_response):
         logger.error(f"reCAPTCHA verification error: {str(e)}")
         return False
 
+def test_email_configuration():
+    """Test email configuration and log results"""
+    try:
+        logger.info(f"Email Host: {settings.EMAIL_HOST}")
+        logger.info(f"Email Port: {settings.EMAIL_PORT}")
+        logger.info(f"Email User: {settings.EMAIL_HOST_USER}")
+        logger.info(f"Use TLS: {getattr(settings, 'EMAIL_USE_TLS', 'Not set')}")
+        logger.info(f"Use SSL: {getattr(settings, 'EMAIL_USE_SSL', 'Not set')}")
+        return True
+    except Exception as e:
+        logger.error(f"Email configuration error: {str(e)}")
+        return False
+
+def send_contact_emails(form_data, client_ip):
+    """Separate function for sending emails with better error handling"""
+    try:
+        # Test email configuration first
+        test_email_configuration()
+        
+        help_type_display = dict(Contact.HELP_CHOICES).get(form_data['help_type'])
+        
+        # Admin email
+        email_subject = f"New Contact Form Submission from {form_data['first_name']} {form_data['last_name']}"
+        html_email = render_to_string('emails/contactform.html', {
+            'first_name': form_data['first_name'],
+            'last_name': form_data['last_name'],
+            'company': form_data['company_name'],
+            'email': form_data['email'],
+            'phone_number': form_data['phone_number'],
+            'help_type': help_type_display,
+            'message': form_data['question'],
+            'ip_address': client_ip,
+        })
+        
+        # Send admin email using EmailMessage for better control
+        admin_email = EmailMessage(
+            subject=email_subject,
+            body=html_email,
+            from_email=settings.EMAIL_HOST_USER,
+            to=['aytacmehdizade08@gmail.com'],
+        )
+        admin_email.content_subtype = "html"
+        
+        admin_result = admin_email.send(fail_silently=False)
+        logger.info(f"Admin email send result: {admin_result}")
+        
+        # User confirmation email
+        user_email_subject = "Thank you for contacting Avtoil"
+        user_email_message = f"""
+Dear {form_data['first_name']},
+
+Thank you for contacting Avtoil. We have received your inquiry. Our team will get back to you shortly.
+
+Best regards,
+Avtoil Support Team
+"""
+        
+        user_email = EmailMessage(
+            subject=user_email_subject,
+            body=user_email_message,
+            from_email=settings.EMAIL_HOST_USER,
+            to=[form_data['email']],
+        )
+        
+        user_result = user_email.send(fail_silently=False)
+        logger.info(f"User email send result: {user_result}")
+        
+        return True, "Emails sent successfully"
+        
+    except SMTPException as smtp_error:
+        error_msg = f"SMTP Error: {str(smtp_error)}"
+        logger.error(error_msg, exc_info=True)
+        return False, error_msg
+    
+    except Exception as e:
+        error_msg = f"Email sending error: {str(e)}"
+        logger.error(error_msg, exc_info=True)
+        return False, error_msg
+
 def contact_view(request):
     help_choices = [
         ('buy', _('I would like to buy Avtoil products.')),  
@@ -57,18 +138,21 @@ def contact_view(request):
     }
     
     if request.method == 'POST':
+        # reCAPTCHA verification
         recaptcha_response = request.POST.get('g-recaptcha-response')
         if not recaptcha_response or not verify_recaptcha(recaptcha_response):
             messages.error(request, _("reCAPTCHA verification failed. Please try again."))
             logger.warning("Form submission with invalid or missing reCAPTCHA.")
             return redirect('contact:contact')
 
+        # IP address check
         client_ip = get_client_ip(request)
         if client_ip and Contact.objects.filter(ip_address=client_ip).exists():
             messages.error(request, _("You have already submitted the form from this IP address."))
             logger.warning(f"Duplicate submission attempt from IP address {client_ip}.")
             return redirect('contact:contact')
 
+        # Form data preparation
         form_data = {
             'help_type': request.POST.get('helpType'),
             'company_name': request.POST.get('company'),
@@ -83,57 +167,28 @@ def contact_view(request):
         
         if form.is_valid():
             try:
+                # Save contact instance
                 contact_instance = form.save(commit=False)
                 contact_instance.ip_address = client_ip 
                 contact_instance.save()
+                logger.info(f"Contact form saved successfully for {form_data['email']}")
                 
-                help_type_display = dict(Contact.HELP_CHOICES).get(form.cleaned_data['help_type'])
+                # Send emails
+                email_success, email_message = send_contact_emails(form.cleaned_data, client_ip)
                 
-                email_subject = f"New Contact Form Submission from {form.cleaned_data['first_name']} {form.cleaned_data['last_name']}"
-                html_email = render_to_string('emails/contactform.html', {
-                    'first_name': form.cleaned_data['first_name'],
-                    'last_name': form.cleaned_data['last_name'],
-                    'company': form.cleaned_data['company_name'],
-                    'email': form.cleaned_data['email'],
-                    'phone_number': form.cleaned_data['phone_number'],
-                    'help_type': help_type_display,
-                    'message': form.cleaned_data['question'],
-                    'ip_address': client_ip,
-                })
-                
-                send_mail(
-                    email_subject,
-                    '',
-                    settings.EMAIL_HOST_USER,
-                    ['info@avtoil.de'],  
-                    html_message=html_email,
-                    fail_silently=False,
-                )
-                
-                user_email_subject = "Thank you for contacting Avtoil" 
-                user_email_message = f"""
-Dear {form.cleaned_data['first_name']},
-
-Thank you for contacting Avtoil. We have received your inquiry. Our team will get back to you shortly.
-
-Best regards,
-Avtoil Support Team
-"""  
-                
-                send_mail(
-                    user_email_subject,
-                    user_email_message,
-                    settings.EMAIL_HOST_USER,
-                    [form.cleaned_data['email']],
-                    fail_silently=False,
-                )   
-                
-                messages.success(request, _("Your message has been sent successfully. Thank you for contacting us!"))
-                return redirect('/')
-            
+                if email_success:
+                    messages.success(request, _("Your message has been sent successfully. Thank you for contacting us!"))
+                    logger.info(f"Contact form processed successfully for {form_data['email']}")
+                    return redirect('/')
+                else:
+                    # Form was saved but emails failed
+                    logger.error(f"Form saved but email failed: {email_message}")
+                    messages.warning(request, _("Your message has been received, but there was an issue sending confirmation emails. We will contact you soon."))
+                    return redirect('/')
+                    
             except Exception as e:
-                logger.error(f"Error processing form or sending email: {str(e)}", exc_info=True)
-                messages.error(request, _("An error occurred while sending your message. Please try again or contact us directly."))
+                logger.error(f"Error processing form: {str(e)}", exc_info=True)
+                messages.error(request, _("An error occurred while processing your message. Please try again or contact us directly."))
                 return redirect('contact:contact')
         else:
             logger.warning(f"Form validation errors: {form.errors.as_json()}")

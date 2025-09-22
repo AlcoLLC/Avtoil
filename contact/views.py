@@ -52,18 +52,18 @@ def test_email_configuration():
         return False
 
 def send_contact_emails(form_data, client_ip):
-    """Separate function for sending emails with better error handling"""
+    """
+    E-postaları göndermek için düzenlenmiş fonksiyon.
+    Artık tek bir e-posta hem yöneticiye hem de kullanıcıya gönderiliyor.
+    """
     try:
-        # Test email configuration first
+        # E-posta ayarlarını test et
         test_email_configuration()
         
         help_type_display = dict(Contact.HELP_CHOICES).get(form_data['help_type'])
         
-        user_email = form_data['email']
-        logger.info(f"Attempting to send emails to admin and user: {user_email}")
-        
-        # Admin email
-        email_subject = f"New Contact Form Submission from {form_data['first_name']} {form_data['last_name']}"
+        # Yönetici ve kullanıcı için ortak e-posta içeriği
+        email_subject = f"İletişim Formu: {form_data['first_name']} {form_data['last_name']}"
         html_email = render_to_string('emails/contactform.html', {
             'first_name': form_data['first_name'],
             'last_name': form_data['last_name'],
@@ -75,66 +75,30 @@ def send_contact_emails(form_data, client_ip):
             'ip_address': client_ip,
         })
         
-        # 1. Send admin email
-        try:
-            admin_email = EmailMessage(
-                subject=email_subject,
-                body=html_email,
-                from_email=settings.EMAIL_HOST_USER,
-                to=['aytacmehdizade08@gmail.com'],
-            )
-            admin_email.content_subtype = "html"
-            admin_result = admin_email.send(fail_silently=False)
-            logger.info(f"Admin email send result: {admin_result}")
-        except Exception as e:
-            logger.error(f"Admin email failed: {str(e)}")
+        # E-postayı hem yöneticiye hem de formu dolduran kullanıcıya gönder
+        # Alıcı listesine kullanıcının e-postasını ekledik
+        recipient_list = ['aytacmehdizade08@gmail.com', form_data['email']]
         
-        # 2. Send form copy to user
-        try:
-            user_copy_subject = f"Your message copy - Avtoil Contact Form"
-            user_copy_email = EmailMessage(
-                subject=user_copy_subject,
-                body=html_email,
-                from_email=settings.EMAIL_HOST_USER,
-                to=[user_email],
-            )
-            user_copy_email.content_subtype = "html"
-            user_copy_result = user_copy_email.send(fail_silently=False)
-            logger.info(f"User copy email to {user_email} send result: {user_copy_result}")
-        except Exception as e:
-            logger.error(f"User copy email to {user_email} failed: {str(e)}")
+        email_message = EmailMessage(
+            subject=email_subject,
+            body=html_email,
+            from_email=settings.EMAIL_HOST_USER,
+            to=recipient_list,
+        )
+        email_message.content_subtype = "html"
         
-        # 3. Send thank you email to user  
-        try:
-            user_email_subject = "Thank you for contacting Avtoil"
-            user_email_message = f"""Dear {form_data['first_name']},
-
-Thank you for contacting Avtoil. We have received your inquiry. Our team will get back to you shortly.
-
-Best regards,
-Avtoil Support Team"""
-            
-            thank_you_email = EmailMessage(
-                subject=user_email_subject,
-                body=user_email_message,
-                from_email=settings.EMAIL_HOST_USER,
-                to=[user_email],
-            )
-            
-            thank_you_result = thank_you_email.send(fail_silently=False)
-            logger.info(f"Thank you email to {user_email} send result: {thank_you_result}")
-        except Exception as e:
-            logger.error(f"Thank you email to {user_email} failed: {str(e)}")
+        result = email_message.send(fail_silently=False)
+        logger.info(f"E-posta gönderim sonucu: {result}. Alıcılar: {recipient_list}")
         
-        return True, "Emails sent successfully"
+        return True, "E-posta başarıyla gönderildi."
         
     except SMTPException as smtp_error:
-        error_msg = f"SMTP Error: {str(smtp_error)}"
+        error_msg = f"SMTP Hatası: {str(smtp_error)}"
         logger.error(error_msg, exc_info=True)
         return False, error_msg
     
     except Exception as e:
-        error_msg = f"Email sending error: {str(e)}"
+        error_msg = f"E-posta gönderme hatası: {str(e)}"
         logger.error(error_msg, exc_info=True)
         return False, error_msg
 

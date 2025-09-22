@@ -77,7 +77,7 @@ def send_contact_emails(form_data, client_ip):
             subject=email_subject,
             body=html_email,
             from_email=settings.EMAIL_HOST_USER,
-            to=['aytacmehdizade08@gmail.com'],
+            to=['aytacmehdizade08@gmail.com', form_data['email']],  # Admin və user emaillərinə göndərilir
         )
         admin_email.content_subtype = "html"
         

@@ -52,13 +52,14 @@
 
 {% block content %}
 
- {% include 'components/navbar.html' %}
-{% include 'components/page-header.html' %}
-
-    <!-- Breadcrumb -->
-    <div class="breadcrumb container">
-        <a href="{% url 'home:home' %}" aria-label="Home Page">{% trans "Home page" %}</a>|<p>{% trans "News" %}</p>
+    <div class="navbar-blue-background">
+        {% include 'components/navbar.html' %}
     </div>
+        <!-- Breadcrumb -->
+        <div class="breadcrumb container">
+            <a href="{% url 'home:home' %}" aria-label="Home Page">{% trans "Home page" %}</a>|<p>{% trans "News" %}</p>
+        </div>
+
 
     <div class="container">
         <div class="news-top-content">

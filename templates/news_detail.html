@@ -41,17 +41,9 @@
 {% endblock %}
 
 {% block content %}
-<div class="non-header-page">
-  {% include 'components/navbar.html' %}
-
-  <header class="page-header">
-      <img loading="lazy"   class="bg-image" src="{{ news.image.url }}" alt="Page header background" />
-      <div class="header-content container">
-        <div class="header-text" >
-          <h1>{{ news.title }}</h1>
-        </div>
-      </div>
-  </header>
+  <div class="navbar-blue-background">
+        {% include 'components/navbar.html' %}
+    </div>
 
   <!-- Breadcrumb -->
   <div class="breadcrumb container">
@@ -112,4 +104,3 @@
     </div>
   </section>
   {% include 'components/whatsapp.html' %} {% endblock %}
-</div>

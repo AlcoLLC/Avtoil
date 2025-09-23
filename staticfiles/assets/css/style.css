@@ -258,6 +258,8 @@ nav {
   max-width: 100% !important;
   position: relative;
 }
+
+
 .navbar {
   position: fixed;
   z-index: 100000;
@@ -272,7 +274,7 @@ nav {
   justify-content: space-between;
   gap: 10px;
 }
-.avtoil-logo {
+.avtoil-logo, .avtoil-logo-dark {
   width: 140px;
 }
 .navbar .nav-section {
@@ -291,7 +293,19 @@ nav {
   align-items: center;
   gap: 20px;
 }
-
+.avtoil-logo-dark {
+  display: none;
+}
+.navbar-blue-background .navbar {
+  top: 0 !important;
+  background-color: #0056b8 !important;
+}
+.navbar-blue-background .avtoil-logo {
+  display: none;
+}
+.navbar-blue-background .avtoil-logo-dark {
+  display: block;
+}
 .language-dropdown .dropdown-content button:hover,
 .mobile-menu ul li a.active {
   color: #f71620 !important;
@@ -313,6 +327,9 @@ nav {
   justify-content: center;
   text-align: center;
 }
+.navbar-blue-background .navbar .nav-section ul li a {
+  color: #f5f5f5;
+}
 .navbar .nav-section .nav-top li a {
   font-size: 14px;
   line-height: 16px;
@@ -322,8 +339,17 @@ nav {
   color: #fff;
 }
 
+.navbar-blue-background .navbar .nav-section ul li a.active {
+  background-color: #f71620 !important;
+  color: #fff !important;
+}
+
 .navbar .nav-section ul li a:hover {
   color: #0056b8;
+}
+
+.navbar-blue-background .navbar .nav-section ul li a:hover {
+  color: #f5f5f5 !important;
 }
 
 .navbar .nav-section ul li a.active:hover {
@@ -365,6 +391,8 @@ nav {
   align-items: center;
   justify-content: center;
 }
+
+
 .dropdown-content {
   width: 100%;
   height: 70px;
@@ -529,7 +557,7 @@ nav {
   font-size: 17px;
 }
 @media screen and (max-width: 1024px) {
-  .avtoil-logo {
+  .avtoil-logo, .avtoil-logo-dark {
     width: 120px;
   }
 
@@ -559,7 +587,7 @@ nav {
     font-size: 14px;
     padding: 0 4px;
   }
-  .avtoil-logo {
+  .avtoil-logo, .avtoil-logo-dark {
     width: 115px;
   }
   .breadcrumb {
@@ -601,7 +629,7 @@ nav {
   .navbar .nav-section {
     display: none !important;
   }
-  .avtoil-logo {
+  .avtoil-logo, .avtoil-logo-dark {
     width: 100px;
   }
   .hamburger {

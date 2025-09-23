@@ -6,6 +6,8 @@
 
 {% block page_css %}
   <link rel="stylesheet" href="{% static 'assets/css/faq.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/contact.css' %}" />
+
 {% endblock %}
   
   {% block extra_schema %}
@@ -30,8 +32,9 @@
 
 {% endblock %} {% block content %}
 
-{% include 'components/navbar.html' %}
-{% include 'components/page-header.html' %}
+<div class="navbar-blue-background">
+        {% include 'components/navbar.html' %}
+    </div>
 
 
 <!-- Breadcrumb -->
@@ -87,4 +90,6 @@
 
 {% block page_js %}
   <script src="{% static 'assets/js/faq.min.js' %}" defer></script>
+  <script src="{% static 'assets/js/contact.min.js' %}" defer></script>
 {% endblock %}
+

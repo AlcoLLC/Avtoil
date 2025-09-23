@@ -294,17 +294,17 @@ nav {
   gap: 20px;
 }
 .avtoil-logo-dark {
-  display: none;
+  display: none !important;
 }
 .navbar-blue-background .navbar {
   top: 0 !important;
   background-color: #0056b8 !important;
 }
 .navbar-blue-background .avtoil-logo {
-  display: none;
+  display: none !important;
 }
 .navbar-blue-background .avtoil-logo-dark {
-  display: block;
+  display: block !important;
 }
 .language-dropdown .dropdown-content button:hover,
 .mobile-menu ul li a.active {

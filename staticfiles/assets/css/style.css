@@ -438,6 +438,9 @@ nav {
   font-size: 2rem;
   cursor: pointer;
 }
+.navbar-blue-background .hamburger {
+  color: #f5f5f5 !important;
+}
 .mobile-menu {
   width: 100%;
   position: fixed;

@@ -277,21 +277,19 @@ document.addEventListener('DOMContentLoaded', function () {
   // =================
   // LANGUAGE SWITCHING FUNCTIONS
   // =================
-  function switchLanguage(langCode) {
-    console.log('Switching language to:', langCode);
+ function switchLanguage(langCode) {
     let csrfValue = getCsrfToken();
     const newPath = calculateNewPath(langCode);
 
-    console.log('New path calculated:', newPath);
-    console.log('CSRF token found:', csrfValue ? 'Yes' : 'No');
+    const currentQueryString = window.location.search;
+    const nextUrl = newPath + currentQueryString;
 
     if (csrfValue) {
-      submitLanguageForm(langCode, newPath, csrfValue);
+      submitLanguageForm(langCode, nextUrl, csrfValue);
     } else {
-      console.warn('No CSRF token found, redirecting directly');
-      window.location.href = newPath;
-    }
-  }
+      window.location.href = nextUrl;
+    }
+  }
 
   function getCsrfToken() {
     // First try meta tag

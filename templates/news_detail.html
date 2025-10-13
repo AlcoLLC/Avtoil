@@ -1,7 +1,8 @@
 {% extends 'base.html' %} {% load static %} {% load i18n %} 
 
-{% block title %} {{ news.title|truncatechars:57 }} {% endblock %}
-{% block description %} {{ news.content|safe|truncatechars:160 }} {% endblock %}
+{% block title %} {{ news.meta_title|safe }} {% endblock %}
+{% block description %} {{ news.meta_description|safe }} {% endblock %}
+{% block keywords %} {{ news.meta_keywords|safe }} {% endblock %}
 
 {% block page_css %}
   <link rel="stylesheet" href="{% static 'assets/css/news.css' %}" />

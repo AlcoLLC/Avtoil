@@ -47,7 +47,7 @@
       {% endif %}
       <img loading="lazy" src="{{ service.image.url }}" alt="{{ service.title }}" />
       {% if service.description %}
-            <p>{{ service.description|safe|linebreaksbr }}</p>
+            <p>{{ service.description|safe }}</p>
       {% endif %}
     </section>
 
@@ -58,7 +58,7 @@
             <div class="section">
               <div class="content">
                 <h2>{{ content.title|linebreaksbr }}</h2>
-                <p>{{ content.description|safe|linebreaksbr }}</p>
+                <p>{{ content.description|safe }}</p>
               </div>
               <img
                 loading="lazy"
@@ -81,7 +81,7 @@
       {% endif %}
       <img loading="lazy" src="{{ service_last_content.image.url }}" alt="{{ service.title }}" />
       {% if service_last_content.description %}
-            <p>{{ service_last_content.description|safe|linebreaksbr }}</p>
+            <p>{{ service_last_content.description|safe }}</p>
       {% endif %}
 </section>
 

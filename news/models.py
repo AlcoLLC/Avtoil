@@ -9,6 +9,9 @@ class News(models.Model):
     image = models.ImageField(upload_to='news/')
     published_date = models.DateTimeField()
     is_active = models.BooleanField(default=True)
+    meta_title = models.CharField(max_length=255, blank=True, null=True)
+    meta_description = models.TextField(blank=True, null=True)
+    meta_keywords = models.CharField(max_length=500, blank=True, null=True)
 
     class Meta:
         ordering = ['-published_date']

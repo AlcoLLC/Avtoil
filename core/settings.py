@@ -270,7 +270,7 @@ LOGGING = {
         'file': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'django_error.log'),
+            'filename': '/var/log/avtoil/django_error.log',
         },
     },
     'loggers': {
@@ -281,6 +281,7 @@ LOGGING = {
         },
     },
 }
+
 
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True

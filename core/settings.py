@@ -284,9 +284,9 @@ LOGGING = {
         },
     },
     'loggers': {
-        'yourapp.views': { 
-            'handlers': ['file', 'console'],
-            'level': 'INFO',
+        'django': {
+            'handlers': ['file'],
+            'level': 'ERROR',
             'propagate': True,
         },
     },

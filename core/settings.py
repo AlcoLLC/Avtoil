@@ -278,7 +278,7 @@ if DEBUG:
                 'file': {
                     'level': 'ERROR',
                     'class': 'logging.FileHandler',
-                    'filename': '/var/log/avtoil/django_error.log',
+                    'filename': os.path.join(BASE_DIR, 'logs', 'django_error.log'),
                 },
             },
             'loggers': {
@@ -297,7 +297,7 @@ else:
             'file': {
                 'level': 'ERROR',
                 'class': 'logging.FileHandler',
-                'filename':  os.path.join(BASE_DIR, 'logs', 'django_error.log'),
+                'filename': '/var/log/avtoil/django_error.log',
             },
         },
         'loggers': {

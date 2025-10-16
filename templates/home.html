@@ -1,71 +1,72 @@
-{% extends 'base.html' %} {% load static %} {% load i18n %} 
-
-{% block title%}{% trans "home_meta_title" %}{% endblock %} 
-{% block description %}{%trans "home_meta_description" %}{%endblock %} 
-{% block keywords %}{%trans "home_keywords" %}{%endblock %}
-
-
-{%block page_css %}
+{% extends 'base.html' %} {% load static %} {% load i18n %} {% block title%}{%
+trans "home_meta_title" %}{% endblock %} {% block description %}{%trans
+"home_meta_description" %}{%endblock %} {% block keywords %}{%trans
+"home_keywords" %}{%endblock %} {%block page_css %}
 <link rel="stylesheet" href="{% static 'assets/css/home.min.css' %}" />
-<link rel="stylesheet" href="{% static 'assets/css/map.min.css' %}" onload="this.rel='stylesheet'"/>
-<link rel="stylesheet" href="{% static 'assets/css/swiper-bundle.min.css' %}" onload="this.rel='stylesheet'" />
+<link
+  rel="stylesheet"
+  href="{% static 'assets/css/map.min.css' %}"
+  onload="this.rel='stylesheet'"
+/>
+<link
+  rel="stylesheet"
+  href="{% static 'assets/css/swiper-bundle.min.css' %}"
+  onload="this.rel='stylesheet'"
+/>
 <noscript>
-  <link rel="stylesheet" href="{% static 'assets/css/swiper-bundle.min.css' %}" />
+  <link
+    rel="stylesheet"
+    href="{% static 'assets/css/swiper-bundle.min.css' %}"
+  />
   <link rel="stylesheet" href="{% static 'assets/css/map.min.css' %}" />
 </noscript>
-{% endblock %} 
-
-{% block extra_schema %}
-<script>
-{
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  "name": "{% trans 'home_meta_title' %}",
-  "description": "{% trans 'home_meta_description' %}",
-  "url": "{{ request.build_absolute_uri }}",
-  "breadcrumb": {
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "{% trans 'Home page' %}",
-        "item": "{{ request.build_absolute_uri }}"
-      }
-    ]
-  },
-  "mainEntity": {
-    "@type": "Organization",
-    "name": "Avtoil",
-    "url": "https://avtoil.de",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://avtoil.de/static/images/avtoil-logo.png"
+{% endblock %}{% block extra_schema %}
+<script type="application/ld+json"> {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "{% trans 'home_meta_title' %}",
+    "description": "{% trans 'home_meta_description' %}",
+    "url": "{{ request.build_absolute_uri }}",
+    "breadcrumb": {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "{% trans 'Home page' %}",
+          "item": "{{ request.build_absolute_uri }}"
+        }
+      ]
     },
-    "address": {
-      "@type": "PostalAddress",
-      "addressCountry": "DE"
-    },
-    "sameAs": [
-      "https://www.instagram.com/...",
-      "https://www.facebook.com/...",
-      "https://www.linkedin.com/...",
-      "https://www.youtube.com/..."
-    ]
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "Avtoil",
+      "url": "https://avtoil.de",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://avtoil.de/static/images/avtoil-logo.png"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "DE"
+      },
+      "sameAs": [
+        "https://www.instagram.com/...",
+        "https://www.facebook.com/...",
+        "https://www.linkedin.com/...",
+        "https://www.youtube.com/..."
+      ]
+    }
   }
-}
 </script>
-{% endblock %} 
-
-{% block content %}
-{% include 'components/navbar.html' %}
+{% endblock %} {% block content %} {% include 'components/navbar.html' %}
 
 <header class="home-header">
   <div class="swiper mySwiper">
     <div class="swiper-wrapper">
       {% for swiper in swiper_images %}
       <div class="swiper-slide">
-        <img 
+        <img
           class="background-image"
           src="{{ swiper.image.url }}"
           alt="{{ swiper.image.url }} Slider Image"
@@ -106,8 +107,8 @@
         aria-label="{{ product_group.title }}"
       >
         <div class="category-image">
-          <img loading="lazy" 
-            
+          <img
+            loading="lazy"
             src="{{ product_group.image.url }}"
             alt="{{ product_group.title }} {% trans 'PRODUCT GROUP' %}"
           />
@@ -132,9 +133,9 @@
 </div>
 
 <div class="container">
-  <section class="production-section">
-    <img loading="lazy" 
-      
+  <section class="production-section" id="productionSection">
+    <img
+      loading="lazy"
       class="bg-image"
       src="{% static 'images/production-bg.webp' %}"
       alt="Production background image"
@@ -148,26 +149,16 @@
           {% trans "about production" %}
         </h2>
         <p>
-          {% blocktrans %} Avtoil Lubricants produces and packages high-quality oils using premium
-          imported base oils and additives, formulated by expert engineers. {% endblocktrans %}
+          {% blocktrans %} Avtoil Lubricants produces and packages high-quality
+          oils using premium imported base oils and additives, formulated by
+          expert engineers. {% endblocktrans %}
         </p>
       </div>
       <div class="play-button" id="playButton">
         <i>►</i>
       </div>
       <div class="video-container" id="videoContainer">
-        <iframe
-          width="560"
-          
-          height="315"
-          src="https://www.youtube-nocookie.com/embed/Wx63amCTJqs?rel=0&showinfo=0&modestbranding=1" 
-          title="YouTube video player"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen
-        ></iframe>
-      </div>
+  </div>
     </div>
   </section>
 </div>
@@ -176,27 +167,34 @@
   <div class="section-header">
     <h2>{% trans "Global Presence" %}</h2>
   </div>
- <div class="map-section">
+  <div class="map-section">
     <div class="page-wrapper">
       <main class="main-content">
         <section id="preview" class="preview section-margin-b-m">
           <div class="preview__content">
             <div id="map-container"></div>
-            <link href="{% static 'assets/css/map.min.css' %}" rel="stylesheet" />
-            <script src="{% static 'assets/js/raphael.min.js' %}" defer></script>
-            <script src="{% static 'assets/js/settings.min.js' %}" defer></script>
+            <link
+              href="{% static 'assets/css/map.min.css' %}"
+              rel="stylesheet"
+            />
+            <script
+              src="{% static 'assets/js/raphael.min.js' %}"
+              defer
+            ></script>
+            <script
+              src="{% static 'assets/js/settings.min.js' %}"
+              defer
+            ></script>
             <script src="{% static 'assets/js/paths.min.js' %}" defer></script>
             <script src="{% static 'assets/js/mapp.min.js' %}" defer></script>
-           
           </div>
         </section>
       </main>
     </div>
   </div>
-
 </section>
 {% if service_contents %}
-<div class="services ">
+<div class="services">
   <div class="section-header">
     <h2>{% trans "Our Services" %}</h2>
   </div>
@@ -208,8 +206,8 @@
         <p>{{ content.description|linebreaksbr }}</p>
       </div>
 
-      <img loading="lazy" 
-        
+      <img
+        loading="lazy"
         class="image-container"
         src="{{ content.image.url }}"
         alt="{{ content.title }}"
@@ -226,19 +224,21 @@
 {% endif %}
 
 <section class="become-partner container">
-  <img loading="lazy"    class="bg-image"
-    src="{{ become_partner.image.url }}" alt="{{ become_partner.title }}"
-    width="100%" />
+  <img
+    loading="lazy"
+    class="bg-image"
+    src="{{ become_partner.image.url }}"
+    alt="{{ become_partner.title }}"
+    width="100%"
+  />
 
   <div class="section-content">
-    <h2 class="section-title">
-      {{ become_partner.title|linebreaksbr }}
-    </h2>
-    <p>
-      {{ become_partner.description|linebreaksbr }} 
-    </p>
+    <h2 class="section-title">{{ become_partner.title|linebreaksbr }}</h2>
+    <p>{{ become_partner.description|linebreaksbr }}</p>
   </div>
-   <a href="{% url 'partnership:partnership' %}" class="partner-button">{% blocktrans %} Become a partner {% endblocktrans %}</a>
+  <a href="{% url 'partnership:partnership' %}" class="partner-button"
+    >{% blocktrans %} Become a partner {% endblocktrans %}</a
+  >
 </section>
 
 <section class="news-section">
@@ -252,10 +252,14 @@
       <div class="news-card">
         <div class="news-image">
           {% if news.image %}
-          <img loading="lazy"   src="{{ news.image.url }}" alt="{{ news.title }}" />
+          <img
+            loading="lazy"
+            src="{{ news.image.url }}"
+            alt="{{ news.title }}"
+          />
           {% else %}
-          <img loading="lazy" 
-            
+          <img
+            loading="lazy"
             src="{% static 'images_folder/default-news.webp' %}"
             alt="{{ news.title }}"
           />
@@ -264,7 +268,10 @@
         <div class="news-content">
           <p>{{ news.content|safe|truncatewords:10 }}</p>
 
-          <a href="{% url 'news:news_detail' news.slug %}" aria-label="{{ news.title }}">
+          <a
+            href="{% url 'news:news_detail' news.slug %}"
+            aria-label="{{ news.title }}"
+          >
             <h2>{{ news.title|linebreaksbr }}</h2>
             <span>
               {% trans "Read more" %}
@@ -282,8 +289,8 @@
 </section>
 
 <section class="electric-solutions container">
-  <img loading="lazy" 
-    
+  <img
+    loading="lazy"
     class="bg-image"
     src="{% static 'images/electric-solutions-bg.webp' %}"
     alt="Electric Solutions Image"
@@ -291,14 +298,10 @@
   <h2 class="section-title">{{ solutions_hybrid.title|linebreaksbr }}</h2>
   <div class="electric-solutions-content">
     <div class="content-left">
-      <p>
-        {{ solutions_hybrid.description_left|linebreaksbr }}
-      </p>
+      <p>{{ solutions_hybrid.description_left|linebreaksbr }}</p>
     </div>
     <div class="content-right">
-      <p>
-        {{ solutions_hybrid.description_right|linebreaksbr }}
-      </p>
+      <p>{{ solutions_hybrid.description_right|linebreaksbr }}</p>
       <ul>
         {% for item in solutions_contents%}
         <li>{{ item.content }}</li>
@@ -310,7 +313,11 @@
 
 <section class="sustainability-section container">
   <div class="sustainability-image">
-    <img loading="lazy"   src="{{ sustainability_image.url}}" alt="{{ sustainability.title}}" />
+    <img
+      loading="lazy"
+      src="{{ sustainability_image.url}}"
+      alt="{{ sustainability.title}}"
+    />
     <div class="property">
       <span>{%trans '100,000 tonnes'%}</span>
       <p>{%trans 'Production capacity'%}</p>
@@ -329,9 +336,10 @@
     <a href="{% url 'about:about' %}">
       <h3>{%trans 'Sustainability'%}</h3>
       <p>
-        {%blocktrans%} Sustainability is at the core of our innovation. As a leading manufacturer of
-        high-quality lubricants, we are committed to delivering solutions that align with global
-        environmental standards and customer needs. {%endblocktrans%}
+        {%blocktrans%} Sustainability is at the core of our innovation. As a
+        leading manufacturer of high-quality lubricants, we are committed to
+        delivering solutions that align with global environmental standards and
+        customer needs. {%endblocktrans%}
       </p>
       <span class="button-style">{%trans 'Learn more'%}</span>
     </a>
@@ -343,10 +351,10 @@
     <h2>{% trans "FEATURED PRODUCTS" %}</h2>
   </div>
   <div class="featured-section">
-    <img loading="lazy" 
+    <img
+      loading="lazy"
       src="{% static 'images/Vector.svg' %}"
       alt="Decorative vector background"
-      
       class="background-svg"
     />
     <div class="background-overlay"></div>
@@ -359,8 +367,8 @@
           <div class="product-card">
             <div class="product-image">
               <a href="{% url 'products:product_detail' slug=product.slug %}">
-                <img loading="lazy" 
-                  
+                <img
+                  loading="lazy"
                   src="{{ product.image.url }}"
                   alt="{{ product.title|linebreaksbr }}"
                 />
@@ -383,21 +391,15 @@
         </div>
       </div>
 
-      <a href="{% url 'products:product' %}" class="button-style">{% trans 'See More' %}</a>
+      <a href="{% url 'products:product' %}" class="button-style"
+        >{% trans 'See More' %}</a
+      >
     </div>
   </div>
 </section>
 
-
-{% include 'components/gallery.html' %} 
-{% include 'components/brochure.html' %}
-{% include 'components/review.html' %}
- 
-{% endblock %}
-
-
-
-{% block page_js %}
+{% include 'components/gallery.html' %} {% include 'components/brochure.html' %}
+{% include 'components/review.html' %} {% endblock %} {% block page_js %}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{% static 'assets/js/swiper-bundle.min.js' %}" defer></script>
 <script src="{% static 'assets/js/home.min.js' %}" defer></script>

@@ -21,9 +21,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const hiddenInput = document.querySelector('#typeOfBusiness');
 
   if (!coorperationSelect || !coorperationOptions) {
-    console.log(
-      'coorperation select elements not found - this script may not be needed on this page'
-    );
     return;
   }
 

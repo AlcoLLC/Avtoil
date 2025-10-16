@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Ana custom select elementleri yoksa, bu sayfa için script'i çalıştırma
   if (!customSelect || !customOptions) {
-    console.log('Custom select elements not found - this script may not be needed on this page');
     return;
   }
 
@@ -15,8 +14,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Eğer template'den option'lar gelmemişse (fallback için)
   if (optionItems.length === 0) {
-    console.warn('No options found from template, creating fallback options');
-
     const helpChoices = [
       ['buy', 'I would like to buy Avtoil products.'],
       ['become_dealer', 'I am interested in becoming a distributor.'],
@@ -120,7 +117,6 @@ document.addEventListener('DOMContentLoaded', function () {
   function validateRecaptcha() {
     // reCAPTCHA yüklü değilse, validasyonu atla
     if (typeof grecaptcha === 'undefined') {
-      console.warn('reCAPTCHA not loaded');
       return true; // Bu durumda server-side validasyon yapılmalı
     }
 
@@ -182,17 +178,14 @@ document.addEventListener('DOMContentLoaded', function () {
   if (typeof window !== 'undefined') {
     window.onRecaptchaSuccess = function () {
       clearRecaptchaError();
-      console.log('reCAPTCHA verified successfully');
     };
 
     window.onRecaptchaExpired = function () {
       showRecaptchaError('reCAPTCHA has expired. Please verify again.');
-      console.log('reCAPTCHA expired');
     };
 
     window.onRecaptchaError = function () {
       showRecaptchaError('reCAPTCHA verification failed. Please try again.');
-      console.log('reCAPTCHA error occurred');
     };
 
     // Reset form state
@@ -212,7 +205,6 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
           grecaptcha.reset();
         } catch (error) {
-          console.log('reCAPTCHA reset failed:', error);
         }
       }
 

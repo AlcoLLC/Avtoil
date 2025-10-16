@@ -16,7 +16,12 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="canonical" href="https://avtoil.de{{ request.path }}" />
+  {% with request.path as clean_path %}
+  <link rel="canonical" href="https://avtoil.de{{ clean_path }}" />
+  {% endwith %}
+  {% block canonical %}
+  {% endblock %}
+  <link rel="alternate" hreflang="x-default" href="https://avtoil.de/" />
   <link rel="alternate" hreflang="en" href="https://avtoil.de/">
   <link rel="alternate" hreflang="de" href="https://avtoil.de/de/">
   <link rel="alternate" hreflang="fr" href="https://avtoil.de/fr/">

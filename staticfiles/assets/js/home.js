@@ -192,3 +192,29 @@ function initProductSlider() {
   sliderContainer.addEventListener('mouseenter', stopAutoplay);
   sliderContainer.addEventListener('mouseleave', startAutoplay);
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  const playButton = document.getElementById('playButton');
+  const videoContainer = document.getElementById('videoContainer');
+  const textContent = document.getElementById('textContent');
+  const videoId = 'Wx63amCTJqs'; 
+  playButton.addEventListener('click', function () {
+    textContent.classList.add('hidden');
+    playButton.classList.add('hidden');
+
+    videoContainer.style.display = 'block';
+
+    const iframe = document.createElement('iframe');
+
+    iframe.setAttribute('width', '560');
+    iframe.setAttribute('height', '315');
+    iframe.setAttribute('src', `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&showinfo=0&modestbranding=1&autoplay=1`);
+    iframe.setAttribute('title', 'YouTube video player');
+    iframe.setAttribute('frameborder', '0');
+    iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    iframe.setAttribute('allowfullscreen', 'true');
+
+    videoContainer.innerHTML = ''; 
+    videoContainer.appendChild(iframe);
+  });
+});

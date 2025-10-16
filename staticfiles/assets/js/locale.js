@@ -6,9 +6,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function initializeMobileMenu() {
     if (isMobileMenuInitialized) {
-      console.warn(
-        'initializeMobileMenu() already initialized. Prevented duplicate initialization.'
-      );
       return;
     }
 
@@ -16,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const mobileMenu = document.getElementById('mobile-menu');
 
     if (!hamburger || !mobileMenu) {
-      console.error('ERROR: Hamburger or Mobile Menu element not found!');
       return;
     }
 
@@ -32,18 +28,13 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       isProcessingClick = true;
 
-      console.log('Hamburger clicked');
-
       const isActive = mobileMenu.classList.toggle('active');
       hamburger.classList.toggle('active');
       document.body.style.overflow = isActive ? 'hidden' : '';
 
-      // Icon change
       if (hamburgerIcon) {
         hamburgerIcon.className = isActive ? 'fas fa-xmark' : 'fas fa-bars';
       }
-
-      console.log('Menu state changed. New state:', isActive ? 'Open' : 'Closed');
 
       setTimeout(() => {
         isProcessingClick = false;
@@ -68,7 +59,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     isMobileMenuInitialized = true;
-    console.log('✅ Mobile Menu successfully loaded and event listeners added.');
   }
 
   // =================
@@ -245,7 +235,6 @@ document.addEventListener('DOMContentLoaded', function () {
       e.stopPropagation();
 
       const selectedLang = this.getAttribute('data-lang');
-      console.log('Desktop language selected:', selectedLang);
 
       if (languageDropdown) {
         languageDropdown.classList.remove('show');
@@ -263,7 +252,6 @@ document.addEventListener('DOMContentLoaded', function () {
         e.stopPropagation();
 
         const selectedLang = this.getAttribute('data-lang');
-        console.log('Mobile language selected:', selectedLang);
 
         if (mobileLanguageDropdown) {
           mobileLanguageDropdown.classList.remove('show');
@@ -295,14 +283,12 @@ document.addEventListener('DOMContentLoaded', function () {
     // First try meta tag
     const csrfMeta = document.querySelector('meta[name="csrf-token"]');
     if (csrfMeta) {
-      console.log('CSRF token found in meta tag');
       return csrfMeta.getAttribute('content');
     }
 
     // Try input field
     const csrfInput = document.querySelector('input[name="csrfmiddlewaretoken"]');
     if (csrfInput) {
-      console.log('CSRF token found in input field');
       return csrfInput.value;
     }
 
@@ -311,12 +297,10 @@ document.addEventListener('DOMContentLoaded', function () {
     for (let cookie of cookies) {
       const [name, value] = cookie.trim().split('=');
       if (name === 'csrftoken') {
-        console.log('CSRF token found in cookie');
         return value;
       }
     }
 
-    console.warn('No CSRF token found');
     return null;
   }
 
@@ -348,8 +332,6 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function submitLanguageForm(langCode, nextUrl, csrfToken) {
-    console.log('Submitting language form with:', { langCode, nextUrl });
-
     const form = document.createElement('form');
     form.method = 'POST';
     form.action = '/i18n/setlang/';
@@ -374,7 +356,6 @@ document.addEventListener('DOMContentLoaded', function () {
     form.appendChild(nextInput);
 
     document.body.appendChild(form);
-    console.log('Form created and submitting...');
     form.submit();
   }
 
@@ -391,19 +372,14 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
 
-    console.log('Setting active language button for:', currentLang);
-
-    // Remove active class from all language options
     document.querySelectorAll('.lang-option').forEach((btn) => {
       btn.classList.remove('active');
     });
 
-    // Add active class to current language
     document.querySelectorAll(`.lang-option[data-lang="${currentLang}"]`).forEach((btn) => {
       btn.classList.add('active');
     });
 
-    // Update dropdown button text
     const langTexts = {
       en: 'EN',
       de: 'DE',
@@ -432,10 +408,6 @@ document.addEventListener('DOMContentLoaded', function () {
   function setActiveLinks() {
     const currentPath = window.location.pathname;
     const allNavLinks = document.querySelectorAll('.navbar a[href], .mobile-menu a[href]');
-
-    console.log('Setting active links for path:', currentPath);
-
-    // Remove active class from all links
     allNavLinks.forEach((link) => {
       link.classList.remove('active');
     });
@@ -512,15 +484,10 @@ document.addEventListener('DOMContentLoaded', function () {
   setActiveLanguageButton();
   setActiveLinks();
 
-  // Event listeners for browser navigation
   window.addEventListener('popstate', setActiveLinks);
   window.updateActiveLinks = setActiveLinks;
 
-  // Test function for debugging
   window.testLanguageSwitch = function (lang) {
-    console.log('Testing language switch to:', lang);
     switchLanguage(lang);
   };
-
-  console.log('Navbar initialized for path:', window.location.pathname);
 });

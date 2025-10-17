@@ -19,8 +19,10 @@
   {% with request.path as clean_path %}
   <link rel="canonical" href="https://avtoil.de{{ clean_path }}" />
   {% endwith %}
+  
   {% block canonical %}
   {% endblock %}
+
   <link rel="alternate" hreflang="x-default" href="https://avtoil.de/" />
   <link rel="alternate" hreflang="en" href="https://avtoil.de/">
   <link rel="alternate" hreflang="de" href="https://avtoil.de/de/">
@@ -55,63 +57,62 @@
 
   {% block page_css %}{% endblock %}
   
-   <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  "name": "Avtoil",
-  "image": "https://avtoil.de/static/images/avtoil-logo.png",
-  "url": "https://avtoil.de",
-  "telephone": "",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "....",
-    "addressLocality": "...",
-    "addressRegion": "DE",
-    "postalCode": "....",
-    "addressCountry": "DE"
-  },
-  "geo": {
-    "@type": "GeoCoordinates",
-    "latitude": .........,
-    "longitude": ........
-  },
-  "openingHoursSpecification": [
-    {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday"
-      ],
-      "opens": "09:00",
-      "closes": "18:00"
+   <script type="application/ld+json"> {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Avtoil",
+    "image": "https://avtoil.de/static/images/avtoil-logo.png",
+    "url": "https://avtoil.de",
+    "telephone": "",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "....",
+      "addressLocality": "...",
+      "addressRegion": "DE",
+      "postalCode": "....",
+      "addressCountry": "DE"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": .........,
+      "longitude": ........
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday"
+        ],
+        "opens": "09:00",
+        "closes": "18:00"
+      }
+    ],
+    "sameAs": [
+      "https://linkedin.com/company/avtoil",
+      "https://www.instagram.com/avtoilglobal/",
+      "https://www.youtube.com/@AVTOIL",
+      "https://www.facebook.com/p/avtoil-100038067895501/"
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+4915207776502",
+      "contactType": "Customer Service",
+      "availableLanguage": ["English", "German", "French", "Italian", "Spanish",  "Chinese"]
     }
-  ],
-  "sameAs": [
-    "https://linkedin.com.....",
-    "https://www.instagram.com....",
-    "https://www.youtube.com....",
-    "https://www.facebook.com...."
-  ],
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "telephone": "+4915207776502",
-    "contactType": "Customer Service",
-    "availableLanguage": ["English", "German", "French", "Italian", "Spanish",  "Chinese"]
   }
-}
 </script>
   {% block extra_schema %}{% endblock %}
 </head>
 
 <body>
   {% block content %} {% endblock %}
-<a href="https://wa.me/4915207776502" aria-label="Whatsapp" class="fixed-whatsapp" target="_blank">
-    <img loading="lazy"   class="whatsapp-icon" src="{% static 'images/whatsapp.svg' %}" alt="Whatsapp icon" />
-</a>
+  <a href="https://wa.me/4915207776502" aria-label="Whatsapp" class="fixed-whatsapp" target="_blank">
+      <img loading="lazy"   class="whatsapp-icon" src="{% static 'images/whatsapp.svg' %}" alt="Whatsapp icon" />
+  </a>
 
   {% include 'components/footer.html' %}
 
@@ -122,8 +123,8 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-FBJKZJFWXB"></script> 
   <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-FBJKZJFWXB'); </script>
 
-    {% block page_js %}
-    {% endblock %}
+  {% block page_js %}
+  {% endblock %}
 
   <script src="{% static 'assets/js/mapconfig.min.js' %}" defer></script>
 

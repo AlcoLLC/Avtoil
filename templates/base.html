@@ -1,132 +1,197 @@
-{% load static %}
-{% load i18n %}
+{% load static %} {% load i18n %}
 
 <!DOCTYPE html>
-  <html lang="{{ LANGUAGE_CODE }}">
+<html lang="{{ LANGUAGE_CODE }}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token }}" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="{% static 'images/avtoil-icon.webp' %}"
+    />
+    <title>
+      {% block title %}{% trans "Avtoil - High-quality oil products" %}{%
+      endblock %}
+    </title>
+    <meta
+      name="description"
+      content="{% block description %}AVTOIL - High-quality oil products{% endblock %}"
+    />
+    <meta
+      name="keywords"
+      content="{% block keywords %}oil, avtoil, automotive oil, industrial oil{% endblock %}"
+    />
+    <meta name="robots" content="index, follow" />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="csrf-token" content="{{ csrf_token }}">
-  <link rel="icon" type="image/svg+xml" href="{% static 'images/avtoil-icon.webp' %}">
-  <title>{% block title %}{% trans "Avtoil - High-quality oil products" %}{% endblock %}</title>
-  <meta name="description" content="{% block description %}AVTOIL - High-quality oil products{% endblock %}">
-  <meta name="keywords" content="{% block keywords %}oil, avtoil, automotive oil, industrial oil{% endblock %}">
-  <meta name="robots" content="index, follow">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    {% with request.path as clean_path %}
+    <link rel="canonical" href="https://avtoil.de{{ clean_path }}" />
+    {% endwith %} {% block canonical %} {% endblock %}
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  {% with request.path as clean_path %}
-  <link rel="canonical" href="https://avtoil.de{{ clean_path }}" />
-  {% endwith %}
-
-  {% block canonical %}
-  {% endblock %}
-
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-      <noscript>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet"
+      />
     </noscript>
-  <link rel="alternate" hreflang="x-default" href="https://avtoil.de/" />
-  <link rel="alternate" hreflang="en" href="https://avtoil.de/">
-  <link rel="alternate" hreflang="de" href="https://avtoil.de/de/">
-  <link rel="alternate" hreflang="fr" href="https://avtoil.de/fr/">
-  <link rel="alternate" hreflang="it" href="https://avtoil.de/it/">
-  <link rel="alternate" hreflang="es" href="https://avtoil.de/es/">
-  <link rel="alternate" hreflang="zh-hans" href="https://avtoil.de/zh-hans/">
+    <link rel="alternate" hreflang="x-default" href="https://avtoil.de/" />
+    <link rel="alternate" hreflang="en" href="https://avtoil.de/" />
+    <link rel="alternate" hreflang="de" href="https://avtoil.de/de/" />
+    <link rel="alternate" hreflang="fr" href="https://avtoil.de/fr/" />
+    <link rel="alternate" hreflang="it" href="https://avtoil.de/it/" />
+    <link rel="alternate" hreflang="es" href="https://avtoil.de/es/" />
+    <link
+      rel="alternate"
+      hreflang="zh-hans"
+      href="https://avtoil.de/zh-hans/"
+    />
 
-  <meta name="google-site-verification" content="2d4Fu6R1Yk8pt6uvft5eyd4-aW1mgj0T74FCFVqyLZ4" />
-  <meta property="og:title" content="Avtoil">
-  <meta property="og:description" content="Avtoil - High-quality oil products">
-  <meta property="og:image" content="https://avtoil.de/static/images/avtoil-logo.png">
-  <meta property="og:url" content="https://avtoil.de{{ request.path }}">
-  <meta property="og:type" content="website">
-  <meta property="og:description" content="{% trans ' Avtoil - High-quality oil products' %}">
+    <meta
+      name="google-site-verification"
+      content="2d4Fu6R1Yk8pt6uvft5eyd4-aW1mgj0T74FCFVqyLZ4"
+    />
+    <meta property="og:title" content="Avtoil" />
+    <meta
+      property="og:description"
+      content="Avtoil - High-quality oil products"
+    />
+    <meta
+      property="og:image"
+      content="https://avtoil.de/static/images/avtoil-logo.png"
+    />
+    <meta property="og:url" content="https://avtoil.de{{ request.path }}" />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:description"
+      content="{% trans ' Avtoil - High-quality oil products' %}"
+    />
 
-   <!-- Twitter Card tags -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:site" content="@Avtoil"> 
-  <meta name="twitter:title" content="Avtoil">
-  <meta name="twitter:description" content="{% trans 'AMİNOL - High-quality oil products' %}">
-  <meta name="twitter:image" content="https://avtoil.de/static/images/avtoil-logo.png">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
+    <!-- Twitter Card tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@Avtoil" />
+    <meta name="twitter:title" content="Avtoil" />
+    <meta
+      name="twitter:description"
+      content="{% trans 'AMİNOL - High-quality oil products' %}"
+    />
+    <meta
+      name="twitter:image"
+      content="https://avtoil.de/static/images/avtoil-logo.png"
+    />
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
 
-  <link rel="preload" as="font" href="{% static 'assets/fonts/fa-solid-900.woff2' %}" type="font/woff2"
-    crossorigin="anonymous">
-  
-  <link rel="stylesheet" href="{% static 'assets/css/common.min.css' %}" />
-  <link rel="stylesheet" href="{% static 'assets/css/fontawesome.min.css' %}" />
+    <link
+      rel="preload"
+      as="font"
+      href="{% static 'assets/fonts/fa-solid-900.woff2' %}"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
 
-  {% block page_css %}{% endblock %}
-  
-   <script type="application/ld+json"> {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "name": "Avtoil",
-    "image": "https://avtoil.de/static/images/avtoil-logo.png",
-    "url": "https://avtoil.de",
-    "telephone": "",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "....",
-      "addressLocality": "...",
-      "addressRegion": "DE",
-      "postalCode": "....",
-      "addressCountry": "DE"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": .........,
-      "longitude": ........
-    },
-    "openingHoursSpecification": [
+    <link rel="stylesheet" href="{% static 'assets/css/common.min.css' %}" />
+    <link
+      rel="stylesheet"
+      href="{% static 'assets/css/fontawesome.min.css' %}"
+    />
+
+    {% block page_css %}{% endblock %}
+
+    <script type="application/ld+json">
       {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday"
-        ],
-        "opens": "09:00",
-        "closes": "18:00"
+         "@context": "https://schema.org",
+         "@type": "LocalBusiness",
+         "name": "Avtoil",
+         "image": "https://avtoil.de/static/images/avtoil-logo.png",
+         "url": "https://avtoil.de",
+         "telephone": "",
+       {
+       "address": {
+           "@type": "PostalAddress",
+           "streetAddress": "Heilbronner Straße 150",
+           "addressLocality": "Stuttgart",
+           "addressRegion": "DE",
+           "postalCode": "70191",
+           "addressCountry": "DE"
+         },
+         "geo": {
+           "@type": "GeoCoordinates",
+           "latitude": 48.79918834312416,
+           "longitude": 9.183187378622678
+         }
+       }
+
+         "openingHoursSpecification": [
+           {
+             "@type": "OpeningHoursSpecification",
+             "dayOfWeek": [
+               "Monday",
+               "Tuesday",
+               "Wednesday",
+               "Thursday",
+               "Friday"
+             ],
+             "opens": "09:00",
+             "closes": "18:00"
+           }
+         ],
+         "sameAs": [
+           "https://linkedin.com/company/avtoil",
+           "https://www.instagram.com/avtoilglobal/",
+           "https://www.youtube.com/@AVTOIL",
+           "https://www.facebook.com/p/avtoil-100038067895501/"
+         ],
+         "contactPoint": {
+           "@type": "ContactPoint",
+           "telephone": "+4915207776502",
+           "contactType": "Customer Service",
+           "availableLanguage": ["English", "German", "French", "Italian", "Spanish",  "Chinese"]
+         }
+       }
+    </script>
+    {% block extra_schema %}{% endblock %}
+  </head>
+
+  <body>
+    {% block content %} {% endblock %}
+    <a
+      href="https://wa.me/4915207776502"
+      aria-label="Whatsapp"
+      class="fixed-whatsapp"
+      target="_blank"
+    >
+      <img
+        loading="lazy"
+        class="whatsapp-icon"
+        src="{% static 'images/whatsapp.svg' %}"
+        alt="Whatsapp icon"
+      />
+    </a>
+
+    {% include 'components/footer.html' %}
+
+    <script src="{% static 'assets/js/script.min.js' %}" defer></script>
+    <script src="{% static 'assets/js/locale.min.js' %}" defer></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
       }
-    ],
-    "sameAs": [
-      "https://linkedin.com/company/avtoil",
-      "https://www.instagram.com/avtoilglobal/",
-      "https://www.youtube.com/@AVTOIL",
-      "https://www.facebook.com/p/avtoil-100038067895501/"
-    ],
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "telephone": "+4915207776502",
-      "contactType": "Customer Service",
-      "availableLanguage": ["English", "German", "French", "Italian", "Spanish",  "Chinese"]
-    }
-  }
-</script>
-  {% block extra_schema %}{% endblock %}
-</head>
+      gtag("js", new Date());
+      gtag("config", "G-FBJKZJFWXB");
+    </script>
 
-<body>
-  {% block content %} {% endblock %}
-  <a href="https://wa.me/4915207776502" aria-label="Whatsapp" class="fixed-whatsapp" target="_blank">
-      <img loading="lazy"   class="whatsapp-icon" src="{% static 'images/whatsapp.svg' %}" alt="Whatsapp icon" />
-  </a>
-
-  {% include 'components/footer.html' %}
-
-  <script src="{% static 'assets/js/script.min.js' %}" defer></script>
-  <script src="{% static 'assets/js/locale.min.js' %}" defer></script>
-  <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-FBJKZJFWXB'); </script>
-
-  {% block page_js %}
-  {% endblock %}
-
-</body>
-
+    {% block page_js %} {% endblock %}
+  </body>
 </html>

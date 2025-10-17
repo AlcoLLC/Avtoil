@@ -1,6 +1,5 @@
 {% extends 'base.html' %} {% load static %} {% load i18n %} 
 
-
 {% block title %}{% trans "service_meta_title" %}{% endblock %}
 {% block description %}{% trans "service_meta_description" %}{% endblock %}
 
@@ -9,7 +8,7 @@
 {
   "@context": "https://schema.org",
   "@type": "Service",
-  "name": "{{ service_highlights.title1|escapejs }}",
+  "name": "{{ service_highlights.title|escapejs }}",
   "description": "{{ service_highlights.description|default_if_none:''|escapejs }}",
   "provider": {
     "@type": "Organization",
@@ -21,14 +20,11 @@
 </script>
 {% endblock %}
 
-
 {% block page_css %}
   <link rel="stylesheet" href="{% static 'assets/css/service.min.css' %}" />
 {% endblock %}
 
 {% block content %} 
-
-
 
 {% include 'components/navbar.html' %} 
 {% include 'components/page-header.html' %}

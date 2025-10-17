@@ -218,3 +218,31 @@ document.addEventListener("DOMContentLoaded", function () {
     videoContainer.appendChild(iframe);
   });
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+    const mapSection = document.querySelector('.map-section');
+    if (mapSection) {
+        const scriptUrl = mapSection.dataset.scriptUrl;
+        if (scriptUrl) {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const mapObserver = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const mapScript = document.createElement('script');
+                        mapScript.src = scriptUrl;
+                        document.body.appendChild(mapScript);
+                        observer.unobserve(mapSection);
+                    }
+                });
+            }, observerOptions);
+            mapObserver.observe(mapSection);
+        } else {
+            console.error('Harita script URLsi "data-script-url" attributeunda bulunamadı.');
+        }
+    }
+});

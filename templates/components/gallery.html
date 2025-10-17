@@ -6,16 +6,6 @@
 {% endblock %}
 
 {% block page_js %}
-  <script>
-document.addEventListener("DOMContentLoaded", function() {
-    if (document.querySelector('.swiper')) {
-        const script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js';
-        script.defer = true;
-        document.body.appendChild(script);
-    }
-});
-</script>
 <script src="{% static 'assets/js/swiper-bundle.min.js' %}" defer></script>
 {% endblock %}
 

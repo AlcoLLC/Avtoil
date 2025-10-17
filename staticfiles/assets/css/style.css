@@ -70,7 +70,7 @@
 
 .section-header h2::before,
 .section-header h3::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 1px;
   padding: 1px;
@@ -84,7 +84,7 @@
 }
 
 .section-header::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 50%;
@@ -99,13 +99,18 @@
 }
 
 .section-header::after {
-  content: '';
+  content: "";
   position: absolute;
   top: -20px;
   left: -20px;
   right: -20px;
   bottom: -20px;
-  background: linear-gradient(45deg, transparent 30%, rgba(0, 86, 184, 0.1) 50%, transparent 70%);
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(0, 86, 184, 0.1) 50%,
+    transparent 70%
+  );
   border-radius: 60px;
   z-index: -3;
   animation: shimmer 3s ease-in-out infinite;
@@ -259,7 +264,6 @@ nav {
   position: relative;
 }
 
-
 .navbar {
   position: fixed;
   z-index: 100000;
@@ -274,7 +278,8 @@ nav {
   justify-content: space-between;
   gap: 10px;
 }
-.avtoil-logo, .avtoil-logo-dark {
+.avtoil-logo,
+.avtoil-logo-dark {
   width: 140px;
 }
 .navbar .nav-section {
@@ -392,7 +397,6 @@ nav {
   justify-content: center;
 }
 
-
 .dropdown-content {
   width: 100%;
   height: 70px;
@@ -508,7 +512,7 @@ nav {
 }
 
 .language-dropdown::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 100%;
   height: 15px;
@@ -560,7 +564,8 @@ nav {
   font-size: 17px;
 }
 @media screen and (max-width: 1024px) {
-  .avtoil-logo, .avtoil-logo-dark {
+  .avtoil-logo,
+  .avtoil-logo-dark {
     width: 120px;
   }
 
@@ -590,7 +595,8 @@ nav {
     font-size: 14px;
     padding: 0 4px;
   }
-  .avtoil-logo, .avtoil-logo-dark {
+  .avtoil-logo,
+  .avtoil-logo-dark {
     width: 115px;
   }
   .breadcrumb {
@@ -632,7 +638,8 @@ nav {
   .navbar .nav-section {
     display: none !important;
   }
-  .avtoil-logo, .avtoil-logo-dark {
+  .avtoil-logo,
+  .avtoil-logo-dark {
     width: 100px;
   }
   .hamburger {
@@ -1016,7 +1023,7 @@ footer .alco-privacy p {
 }
 
 .page-header::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -1448,6 +1455,7 @@ footer .alco-privacy p {
   width: 155px;
   object-fit: contain !important;
   height: auto;
+  max-width: 155px;
   max-height: 70px;
 }
 @media (max-width: 1200px) {
@@ -1999,7 +2007,6 @@ footer .alco-privacy p {
     height: 200px;
   }
 }
-
 
 .service-main-content {
   margin: 50px auto;

@@ -1,7 +1,7 @@
-{% extends 'base.html' %} {% load static %} {% load i18n %} 
-{% block title %}{% trans "home_meta_title" %}{% endblock %}
+{% extends 'base.html' %} {% load static %} {% load i18n %}  
+{% block title %} {% trans "home_meta_title" %} {% endblock %}  
 {% block description %} {% trans "home_meta_description" %} {% endblock %}
-{% block keywords %} {% trans "home_keywords" %}{%endblock %} {%block page_css %}
+ {% block keywords %} {% trans "home_keywords" %}{%endblock %} {% block page_css %}
 <link rel="stylesheet" href="{% static 'assets/css/home.min.css' %}" />
 <link
   rel="stylesheet"
@@ -13,7 +13,10 @@
   href="{% static 'assets/css/swiper-bundle.min.css' %}"
   onload="this.rel='stylesheet'"
 />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<link
+  href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+  rel="stylesheet"
+/>
 
 <noscript>
   <link
@@ -23,7 +26,8 @@
   <link rel="stylesheet" href="{% static 'assets/css/map.min.css' %}" />
 </noscript>
 {% endblock %}{% block extra_schema %}
-<script type="application/ld+json"> {
+<script type="application/ld+json">
+  {
     "@context": "https://schema.org",
     "@type": "WebPage",
     "name": "{% trans 'home_meta_title' %}",
@@ -53,10 +57,10 @@
         "addressCountry": "DE"
       },
       "sameAs": [
-        "https://www.instagram.com/...",
-        "https://www.facebook.com/...",
-        "https://www.linkedin.com/...",
-        "https://www.youtube.com/..."
+        "https://linkedin.com/company/avtoil",
+        "https://www.instagram.com/avtoilglobal/",
+        "https://www.youtube.com/@AVTOIL",
+        "https://www.facebook.com/p/avtoil-100038067895501/"
       ]
     }
   }
@@ -79,7 +83,7 @@
         <div class="slide-content">
           <a aria-label="Header Slide Content" href="{{ swiper.link }}">
             <div class="section-header-title">{{ swiper.title }}</div>
-            {% if swiper.description %}    
+            {% if swiper.description %}
             <p>{{ swiper.description }}</p>
             {% endif %}
             <span class="button-style">{% trans "Go to catalog" %}</span>
@@ -159,8 +163,7 @@
       <div class="play-button" id="playButton">
         <i>►</i>
       </div>
-      <div class="video-container" id="videoContainer">
-  </div>
+      <div class="video-container" id="videoContainer"></div>
     </div>
   </section>
 </div>

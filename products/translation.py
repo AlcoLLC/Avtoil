@@ -22,7 +22,7 @@ class OilTypesTranslationOptions(TranslationOptions):
 class ProductTranslationOptions(TranslationOptions):
     fields = (
         'title', 'description', 'features_benefits', 'application',
-        'recommendations', 'meta_title', 'meta_description', 'meta_keywords'
+        'recommendations'
     )
 
 @register(ProductProperty)

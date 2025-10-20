@@ -103,11 +103,7 @@ class ProductAdmin(TranslationAdmin):
         ('Documents', {
             'fields': ('pds_url', 'sds_url'),
             'classes': ('collapse',),
-        }),
-        ('Meta Information', {
-            'fields': ('meta_title', 'meta_description', 'meta_keywords'),
-            'classes': ('collapse',),
-        }),
+        })
     )
     
     def has_pds(self, obj):

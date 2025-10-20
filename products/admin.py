@@ -10,9 +10,6 @@ class ProductGroupAdmin(TranslationAdmin):
     search_fields = ('title',)
     
     def get_queryset(self, request): 
-
-
-        
         qs = super().get_queryset(request)
         return qs
     

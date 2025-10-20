@@ -303,7 +303,7 @@ else:
         },
     }
 
-GOOGLE_INDEXING_KEY_FILE = BASE_DIR / '../service_account.json'
+GOOGLE_INDEXING_KEY_FILE = BASE_DIR / 'service_account.json'
 SITE_DOMAIN = 'https://avtoil.de'
 
 

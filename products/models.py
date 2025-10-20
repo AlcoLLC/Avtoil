@@ -83,9 +83,9 @@ class Product(models.Model):
     order = models.IntegerField(default=0)
     in_home = models.BooleanField(default=False, verbose_name="In Home")
     
-    meta_title = models.CharField(max_length=255, blank=True, null=True)
-    meta_description = models.TextField(blank=True, null=True)
-    meta_keywords = models.CharField(max_length=500, blank=True, null=True)
+    # meta_title = models.CharField(max_length=255, blank=True, null=True)
+    # meta_description = models.TextField(blank=True, null=True)
+    # meta_keywords = models.CharField(max_length=500, blank=True, null=True)
     
     def __str__(self):
         return self.title

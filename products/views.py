@@ -58,8 +58,8 @@ def product_list(request):
         try:
             if len(selected_product_groups) == 1:
                 obj = Product_group.objects.get(slug=selected_product_groups[0])
-                meta_title = obj.meta_title_prouduct_group
-                meta_description = obj.meta_description_prouduct_group
+                meta_title = obj.meta_title
+                meta_description = obj.meta_description
             elif len(selected_segments) == 1:
                 obj = Segments.objects.get(slug=selected_segments[0])
                 meta_title = obj.meta_title

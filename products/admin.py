@@ -9,8 +9,6 @@ class ProductGroupAdmin(TranslationAdmin):
     prepopulated_fields = {'slug': ('title',)}
     search_fields = ('title',)
 
-
-
 @admin.register(Segments)
 class SegmentsAdmin(TranslationAdmin):
     list_display = ('title', 'slug')

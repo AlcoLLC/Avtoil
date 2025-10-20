@@ -5,7 +5,7 @@ from .models import (Product_group, Segments,
 
 @register(Product_group)
 class ProductGroupTranslationOptions(TranslationOptions):
-    fields = ('title', 'description', 'meta_title', 'meta_description')
+    fields = ('title', 'description')
 
 
 @register(Segments)

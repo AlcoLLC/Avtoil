@@ -48,7 +48,7 @@ def product_list(request):
     meta_description = None
 
     active_filter_count = sum([
-        1 if selected_product_groups else 0,
+        # 1 if selected_product_groups else 0,
         1 if selected_segments else 0,
         1 if selected_oil_types else 0,
         1 if selected_viscosity else 0,
@@ -56,11 +56,7 @@ def product_list(request):
 
     if active_filter_count == 1:
         try:
-            if len(selected_product_groups) == 1:
-                obj = Product_group.objects.get(slug=selected_product_groups[0])
-                meta_title = obj.meta_title
-                meta_description = obj.meta_description
-            elif len(selected_segments) == 1:
+            if len(selected_segments) == 1:
                 obj = Segments.objects.get(slug=selected_segments[0])
                 meta_title = obj.meta_title
                 meta_description = obj.meta_description
@@ -72,7 +68,7 @@ def product_list(request):
                 obj = Viscosity.objects.get(slug=selected_viscosity[0])
                 meta_title = obj.meta_title
                 meta_description = obj.meta_description
-        except (Product_group.DoesNotExist, Segments.DoesNotExist, Oil_Types.DoesNotExist, Viscosity.DoesNotExist):
+        except (Segments.DoesNotExist, Oil_Types.DoesNotExist, Viscosity.DoesNotExist):
             pass
 
     product_group_categories = None

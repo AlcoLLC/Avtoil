@@ -8,8 +8,8 @@ class Product_group(models.Model):
     slug = models.SlugField(max_length=255, unique=True)
     in_home = models.BooleanField(default=False, verbose_name="In Home")
     order = models.IntegerField(default=0)
-    meta_title = models.CharField(max_length=255, blank=True, null=True)
-    meta_description = models.TextField(blank=True, null=True, verbose_name="Meta Description")
+    meta_title_prouduct_group = models.CharField(max_length=255, blank=True, null=True)
+    meta_description_prouduct_group = models.TextField(blank=True, null=True, verbose_name="Meta Description")
     
     def __str__(self):
         return self.title

@@ -1,24 +1,8 @@
 {% extends 'base.html' %} {% load static %}
 {% load i18n %}
 
-{% block title %}
-    {% comment %} Eğer view'dan özel bir meta_title geldiyse onu kullan, yoksa genel çeviriyi kullan {% endcomment %}
-    {% if meta_title %}
-        {{ meta_title }}
-    {% else %}
-        {% trans "products_meta_title" %}
-    {% endif %}
-{% endblock %}
-
-{% block description %}
-    {% comment %} Eğer view'dan özel bir meta_description geldiyse onu kullan, yoksa genel çeviriyi kullan {% endcomment %}
-    {% if meta_description %}
-        {{ meta_description }}
-    {% else %}
-        {% trans "products_meta_description" %}
-    {% endif %}
-{% endblock %}
-
+{% block title %}{% trans "products_meta_title" %}{% endblock %}
+{% block description %}{% trans "products_meta_description" %}{% endblock %}
 {% block keywords %}{% trans "products_keywords" %}{% endblock %}
 
 {% block page_css %}

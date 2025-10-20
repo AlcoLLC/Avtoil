@@ -303,6 +303,9 @@ else:
         },
     }
 
+GOOGLE_INDEXING_KEY_FILE = BASE_DIR / '../service_account.json'
+SITE_DOMAIN = 'https://avtoil.de'
+
 
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True

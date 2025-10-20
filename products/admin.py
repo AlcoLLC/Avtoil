@@ -8,10 +8,7 @@ class ProductGroupAdmin(TranslationAdmin):
     list_display = ('title', 'slug', 'image', 'in_home')
     prepopulated_fields = {'slug': ('title',)}
     search_fields = ('title',)
-    
-    def get_queryset(self, request): 
-        qs = super().get_queryset(request)
-        return qs
+
     
     def save_model(self, request, obj, form, change):     
         super().save_model(request, obj, form, change)
@@ -120,6 +117,10 @@ class ProductAdmin(TranslationAdmin):
         }),
         ('Documents', {
             'fields': ('pds_url', 'sds_url'),
+            'classes': ('collapse',),
+        }),
+        ('Meta Information', {
+            'fields': ('meta_title', 'meta_description', 'meta_keywords'),
             'classes': ('collapse',),
         }),
     )

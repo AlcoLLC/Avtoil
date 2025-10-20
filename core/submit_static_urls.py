@@ -3,7 +3,7 @@ from google.oauth2 import service_account
 from google.auth.transport.requests import Request
 import time
 
-JSON_KEY_FILE = 'service_account.json'
+JSON_KEY_FILE = 'avtoil-475708-217f43591fff.json'
 API_SCOPE = 'https://www.googleapis.com/auth/indexing'
 ENDPOINT = 'https://indexing.googleapis.com/v3/urlNotifications:publish'
 

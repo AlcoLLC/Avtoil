@@ -6,7 +6,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-JSON_KEY_FILE = getattr(settings, 'GOOGLE_INDEXING_KEY_FILE', 'service_account.json')
+JSON_KEY_FILE = getattr(settings, 'GOOGLE_INDEXING_KEY_FILE', 'avtoil-475708-217f43591fff.json')
 API_SCOPE = 'https://www.googleapis.com/auth/indexing'
 ENDPOINT = 'https://indexing.googleapis.com/v3/urlNotifications:publish'
 

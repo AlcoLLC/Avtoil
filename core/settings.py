@@ -94,10 +94,10 @@ INSTALLED_APPS = [
     'services',
     'contact',
     'faq',
-    'news',
     'brands',
-    'products',
     'partnership',
+    'news.apps.NewsConfig', 
+    'products.apps.ProductsConfig',
 ]
 
 SITE_ID = 1

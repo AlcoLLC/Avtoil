@@ -1,12 +1,15 @@
 import requests
 from google.oauth2 import service_account
-from google.auth.transport.requests import Request
+from google.auth.transport.requests import Request, AuthorizedSession
 from django.conf import settings
 import logging
+import os 
 
 logger = logging.getLogger(__name__)
 
-JSON_KEY_FILE = getattr(settings, 'GOOGLE_INDEXING_KEY_FILE', 'avtoil-475708-217f43591fff.json')
+JSON_KEY_FILE = getattr(settings, 'GOOGLE_INDEXING_KEY_FILE', 
+                        os.path.join(settings.BASE_DIR, 'avtoil-475708-217f43591fff.json'))
+
 API_SCOPE = 'https://www.googleapis.com/auth/indexing'
 ENDPOINT = 'https://indexing.googleapis.com/v3/urlNotifications:publish'
 
@@ -19,6 +22,9 @@ def get_credentials():
         if not creds.valid:
             creds.refresh(Request())
         return creds
+    except FileNotFoundError: 
+        logger.error(f"[Google Indexing] HATA: JSON anahtar dosyası bulunamadı: {JSON_KEY_FILE}")
+        return None
     except Exception as e:
         logger.error(f"[Google Indexing] Kimlik bilgileri alınırken hata: {e}", exc_info=True)
         return None
@@ -29,8 +35,7 @@ def submit_url_to_google(url_to_submit, url_type="URL_UPDATED"):
         logger.warning(f"[Google Indexing] Kimlik bilgisi yok, {url_to_submit} gönderilemedi.")
         return
 
-    session = requests.Session()
-    session.auth = (f"Bearer {credentials.token}")
+    session = AuthorizedSession(credentials)
     
     payload = {
         "url": url_to_submit,
@@ -43,8 +48,12 @@ def submit_url_to_google(url_to_submit, url_type="URL_UPDATED"):
         logger.info(f"[Google Indexing] Başarılı ({url_type}): {url_to_submit}")
 
     except requests.exceptions.HTTPError as e:
-        error_json = e.response.json()
-        error_message = error_json.get("error", {}).get("message", e.response.text)
+        try:
+            error_json = e.response.json()
+            error_message = error_json.get("error", {}).get("message", e.response.text)
+        except requests.exceptions.JSONDecodeError:
+            error_message = e.response.text
+            
         logger.error(f"[Google Indexing] HATA ({e.response.status_code}) {url_to_submit}: {error_message}")
     except Exception as e:
         logger.error(f"[Google Indexing] BEKLENMEDİK HATA {url_to_submit}: {e}", exc_info=True)

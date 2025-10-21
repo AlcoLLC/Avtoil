@@ -2,7 +2,7 @@ from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.urls import reverse
 from django.conf import settings
-from .models import Product # Model adınızın 'Product' olduğunu varsayıyorum
+from .models import Product 
 from core.google_indexing import submit_url_to_google
 from django.utils.translation import get_language, activate
 import logging
@@ -10,9 +10,8 @@ logger = logging.getLogger(__name__)
 
 @receiver(post_save, sender=Product)
 def submit_product_to_google(sender, instance, created, **kwargs):
-    # Sitenizdeki aktif dilleri settings.LANGUAGES'dan alın
     language_codes = [lang[0] for lang in settings.LANGUAGES]
-    original_lang = get_language() # Mevcut dili kaydet
+    original_lang = get_language() 
 
     for lang_code in language_codes:
         try:

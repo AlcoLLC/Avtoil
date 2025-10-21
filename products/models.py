@@ -4,8 +4,8 @@ from ckeditor_uploader.fields import RichTextUploadingField
 class Product_group(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
-    # meta_title = models.CharField(max_length=255, blank=True, null=True)
-    # meta_description = models.TextField(blank=True, null=True, verbose_name="Meta Description")
+    meta_title = models.CharField(max_length=255, blank=True, null=True)
+    meta_description = models.TextField(blank=True, null=True, verbose_name="Meta Description")
     image = models.ImageField(upload_to='product_group/')
     slug = models.SlugField(max_length=255, unique=True)
     in_home = models.BooleanField(default=False, verbose_name="In Home")
@@ -26,8 +26,8 @@ class Segments(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
 
-    # meta_title = models.CharField(max_length=255, blank=True, null=True)
-    # meta_description = models.TextField(blank=True, null=True, verbose_name="Meta Description")
+    meta_title = models.CharField(max_length=255, blank=True, null=True)
+    meta_description = models.TextField(blank=True, null=True, verbose_name="Meta Description")
     
     def __str__(self):
         return self.title
@@ -36,8 +36,8 @@ class Oil_Types(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
 
-    # meta_title = models.CharField(max_length=255, blank=True, null=True)
-    # meta_description = models.TextField(blank=True, null=True, verbose_name="Meta Description")
+    meta_title = models.CharField(max_length=255, blank=True, null=True)
+    meta_description = models.TextField(blank=True, null=True, verbose_name="Meta Description")
     
     def __str__(self):
         return self.title
@@ -46,8 +46,8 @@ class Viscosity(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
 
-    # meta_title = models.CharField(max_length=255, blank=True, null=True)
-    # meta_description = models.TextField(blank=True, null=True, verbose_name="Meta Description")
+    meta_title = models.CharField(max_length=255, blank=True, null=True)
+    meta_description = models.TextField(blank=True, null=True, verbose_name="Meta Description")
     
     def __str__(self):
         return self.title
@@ -83,16 +83,16 @@ class Product(models.Model):
     order = models.IntegerField(default=0)
     in_home = models.BooleanField(default=False, verbose_name="In Home")
     
-    # meta_title = models.CharField(max_length=255, blank=True, null=True)
-    # meta_description = models.TextField(blank=True, null=True)
-    # meta_keywords = models.CharField(max_length=500, blank=True, null=True)
+    meta_title = models.CharField(max_length=255, blank=True, null=True)
+    meta_description = models.TextField(blank=True, null=True)
+    meta_keywords = models.CharField(max_length=500, blank=True, null=True)
     
     def __str__(self):
         return self.title
 
 class ProductProperty(models.Model):
     product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='properties')
-    property_name = models.CharField(max_length=255, verbose_name="Property")
+    property_name = models.CharField(max_length=255, verbose_name="Property" )
     unit = models.CharField(max_length=50, blank=True, null=True, verbose_name="Unit")
     test_method = models.CharField(max_length=255, verbose_name="Test method")
     typical_value = models.CharField(max_length=100, verbose_name="Typical value")

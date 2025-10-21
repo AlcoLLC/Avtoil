@@ -1,28 +1,31 @@
 from modeltranslation.translator import register, TranslationOptions
 from .models import (Product_group, Segments,
-    Oil_Types, Product, ProductProperty
+    Oil_Types, Product, ProductProperty, Viscosity
 )
 
 @register(Product_group)
 class ProductGroupTranslationOptions(TranslationOptions):
-    fields = ('title', 'description')
+    fields = ('title', 'description', 'meta_title', 'meta_description')
 
 
 @register(Segments)
 class SegmentsTranslationOptions(TranslationOptions):
-    fields = ('title',)
+    fields = ('title', 'meta_title', 'meta_description')
 
 
 @register(Oil_Types)
 class OilTypesTranslationOptions(TranslationOptions):
-    fields = ('title',)
+    fields = ('title', 'meta_title', 'meta_description')
 
+@register(Viscosity)
+class ViscosityTranslationOptions(TranslationOptions):
+    fields = ( 'meta_title', 'meta_description')
 
 @register(Product)
 class ProductTranslationOptions(TranslationOptions):
     fields = (
         'title', 'description', 'features_benefits', 'application',
-        'recommendations'
+        'recommendations', 'meta_title', 'meta_description'
     )
 
 @register(ProductProperty)

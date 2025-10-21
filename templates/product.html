@@ -1,8 +1,23 @@
 {% extends 'base.html' %} {% load static %}
 {% load i18n %}
 
-{% block title %}{% trans "products_meta_title" %}{% endblock %}
-{% block description %}{% trans "products_meta_description" %}{% endblock %}
+
+{% block title %}
+    {% if meta_title %}
+        {{ meta_title }}
+    {% else %}
+        {% trans "products_meta_title" %}
+    {% endif %}
+{% endblock %}
+
+{% block description %}
+    {% if meta_description %}
+        {{ meta_description }}
+    {% else %}
+        {% trans "products_meta_description" %}
+    {% endif %}
+{% endblock %}
+
 {% block keywords %}{% trans "products_keywords" %}{% endblock %}
 
 {% block page_css %}

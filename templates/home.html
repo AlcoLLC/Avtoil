@@ -1,10 +1,12 @@
-{% extends 'base.html' %} {% load static %} {% load i18n %} {% block title %} {% trans "home_meta_title" %} {% endblock %} 
-{% block description %} {% trans "home_meta_description" %} {% endblock %} 
-{% block keywords %} {% trans "home_keywords" %}{%endblock %} {% block page_css %}
+{% extends 'base.html' %} {% load static %} {% load i18n %} {% block title %} {%
+trans "home_meta_title" %} {% endblock %} {% block description %} {% trans
+"home_meta_description" %} {% endblock %} {% block keywords %} {% trans
+"home_keywords" %}{%endblock %} {% block page_css %}
+
 <link rel="stylesheet" href="{% static 'assets/css/home.min.css' %}" />
 <link
   rel="stylesheet"
-  href="{% static 'assets/css/map.min.css' %}"
+  href="{% static 'assets/css/map.css' %}"
   onload="this.rel='stylesheet'"
 />
 <link
@@ -18,12 +20,14 @@
     rel="stylesheet"
     href="{% static 'assets/css/swiper-bundle.min.css' %}"
   />
+  <link rel="stylesheet" href="{% static 'assets/css/map.css' %}" />
   <link
     href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
     rel="stylesheet"
   />
 </noscript>
-{% endblock %}{% block extra_schema %}
+
+{% endblock %} {% block extra_schema %}
 <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -392,15 +396,11 @@
 
 {% include 'components/gallery.html' %} {% include 'components/brochure.html' %}
 {% include 'components/review.html' %} {% endblock %} {% block page_js %}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
 <script src="{% static 'assets/js/home.min.js' %}" defer></script>
-<script src="{% static 'assets/js/map-init.min.js' %}" defer></script>
-<script src="{% static 'assets/js/mapconfig-1.min.js' %}" defer></script>
-<script src="{% static 'assets/js/mapconfig-2.min.js' %}" defer></script>
-<script src="{% static 'assets/js/mapconfig-3.min.js' %}" defer></script>
 <script src="{% static 'assets/js/raphael.min.js' %}" defer></script>
 <script src="{% static 'assets/js/settings.min.js' %}" defer></script>
 <script src="{% static 'assets/js/paths.min.js' %}" defer></script>
-<script src="{% static 'assets/js/map.min.js' %}" defer></script>
-
+<script src="{% static 'assets/js/mapp.min.js' %}" defer></script>
+<script src="{% static 'assets/js/map-init.min.js' %}" defer></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 {% endblock %}

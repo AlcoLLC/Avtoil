@@ -1,7 +1,6 @@
-{% extends 'base.html' %} {% load static %} {% load i18n %} {% block title %} {%
-trans "home_meta_title" %} {% endblock %} {% block description %} {% trans
-"home_meta_description" %} {% endblock %} {% block keywords %} {% trans
-"home_keywords" %}{%endblock %} {% block page_css %}
+{% extends 'base.html' %} {% load static %} {% load i18n %} {% block title %} {% trans "home_meta_title" %} {% endblock %} 
+{% block description %} {% trans "home_meta_description" %} {% endblock %} 
+{% block keywords %} {% trans "home_keywords" %}{%endblock %} {% block page_css %}
 <link rel="stylesheet" href="{% static 'assets/css/home.min.css' %}" />
 <link
   rel="stylesheet"
@@ -394,7 +393,7 @@ trans "home_meta_title" %} {% endblock %} {% block description %} {% trans
 
 {% include 'components/gallery.html' %} {% include 'components/brochure.html' %}
 {% include 'components/review.html' %} {% endblock %} {% block page_js %}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
 <script src="{% static 'assets/js/home.min.js' %}" defer></script>
 <script src="{% static 'assets/js/map-init.min.js' %}" defer></script>
 <script src="{% static 'assets/js/mapconfig-1.min.js' %}" defer></script>

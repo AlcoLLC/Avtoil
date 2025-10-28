@@ -137,6 +137,7 @@
   }
   .home-header .slide-content a {
     justify-content: center;
+    align-items: center;
     text-align: center;
   }
   .home-header .slide-content {
@@ -150,6 +151,7 @@
     font-size: 14px;
     line-height: 18px;
     text-align: center;
+    max-width: 100%;
   }
   .home-header .swiper-button-next,
   .home-header .swiper-button-prev {
@@ -693,9 +695,6 @@
 @media (max-width: 520px) {
   .home-header .swiper {
     height: 47vh;
-  }
-  .home-header .slide-content a {
-    text-align: left;
   }
   .home-header .swiper-slide {
     padding-top: 15%;

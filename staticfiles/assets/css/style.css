@@ -276,6 +276,7 @@ nav {
 }
 .avtoil-logo, .avtoil-logo-dark {
   width: 140px;
+  height: auto !important;
 }
 .navbar .nav-section {
   display: flex;
@@ -1284,6 +1285,7 @@ footer .alco-privacy p {
 }
 .brochure img {
   width: 100%;
+  height: auto !important;
 }
 .brochure-text-section h4 {
   font-weight: 400;

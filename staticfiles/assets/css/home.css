@@ -698,7 +698,8 @@
   }
   .home-header .swiper-slide {
     padding-top: 15%;
-    padding-left: 20%;
+    padding-left: 15%;
+    padding-right: 15%;
   }
   .home-header .slide-content .section-header-title {
     font-size: 20px;

@@ -69,8 +69,8 @@
 .home-header .swiper-button-next,
 .home-header .swiper-button-prev {
   position: absolute !important;
-  width: 45px;
-  height: 45px;
+  width: 48px;
+  height: 48px;
   border-radius: 10px;
   border: none;
   background-color: #fff;
@@ -97,17 +97,12 @@
 }
 .home-header .swiper-button-next i,
 .home-header .swiper-button-prev i {
-  font-size: 16px;
+  font-size: 20px;
   color: #000;
 }
 @media (max-width: 1200px) {
   .home-header .slide-content p {
     max-width: 60%;
-  }
-  .home-header .swiper-button-next,
-  .home-header .swiper-button-prev {
-    width: 40px;
-    height: 40px;
   }
   .home-header .swiper {
     height: 70vh;
@@ -152,11 +147,6 @@
     line-height: 18px;
     text-align: center;
     max-width: 100%;
-  }
-  .home-header .swiper-button-next,
-  .home-header .swiper-button-prev {
-    width: 40px !important;
-    height: 40px !important;
   }
   .home-header .swiper-button-prev {
     top: 65%;

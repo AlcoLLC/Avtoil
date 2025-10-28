@@ -277,9 +277,9 @@ nav {
   justify-content: space-between;
   gap: 10px;
 }
-.avtoil-logo,
-.avtoil-logo-dark {
+.avtoil-logo, .avtoil-logo-dark {
   width: 140px;
+  height: auto !important;
 }
 .navbar .nav-section {
   display: flex;
@@ -1290,6 +1290,7 @@ footer .alco-privacy p {
 }
 .brochure img {
   width: 100%;
+  height: auto;
 }
 .brochure-text-section h4 {
   font-weight: 400;

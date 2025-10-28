@@ -698,8 +698,8 @@
   }
   .home-header .swiper-slide {
     padding-top: 15%;
-    padding-left: 15%;
-    padding-right: 15%;
+    padding-left: 10%;
+    padding-right: 10%;
   }
   .home-header .slide-content .section-header-title {
     font-size: 20px;
@@ -707,6 +707,7 @@
   }
   .home-header .slide-content a{
     gap: 9px;
+    margin-top: 0;
   }
   .home-header .slide-content p,
   .product-categories .category-desc {

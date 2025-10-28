@@ -701,8 +701,11 @@
     padding-left: 20%;
   }
   .home-header .slide-content .section-header-title {
-    font-size: 22px;
-    line-height: 26px;
+    font-size: 20px;
+    line-height: 25px;
+  }
+  .home-header .slide-content a{
+    gap: 17px;
   }
   .home-header .slide-content p,
   .product-categories .category-desc {

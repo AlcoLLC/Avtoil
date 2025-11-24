@@ -1,6 +1,6 @@
 from django.contrib import admin
 from modeltranslation.admin import TranslationAdmin, TranslationTabularInline
-from .models import Product_group, Segments, Oil_Types, Viscosity, Liter, Product, ProductProperty
+from .models import Product_group, Segments, Oil_Types, Viscosity, Liter, Product, ProductProperty, Product_Group_Category
 from django.utils.html import format_html
 
 @admin.register(Product_group)
@@ -8,6 +8,11 @@ class ProductGroupAdmin(TranslationAdmin):
     list_display = ('title', 'slug', 'image', 'in_home')
     prepopulated_fields = {'slug': ('title',)}
     search_fields = ('title',)
+
+@admin.register(Product_Group_Category)
+class ProductGroupCategoryAdmin(TranslationAdmin):
+    list_display = ('title', 'product_group')
+    search_fields = ('title', 'product_group__title')
 
 @admin.register(Segments)
 class SegmentsAdmin(TranslationAdmin):

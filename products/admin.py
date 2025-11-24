@@ -3,16 +3,29 @@ from modeltranslation.admin import TranslationAdmin, TranslationTabularInline
 from .models import Product_group, Segments, Oil_Types, Viscosity, Liter, Product, ProductProperty, Product_Group_Category
 from django.utils.html import format_html
 
+@admin.register(Product_Group_Category)
+class ProductGroupCategoryAdmin(TranslationAdmin):
+    list_display = ('get_category_name', 'product_group')
+    list_filter = ('product_group',)
+    search_fields = ('title', 'description')
+
+    def get_category_name(self, obj):
+        from django.utils.html import strip_tags
+        if obj.title:
+            return strip_tags(obj.title)[:50]
+        return "No Title"
+    get_category_name.short_description = "Category Title"
+
+class ProductGroupCategoryInline(TranslationTabularInline):
+    model = Product_Group_Category
+    extra = 1
+
 @admin.register(Product_group)
 class ProductGroupAdmin(TranslationAdmin):
     list_display = ('title', 'slug', 'image', 'in_home')
     prepopulated_fields = {'slug': ('title',)}
     search_fields = ('title',)
-
-@admin.register(Product_Group_Category)
-class ProductGroupCategoryAdmin(TranslationAdmin):
-    list_display = ('title', 'product_group')
-    search_fields = ('title', 'product_group__title')
+    inlines = [ProductGroupCategoryInline]
 
 @admin.register(Segments)
 class SegmentsAdmin(TranslationAdmin):
